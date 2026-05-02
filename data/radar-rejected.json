@@ -1,157 +1,149 @@
 {
-  "generatedAt": "2026-05-02T08:53:58.586Z",
-  "engine": "Free Feed Radar V4.2",
+  "generatedAt": "2026-05-02T10:00:25.611Z",
+  "engine": "Strict Free Feed Radar V5",
   "stats": {
-    "totalRejected": 20,
-    "noHumanContact": 20,
-    "collectionErrors": 6
+    "totalRejected": 15,
+    "noHumanContact": 15,
+    "noContactMethod": 15,
+    "skipWindow": 0,
+    "collectionErrors": 0
   },
-  "errors": [
-    {
-      "source": "Texas physician practice owners GDELT",
-      "error": "GDELT 429"
-    },
-    {
-      "source": "Nationwide physician practice openings GDELT",
-      "error": "fetch failed"
-    },
-    {
-      "source": "Texas business owner liquidity events GDELT",
-      "error": "GDELT 429"
-    },
-    {
-      "source": "Nationwide founder exits GDELT",
-      "error": "fetch failed"
-    },
-    {
-      "source": "Energy-state oil and gas executives GDELT",
-      "error": "fetch failed"
-    },
-    {
-      "source": "CPA tax planning partners GDELT",
-      "error": "fetch failed"
-    }
-  ],
+  "errors": [],
   "rejected": [
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "2 physicians to take additional seats on ACIP vaccine board; meeting scheduled for March - Medical Economics",
-      "sourceFeed": "Texas physician practice owners"
+      "reason": "no real named human contact",
+      "rawTitle": "Welcome new physicians - CAMC",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9ydUVGU1BGTDFuN2FGMEhOUFRXQU01N0xKNlQzb1U2VlZTb1Q1NHl2TVhWLVpPU0tqOWlWd2kzSUN6cWNyTjluMTVOZ01pZWVobHdjWTdTY0xTcVZpckI1cg?oc=5",
+      "sourceFeed": "Texas physician practice owners",
+      "nextEligibleCheck": "2026-05-16T10:00:23.110Z",
+      "skippedAt": "2026-05-02T10:00:23.110Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "CityVet opens new Fort Worth practice - Vet Times",
-      "sourceFeed": "Texas physician practice owners"
+      "reason": "no real named human contact",
+      "rawTitle": "Hugo robot-assisted surgery system launches on US market - Urology Times",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNNDNsanV5cTZUbkgwSk96akRrYUNJWUUwSU1NaXJHb2NCUXh5cG9TdjQ5a0p0REFMbUpiamhlclI4RjlhTlNrTkJmTUhIUjFLTWdPaGxoOVpkUVhEbUFEcHdQRkZUckRtdENNR2l6SVNPM2JMYXpudlBSaUszSnRVTXpRcElxNi04ZW41RlIxNzhHT1Za?oc=5",
+      "sourceFeed": "Nationwide physician practice signals",
+      "nextEligibleCheck": "2026-05-16T10:00:23.552Z",
+      "skippedAt": "2026-05-02T10:00:23.552Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "10 Under 10 Awards: Recognizing the 'future of the dental profession' - American Dental Association",
-      "sourceFeed": "Texas physician practice owners"
+      "reason": "no real named human contact",
+      "rawTitle": "In major $12.3B deal, Webster Bank to be acquired by Santander Bank - Hartford Business Journal",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNVFpzYTdPMjltQjIxekV1dDRqSmZkN2RyQm12X0pWVEJ0a2V4bHFjblhsbkpSaUxiWjFFSXVNQW1maGRIOW13UWMydmNRNnBtSUJGXzlncUJWZGpQNjNURFltUURGY2tkYUhUQ0V2d0RFV0cxaUtNbkpLMHRhYzJvNmdMNXlsSk1WQjBhekM5TkJaU0tGWkNySjRaMURIUVVnSUF0X3dn?oc=5",
+      "sourceFeed": "Founder owner liquidity events",
+      "nextEligibleCheck": "2026-05-16T10:00:23.980Z",
+      "skippedAt": "2026-05-02T10:00:23.980Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "AMISTAD 2025 launches final iteration in Panamá - southcom.mil",
-      "sourceFeed": "Nationwide physician practice openings"
+      "reason": "no real named human contact",
+      "rawTitle": "Olaplex to be acquired by German company Henkel in $1.4 billion deal - CNBC",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QSDVxeUd6cEVIREdZZDRqcjBkN3Y3Sl9ud1FMRERTLVA0X3ZNQlN0SFVTUFJncWFDRVlDZzBJZW9rN1N0cEFOdHZGQ0E1QnVoNmZOYzFXWVluaHlYSURDVVphMWVsbmxtVC1LeNIBckFVX3lxTE5HS3A3c1lDRGo2dEdWSnZGTTFWM0FqTFlWZGVDZkVyV01MU3pfaEZUS21RZ0FQX045YkFFcWZpZmFwMDFsM045dWZyT2x6eXFHX3plUzBDVGtQdTQzX3FidWZLclkyRkViRFphdHQ1eHd3QQ?oc=5",
+      "sourceFeed": "Founder owner liquidity events",
+      "nextEligibleCheck": "2026-05-16T10:00:23.980Z",
+      "skippedAt": "2026-05-02T10:00:23.980Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Orthopedic surgeon, outdoorsman joins St. Mary's in Athens - Online Athens",
-      "sourceFeed": "Nationwide physician practice openings"
+      "reason": "no real named human contact",
+      "rawTitle": "Dog food maker Ollie acquired by Spain’s Agrolimen - Reuters",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNbkdvMnpaaXA0X1RBeXhINEM2RzBCcU4xdDJ0X3FBcnJHcHF4SmxZbVMwajh3SkVsTDNYUWdRZXVpWkcxWmlXUkR1TmZETmlfRDdDMVVmWmtaUGJMcEYzLWx6aHdacWZWTkhrVzNTZGVJa3B0cDlhYmJxVHUzM1MwbmY2YVJ0ZkQ2Z01IbXV0MkNMVUlaMnUtcm9qMmYxVldvWG9kSA?oc=5",
+      "sourceFeed": "Founder owner liquidity events",
+      "nextEligibleCheck": "2026-05-16T10:00:23.980Z",
+      "skippedAt": "2026-05-02T10:00:23.980Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "O’Hare consultant Unison acquired by Texas firm - Crain's Chicago Business",
-      "sourceFeed": "Texas business owner liquidity events"
+      "reason": "no real named human contact",
+      "rawTitle": "Vancouver’s PayByPhone to be acquired by U.S. equity firm - Business in Vancouver",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQQ1F4Vlo1MGVJd2JJSkgwbmQzNWdOaW1MOERuTkxDdjJpdUFaQnFhMDZBV3ZOUWxMYzRZdzg1ZjZTMEd6LTdSQkwzSHJpaGg2TXRGcWc4ZlpwX1RsWnVWcGdDVkhoS0NjXzY4M1JRZkhSQ19PS0Q2X2VCaE9Ec082SmtydndQOElDSkNiTEJsUjNtczA0M2JUenJpS1NDQkNS?oc=5",
+      "sourceFeed": "Founder owner liquidity events",
+      "nextEligibleCheck": "2026-05-16T10:00:23.980Z",
+      "skippedAt": "2026-05-02T10:00:23.980Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Family behind beloved Texas brand exits after PepsiCo sale - MySA",
-      "sourceFeed": "Texas business owner liquidity events"
+      "reason": "no real named human contact",
+      "rawTitle": "Trump threatens tariffs on countries supplying Cuba with much-needed oil - Al Jazeera",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNTnFFdkY5SHczLU85eVFFSHNlYXhUQV8yeTVMdnZWd1lUM05wYjl5NFpkWXJaVklEUHotNk40bW5VakxCQ1NhTTVqMHNLTEhTY1ZMbGZjOWM5U3B4M0lyYzBqaWVpWGNORVlBdEZiOVRQbk5mbV9ISXl2VHgtLXUwMGhQcnF4bzBDNTExYnRSSU0zb1hNRzVka05YMTZXREx4Z3hZRDc1SU9YNjB2NWIwOE9sRdIBuAFBVV95cUxNTjl1dVV5Y3MxNXpTeUhSODRoMFNZNGtVdEd3ekhvODR6ZVpxSGVrdFhyMl9sQ0NaNGs5UTN1NEg0MGkwNklsYThjQnl1Z0JtR1pLbld0X1B6SkJiT3Ytb0pHMDU4VXNDZ1R1Xzkzc0lka2J4bDJiZWhYcWU4T1JiX21LV1VyUnVoaG9MWHVzUU15cDJpZnctNDVCdnFjRmk",
+      "sourceFeed": "Energy executives named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.471Z",
+      "skippedAt": "2026-05-02T10:00:24.471Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Alabama healthcare company to be acquired by Texas firm in $565 million deal - AL.com",
-      "sourceFeed": "Texas business owner liquidity events"
-    },
-    {
-      "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "TaylorMade CEO says company could be sold by end of 2026 - MSN",
-      "sourceFeed": "Nationwide founder exits"
-    },
-    {
-      "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "United CEO had been considering a merger last fall, months before bringing it up to the Trump administration - CNBC",
-      "sourceFeed": "Nationwide founder exits"
-    },
-    {
-      "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "PN Bakken: Something new in the making - Petroleum News",
-      "sourceFeed": "Energy-state oil and gas executives"
-    },
-    {
-      "reject": true,
-      "reason": "no named human contact",
+      "reason": "no real named human contact",
       "rawTitle": "Trump names CEO of Denver-based oil and gas company as energy secretary - The Colorado Sun",
-      "sourceFeed": "Energy-state oil and gas executives"
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQUGp4Z2VuMTNYY0dyX0VDNU1Sa2NPRjBHZmRVT2w1cGhRMXg3Tm82bnljUzdQd3MwMzJIejl5WDkzQnZOeHpFeHFRRXVxVzNqMDVwaE03a2N3bk1xbzdnb0JaTGVVZ3QwTGQ2a0llYUpGcFUtYlV5b184cUg4MmxHZTNaWEo?oc=5",
+      "sourceFeed": "Energy executives named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.472Z",
+      "skippedAt": "2026-05-02T10:00:24.472Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Trump loves VP contender’s energy cred - E&E News by POLITICO",
-      "sourceFeed": "Energy-state oil and gas executives"
+      "reason": "no real named human contact",
+      "rawTitle": "How an oil exec got picked to lead the DOE renewables office - E&E News by POLITICO",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNSmVnWFc0bWFZM2RqNl9hVGtIMzRFZm5nNnJiNEJVN3NDZVB4REdHT3JlQWpSYVRwOWMwY0dOVjJEZUduS1MxSkRCQkVzbHJGMk9GWWoyVE95aWxlQmY0b0x2eGR6Z1EyYzNzbEFSaVZpbDBEcHBKNnRkTmt2a1BXZHhCUTRTR3IxSFJ5TU9xWFpqM0dpMzVOcw?oc=5",
+      "sourceFeed": "Energy executives named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.472Z",
+      "skippedAt": "2026-05-02T10:00:24.472Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Entrepreneurs reflect on Bakken boom at MSU event - minotdailynews.com",
-      "sourceFeed": "Energy-state oil and gas executives"
+      "reason": "no real named human contact",
+      "rawTitle": "Louisiana leads lawsuit against Biden’s ban on new offshore drilling - Louisiana Illuminator",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE94d05wQXd4SExJaWhPZFJZZTFZMlRheDgyUkVNLUNTYUEzVUpvbnhhVmM5UG4tei1OY2g4ODNJdVBIM3BOY21keDVReVNrMWhHVWdXUXlwSzhyUWlJMFF2dF9PWmt2dw?oc=5",
+      "sourceFeed": "Energy executives named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.472Z",
+      "skippedAt": "2026-05-02T10:00:24.472Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Succession and tax strategy for farmers and business owners post-Budget - Charles Russell Speechlys",
-      "sourceFeed": "CPA tax planning partners"
+      "reason": "no real named human contact",
+      "rawTitle": "Former small-business owner, public accountant joins FNBSF team - SiouxFalls.Business",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSHlsVjJTN09Sb1ZtaXkxenJhS1pqdE1JNVpOVWhpamNNUkg0U3Y5czRYMFAwSTd0OGJKMG1nSm5Dc0pFWlVYUnJZQ2JYWHFsSi1BMDUwMWljNGpZTkYyQ0s1Y1VUZ2E1eGxEX0lrdHgyejYxbWNWVjRKcmM0MGFQdFRMaV9qTncycVNoNVBVRENfSFgzWnc?oc=5",
+      "sourceFeed": "CPA partner named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.793Z",
+      "skippedAt": "2026-05-02T10:00:24.793Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "The best online will-makers of 2026 - CNBC",
-      "sourceFeed": "Law partners estate planning"
+      "reason": "no real named human contact",
+      "rawTitle": "California CPA firm wades into wealth with RIA partnership - InvestmentNews",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQaXdiTUw5Z29tN21XNGR2NUlKdmJyZ1FXVVVuNEtDRURXVzFVWm9oSXJKSEpPTmVxYVU1ZU92Um41OHkyYWphcl9MVkR2MFhzWlpBMEpCMXhWbENkdlNiQXdsWHZrQVM0RXlFQzBodFJkM09FYWx1YVJpNjA3V2JCZ3BFbHcyaWdDcUNNbUMyd1NmY1lyajB1bk1xT1duMG5EQllGVE83ay0?oc=5",
+      "sourceFeed": "CPA partner named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:24.793Z",
+      "skippedAt": "2026-05-02T10:00:24.793Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Single-owner firms: The thrill of flying solo - Journal of Accountancy",
-      "sourceFeed": "Speaker authority signals"
+      "reason": "no real named human contact",
+      "rawTitle": "Ex-Missouri lawmaker who admitted to COVID fraud sentenced to prison - USA Today",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOMWI4eXBId0lic1JILTlROEttNmhlcEFNeVpzeGFidVJPUFFYNjkzLUVZT05NWWtodW9weFd4R3RVMTVGTHVEUkg0MnZJZ2pKWlNDVUtDRGtTRTNhRWc5dDVYcTM1NndSclNjRUN5dEtnLUVtdndDQ2t2Z1lKZVNkcWdtcjRSaS1JNmhfRTZxcnZRWll1LXVlUjRJOWIzblNTR1dOX1lqYWFreTliZVVNdTQ5dWdEclVBLUhnM2xfY2lmdjF0bVdn?oc=5",
+      "sourceFeed": "Attorney partner named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:25.233Z",
+      "skippedAt": "2026-05-02T10:00:25.233Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Trump's tax bill could end popular 'SALT' deduction workaround for certain business owners - CNBC",
-      "sourceFeed": "Speaker authority signals"
+      "reason": "no real named human contact",
+      "rawTitle": "Another candidate joins the expanding field seeking to be Georgia's top lawyer - Savannah Morning News",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPalo5SGdnaWdHX2xlY3dfUDk2YWt3Mnd3WERNZUtUNlNKcHR1MzUxay16MFcyTVhhNktoaG5mQktJZnBEZVV6a0I4eUFxM3NOT0h4d2RBdEEtSzdOUVFQdGFaNDNLdEdaaVVORGRvSjI5NlVPOHA1WnAxeVBVUnFCUm1VM2c4ZDZ0ZTRsSFBvZ0NsLXE2UUlIX2p4eEZnSTBaNzVSRGo3TzU4NXd3TUlYX3UzZXFzQ3Z3WmtXeS1jYnhqakVLNnFkMTF0eXc2WUZ5R1VpaXRxekJEd2QyNmFv?oc=5",
+      "sourceFeed": "Attorney partner named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:25.233Z",
+      "skippedAt": "2026-05-02T10:00:25.233Z"
     },
     {
       "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "Rheinmetall acquires stake in Croatian company DOK-ING - Rheinmetall",
-      "sourceFeed": "Real estate developer signals"
-    },
-    {
-      "reject": true,
-      "reason": "no named human contact",
-      "rawTitle": "OpenAI acquires TBPN, the buzzy founder-led business talk show - TechCrunch",
-      "sourceFeed": "Real estate developer signals"
+      "reason": "no real named human contact",
+      "rawTitle": "Anthropic cofounder says studying the humanities will be 'more important than ever' in the age of AI - Fortune",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPcVhvTDNmNHBOak5FN3BkSmRvbHpfcmFuQkowN0kyMjVOTTRMQ3lDTDA3UmR5bmJSblN0ZHktNHkwZGRKNGZJTUVpUUkxclpERUViclhNQVJyOXVrd1ZGQUdGMnJSdlppY2J1d0ZEVXYxZjQxa054MHhOdEo3OFQ2QVZxa3Fkb0JpT0dCMTJ5bjVRNEFJTVdTckVDWjh3RHViYzFHNm1LTUlKaFA5c2pRYg?oc=5",
+      "sourceFeed": "Podcast interview named signals",
+      "nextEligibleCheck": "2026-05-16T10:00:25.610Z",
+      "skippedAt": "2026-05-02T10:00:25.610Z"
     }
   ]
 }
