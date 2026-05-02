@@ -130,6 +130,9 @@ function routeCoreFrame(mapped){
   const frame=$('core-frame');
   if(!frame)return;
 
+  // Use cache-bust so GitHub Pages/browser does not keep the iframe stuck on the old dashboard route.
+  const src='app-core.html?v=core-route-2#'+encodeURIComponent(mapped);
+
   function tryRoute(){
     try{
       const w=frame.contentWindow;
@@ -137,7 +140,7 @@ function routeCoreFrame(mapped){
         w.goPage(mapped,null);
         return true;
       }
-      if(w && typeof w.location!=='undefined'){
+      if(w && w.location){
         w.location.hash=mapped;
       }
     }catch(e){}
@@ -148,17 +151,14 @@ function routeCoreFrame(mapped){
     let tries=0;
     const timer=setInterval(function(){
       tries++;
-      if(tryRoute() || tries>20) clearInterval(timer);
-    },150);
+      if(tryRoute() || tries>40) clearInterval(timer);
+    },125);
   };
 
-  // Force a real reload for every workspace page. Hash-only changes were not reliably firing inside the preserved core app.
-  frame.src='app-core.html#'+encodeURIComponent(mapped);
-
-  // Also attempt immediately in case the frame is already loaded and same-origin.
-  setTimeout(tryRoute,250);
-  setTimeout(tryRoute,800);
-  setTimeout(tryRoute,1500);
+  frame.src=src;
+  setTimeout(tryRoute,300);
+  setTimeout(tryRoute,900);
+  setTimeout(tryRoute,1800);
 }
 function showMission(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page==='dashboard'));

@@ -781,58 +781,7 @@ function copySelectedHandoff(){let note=selectedHandoffNote();if(!note)return to
 function downloadSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');download('director-handoff-'+(note.name||'prospect').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt',buildHandoffText(note));toast('HANDOFF DOWNLOADED')}
 function printHandoffById(id){let note=handoffMeetings().find(n=>n.id===id);if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
 function printSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
-function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'
-<script id="basin-core-hash-bridge">
-(function(){
-  function mapPage(p){
-    return ({
-      dashboard:'dashboard',
-      playbook:'playbook',
-      radar:'radar',
-      leadradar:'radar',
-      linkedin:'linkedinbuilder',
-      linkedinbuilder:'linkedinbuilder',
-      salesnav:'salesnavnpi',
-      npi:'salesnavnpi',
-      rss:'rssmonitor',
-      rssmonitor:'rssmonitor',
-      profiler:'profiler',
-      investorprofiler:'profiler',
-      cpaprofiler:'cpaprofiler',
-      investors:'investors',
-      leads:'leads',
-      cpas:'cpas',
-      sequences:'sequences',
-      sequence:'sequences',
-      cpafinder:'cpafinder',
-      coach:'coach',
-      callcoach:'coach',
-      notes:'notes',
-      analytics:'analytics',
-      followups:'followups',
-      calendar:'calendar',
-      handoffs:'handoffs',
-      settings:'settings',
-      apicenter:'apicenter'
-    })[String(p||'').replace(/^#/,'').toLowerCase()] || 'dashboard';
-  }
-  function route(){
-    var raw = (location.hash || '#dashboard').replace(/^#/,'');
-    var page = mapPage(raw);
-    function attempt(){
-      try{
-        if(typeof goPage === 'function'){ goPage(page, null); return true; }
-      }catch(e){ console.warn('Basin core route failed', e); }
-      return false;
-    }
-    if(!attempt()) setTimeout(attempt, 500);
-  }
-  window.addEventListener('hashchange', route);
-  document.addEventListener('DOMContentLoaded', function(){ setTimeout(route, 350); });
-})();
-</script>
-
-</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
+function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
 function snoozeFollowup(id,days){let n=STORE.notes.find(x=>x.id===id);if(!n)return;let base=new Date();base.setDate(base.getDate()+days);base.setHours(9,0,0,0);n.due=toLocalInputValue(base);if((n.status||'Open')==='Done')n.status='Follow-Up Needed';save();refresh();toast(days===1?'MOVED TO TOMORROW':'MOVED +7 DAYS')}
 function toLocalInputValue(d){let pad=x=>String(x).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function syncNoteToPipeline(note){let inv=(STORE.investors||[]).find(x=>(x.name||'').toLowerCase()===(note.name||'').toLowerCase());if(!inv)return;let o=(note.outcome||'').toLowerCase(),s=(note.status||'').toLowerCase();if(o.includes('appointment booked')||s.includes('meeting')){let old=inv.status;inv.status='Appt Booked';inv.statusUpdated=new Date().toISOString();if(old!=='Appt Booked'&&note.id.indexOf('handoff')===-1)autoCreateHandoffTask(inv)}else if(o.includes('director call held'))inv.status='Call Held';else if(o.includes('closed won'))inv.status='Closed';else if(o.includes('connected')||o.includes('voicemail')||o.includes('no answer')){if(inv.status==='New')inv.status='Contacted'}}
@@ -2022,6 +1971,68 @@ setTimeout(function(){initRadarAutomation(true)},1800);
 applyApiCorsClarity();
 console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 </script>
+
+<script id="basin-core-hash-bridge">
+(function(){
+  function mapPage(p){
+    return ({
+      dashboard:'dashboard',
+      playbook:'playbook',
+      radar:'radar',
+      leadradar:'radar',
+      linkedin:'linkedinbuilder',
+      linkedinbuilder:'linkedinbuilder',
+      salesnav:'salesnavnpi',
+      npi:'salesnavnpi',
+      rss:'rssmonitor',
+      rssmonitor:'rssmonitor',
+      profiler:'profiler',
+      investorprofiler:'profiler',
+      cpaprofiler:'cpa-profiler',
+      cpa_profiler:'cpa-profiler',
+      investors:'investors',
+      leads:'leads',
+      cpas:'cpas',
+      sequences:'sequences',
+      sequence:'sequences',
+      cpafinder:'cpafinder',
+      coach:'coach',
+      callcoach:'coach',
+      notes:'notes',
+      analytics:'analytics',
+      followups:'followups',
+      calendar:'calendar',
+      handoffs:'handoffs',
+      settings:'settings',
+      apicenter:'apicenter'
+    })[String(p||'').replace(/^#/,'').toLowerCase()] || 'dashboard';
+  }
+  function route(){
+    var raw = (location.hash || '#dashboard').replace(/^#/,'');
+    var page = mapPage(raw);
+    var tries = 0;
+    var timer = setInterval(function(){
+      tries++;
+      try{
+        if(typeof goPage === 'function'){
+          goPage(page, null);
+          clearInterval(timer);
+        }
+      }catch(e){
+        if(tries > 30) clearInterval(timer);
+      }
+      if(tries > 30) clearInterval(timer);
+    }, 100);
+  }
+  window.addEventListener('hashchange', route);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', route);
+  } else {
+    route();
+  }
+})();
+</script>
+
 </body>
 </html>
 
