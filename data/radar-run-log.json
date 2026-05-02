@@ -1,4 +1,9 @@
 {
-  "status": "awaiting first free radar run",
-  "lastRunAt": null
+  "lastRunAt": "2026-05-02T08:53:58.586Z",
+  "startedAt": "2026-05-02T08:52:58.633Z",
+  "status": "complete",
+  "usableLeads": 81,
+  "rejected": 20,
+  "errors": 6,
+  "message": "Free radar completed with 81 usable leads."
 }
