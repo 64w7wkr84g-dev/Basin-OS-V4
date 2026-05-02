@@ -1,9 +1,6 @@
 {
-  "lastRunAt": "2026-05-02T10:00:25.611Z",
-  "startedAt": "2026-05-02T10:00:22.508Z",
-  "status": "complete",
-  "usableLeads": 97,
-  "rejected": 15,
-  "errors": 0,
-  "message": "Strict free radar completed with 97 usable named-human leads."
+  "lastRunAt": "2026-05-02T08:37:02Z",
+  "status": "starter",
+  "message": "Starter file uploaded. Run the GitHub Action to generate live radar data.",
+  "runs": []
 }

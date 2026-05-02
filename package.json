@@ -1,6 +1,6 @@
 {
-  "name": "basin-os-v4-free-radar",
-  "version": "4.2.1",
+  "name": "basin-os-v42-free-radar",
+  "version": "4.2.0",
   "private": true,
   "type": "commonjs",
   "scripts": {

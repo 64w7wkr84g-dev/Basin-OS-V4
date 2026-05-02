@@ -2,14 +2,23 @@
 'use strict';
 
 /**
- * Basin OS V5 Strict Free Radar Runner
- * Groq = optional AI analyst only.
- * Discovery = free public feeds.
+ * Basin OS V4 Free Radar Runner
+ * No paid search API required.
  *
- * Hard rule:
- * A usable lead MUST be a real named human contact AND have at least one contact/research path.
- * Company names, city names, article titles, topic names, and generic phrases are rejected.
- * Rejected items are skipped for at least 14 days by fingerprint.
+ * Sources:
+ * - Google News RSS search feeds
+ * - GDELT Doc API
+ * - SEC Company Concept / Submissions-style search links are preserved as source links
+ *
+ * Optional:
+ * - GROQ_API_KEY may be used later, but this runner does not require it.
+ *
+ * Outputs BOTH:
+ * - radar-leads.json
+ * - data/radar-leads.json
+ * - radar-rejected.json
+ * - data/radar-rejected.json
+ * - data/radar-run-log.json
  */
 
 const fs = require('fs');
@@ -21,187 +30,313 @@ const REJ_ROOT = path.join(process.cwd(), 'radar-rejected.json');
 const REJ_DATA = path.join(process.cwd(), 'data', 'radar-rejected.json');
 const RUN_LOG = path.join(process.cwd(), 'data', 'radar-run-log.json');
 
-const MAX_PER_FEED = Number(process.env.RADAR_MAX_PER_FEED || 16);
+const MAX_PER_FEED = Number(process.env.RADAR_MAX_PER_FEED || 12);
 const MAX_LEADS = Number(process.env.RADAR_MAX_LEADS || 120);
-const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
 
 function now(){ return new Date().toISOString(); }
-function clean(s, max=700){
+function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function clean(s, max=600){
   return String(s||'')
     .replace(/<!\[CDATA\[/g,'').replace(/\]\]>/g,'')
     .replace(/<[^>]+>/g,' ')
     .replace(/&nbsp;/g,' ')
-    .replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
-    .replace(/\s+/g,' ').trim().slice(0,max);
+    .replace(/&amp;/g,'&')
+    .replace(/&quot;/g,'"')
+    .replace(/&#39;/g,"'")
+    .replace(/\s+/g,' ')
+    .trim()
+    .slice(0,max);
 }
-function id(prefix='rad-strict'){ return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
-function fingerprint(x){ return clean([x.name,x.company,x.signal,x.url,x.sourceUrl,x.rawTitle].filter(Boolean).join('|'),400).toLowerCase().replace(/[^a-z0-9|]+/g,''); }
+function decodeXml(s){ return clean(s, 2000); }
+function id(prefix='rad-free'){ return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
 
 const FEEDS = [
-  {name:'Texas physician practice owners', type:'physician', priority:'texas', query:'("Dr." OR "MD" OR "DO") ("opened" OR "launches" OR "joins" OR "named") ("medical practice" OR orthopedic OR gastroenterology OR dermatology OR urology) Texas'},
-  {name:'Nationwide physician practice signals', type:'physician', priority:'nationwide', query:'("Dr." OR "MD" OR "DO") ("opened" OR "launches" OR "joins" OR "named") ("medical practice" OR orthopedic OR gastroenterology OR dermatology OR urology) USA 2025 OR 2026'},
-  {name:'Founder owner liquidity events', type:'liquidity_event', priority:'nationwide', query:'("sold his company" OR "sold her company" OR "founder exits" OR "acquired by") ("CEO" OR founder OR owner) USA 2025 OR 2026'},
-  {name:'Energy executives named signals', type:'energy', priority:'energy_states', query:'("oil and gas" OR "mineral rights" OR "royalty owner" OR "energy operator") ("CEO" OR president OR founder OR owner) (Texas OR Oklahoma OR Louisiana OR New Mexico OR Colorado OR Wyoming OR North Dakota)'},
-  {name:'CPA partner named signals', type:'cpa', priority:'nationwide', query:'("CPA" OR "tax partner") ("named partner" OR promoted OR joins OR speaker) "business owners" USA'},
-  {name:'Attorney partner named signals', type:'attorney', priority:'nationwide', query:'("attorney" OR "law partner") ("named partner" OR promoted OR joins OR speaker) ("estate planning" OR tax OR business) USA'},
-  {name:'Podcast interview named signals', type:'media', priority:'nationwide', query:'podcast interview ("founder" OR "CEO" OR "physician" OR "attorney" OR "CPA") USA 2025 OR 2026'}
+  {name:'Texas physician practice owners', type:'physician', priority:'texas', query:'("physician founder" OR "practice owner" OR "medical practice owner" OR "surgeon founder") Texas'},
+  {name:'Nationwide physician practice openings', type:'physician', priority:'nationwide', query:'("opened" OR "launches" OR "joins") ("medical practice" OR "orthopedic" OR "gastroenterology" OR "dermatology" OR "urology") USA 2025 OR 2026'},
+  {name:'Texas business owner liquidity events', type:'liquidity_event', priority:'texas', query:'("acquired" OR "sold his company" OR "sold her company" OR "founder exits" OR "liquidity event") Texas founder owner CEO'},
+  {name:'Nationwide founder exits', type:'liquidity_event', priority:'nationwide', query:'("acquired" OR "sold" OR "merger") ("founder" OR "CEO" OR "owner") USA 2025 OR 2026'},
+  {name:'Energy-state oil and gas executives', type:'energy', priority:'energy_states', query:'("oil and gas" OR "mineral rights" OR "royalty owner" OR "energy operator") (Texas OR Oklahoma OR Louisiana OR New Mexico OR Colorado OR Wyoming OR North Dakota) founder CEO owner president'},
+  {name:'CPA tax planning partners', type:'cpa', priority:'nationwide', query:'("year-end tax planning" OR "tax strategy" OR "oil and gas tax") CPA "business owners" USA'},
+  {name:'Law partners estate planning', type:'attorney', priority:'nationwide', query:'("named partner" OR "promoted to partner" OR "estate planning") attorney law firm USA 2025 OR 2026'},
+  {name:'Speaker authority signals', type:'speaker', priority:'nationwide', query:'conference speaker physician founder attorney CPA business owner USA 2025 OR 2026'},
+  {name:'Podcast media signals', type:'media', priority:'nationwide', query:'podcast interview founder physician attorney CPA business owner USA 2025 OR 2026'},
+  {name:'Real estate developer signals', type:'real_estate', priority:'nationwide', query:'("real estate developer" OR "new project" OR "acquires") founder principal owner USA 2025 OR 2026'}
 ];
 
 function googleNewsUrl(query){
   return 'https://news.google.com/rss/search?q=' + encodeURIComponent(query) + '&hl=en-US&gl=US&ceid=US:en';
 }
+
 async function fetchText(url){
-  const res = await fetch(url, {headers:{'User-Agent':'BasinOSRadar/5.0'}});
+  const res = await fetch(url, {headers:{'User-Agent':'BasinOSRadar/4.2'}});
   if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return await res.text();
 }
+
 function parseRss(xml){
-  return [...String(xml).matchAll(/<item\b[\s\S]*?<\/item>/gi)].map(m=>m[0]).map(b=>({
-    title: clean((b.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1],240),
-    link: clean((b.match(/<link[^>]*>([\s\S]*?)<\/link>/i)||[])[1],500),
-    pubDate: clean((b.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i)||[])[1],120),
-    description: clean((b.match(/<description[^>]*>([\s\S]*?)<\/description>/i)||[])[1],700)
-  })).filter(x=>x.title||x.link);
+  const items = [];
+  const blocks = [...String(xml).matchAll(/<item\b[\s\S]*?<\/item>/gi)].map(m=>m[0]);
+  for(const b of blocks){
+    const title = decodeXml((b.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]);
+    const link = decodeXml((b.match(/<link[^>]*>([\s\S]*?)<\/link>/i)||[])[1]);
+    const pubDate = decodeXml((b.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i)||[])[1]);
+    const description = decodeXml((b.match(/<description[^>]*>([\s\S]*?)<\/description>/i)||[])[1]);
+    if(title || link) items.push({title, link, pubDate, description});
+  }
+  return items;
 }
 
-function badName(name){
-  const n=String(name||'').trim();
-  const lower=n.toLowerCase();
-  if(!n || n.length<5)return true;
-  const bad=[
-    'names new','tax strategies','essential financial','bay legal','virtruvian partners','practice owner',
-    'business owner','email addresses','licensure supervision','via llp','los angeles','new york','houston',
-    'dallas','austin','san antonio','nationwide','physician','doctor','attorney','law partner','cpa','tax advisor'
+function looksLikeBadName(name){
+  const n = String(name||'').trim().toLowerCase();
+  if(!n) return true;
+  if(n.length < 5) return true;
+  const bad = [
+    'united states','texas','houston','dallas','austin','san antonio','fort worth','nationwide',
+    'new practice','medical practice','press release','business wire','pr newswire','globe newswire',
+    'email addresses','via llp','charged with','licensure supervision','practice owner',
+    'capital partners','private equity','company announces'
   ];
-  if(bad.some(x=>lower===x || lower.includes(x)))return true;
-  if(/\b(strategies|financial|partners|legal|capital|ventures|group|llc|inc|firm|clinic|practice|medical|health|associates|company|services|advisors|consulting|solutions|bank|hospital|center|university)\b/i.test(n))return true;
-  if(!/^[A-Z][a-zA-Z'.-]{1,}(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'.-]{1,}$/.test(n))return true;
+  if(bad.some(x=>n===x || n.includes(x))) return true;
+  if(/\b(inc|llc|ltd|corp|company|capital|partners|ventures|health|medical|clinic|practice|dental|law firm)\b/i.test(name) && !/\b[A-Z][a-z]+ [A-Z][a-z]+\b/.test(name)) return true;
   return false;
 }
 
 function extractHumanName(title){
-  const t=clean(title,260).replace(/\s+-\s+[^-]+$/,'');
-  const patterns=[
-    /\bDr\.?\s+([A-Z][a-zA-Z'.-]+(?:\s+[A-Z]\.)?\s+[A-Z][a-zA-Z'.-]+)\b/,
-    /\b([A-Z][a-zA-Z'.-]+(?:\s+[A-Z]\.)?\s+[A-Z][a-zA-Z'.-]+),?\s+(?:MD|DO|CPA|JD|CEO|Founder|Owner|President|Partner)\b/,
-    /\b([A-Z][a-zA-Z'.-]+(?:\s+[A-Z]\.)?\s+[A-Z][a-zA-Z'.-]+)\s+(?:named|joins|promoted|appointed|launches|opens|acquires|sells|speaks|discusses|leads|takes|talks)\b/
+  const t = clean(title, 240).replace(/\s+-\s+[^-]+$/,'');
+  const patterns = [
+    /\bDr\.?\s+([A-Z][a-z]+(?:\s+[A-Z]\.)?\s+[A-Z][a-z]+)\b/,
+    /\b([A-Z][a-z]+(?:\s+[A-Z]\.)?\s+[A-Z][a-z]+)\s+(?:named|joins|promoted|appointed|launches|opens|acquires|sells|speaks|discusses|leads|takes|talks)\b/,
+    /\b(?:CEO|Founder|Owner|President|Surgeon|Attorney|CPA|Partner)\s+([A-Z][a-z]+(?:\s+[A-Z]\.)?\s+[A-Z][a-z]+)\b/,
+    /\b([A-Z][a-z]+(?:\s+[A-Z]\.)?\s+[A-Z][a-z]+),?\s+(?:MD|DO|CPA|JD|CEO|Founder|Owner|President|Partner)\b/
   ];
   for(const p of patterns){
-    const m=t.match(p);
-    if(m && !badName(m[1]))return m[1].trim();
+    const m = t.match(p);
+    if(m && !looksLikeBadName(m[1])) return m[1].trim();
   }
-  const names=[...t.matchAll(/\b([A-Z][a-zA-Z'.-]{2,}(?:\s+[A-Z]\.)?\s+[A-Z][a-zA-Z'.-]{2,})\b/g)].map(m=>m[1]);
-  for(const n of names)if(!badName(n))return n.trim();
+
+  // Fallback: first likely two-word person near the beginning
+  const names = [...t.matchAll(/\b([A-Z][a-z]{2,}(?:\s+[A-Z]\.)?\s+[A-Z][a-z]{2,})\b/g)].map(m=>m[1]);
+  for(const n of names){
+    if(!looksLikeBadName(n)) return n;
+  }
   return '';
 }
+
 function extractCompany(title, desc){
-  const text=clean(`${title} ${desc}`,600);
-  const m=text.match(/(?:at|with|joins|from|of)\s+([A-Z][A-Za-z0-9 &.,'’\-]{3,70})/);
-  if(!m)return '';
-  return clean(m[1].replace(/\s+(in|as|for|after|with|to|and)\s+.*/i,''),90);
+  const text = clean(`${title} ${desc}`, 500);
+  const patterns = [
+    /(?:at|with|joins|from|of)\s+([A-Z][A-Za-z0-9 &.,'’\-]{3,80})/,
+    /([A-Z][A-Za-z0-9 &.,'’\-]{3,80})\s+(?:announces|acquires|opens|launches|names|promotes)/
+  ];
+  for(const p of patterns){
+    const m = text.match(p);
+    if(m){
+      return clean(m[1].replace(/\s+(in|as|for|after|with|to|and)\s+.*/i,''), 90);
+    }
+  }
+  return '';
 }
+
 function inferTitle(type, text){
-  const s=String(text||'').toLowerCase();
-  if(/surgeon|orthopedic|physician|doctor|medical practice|clinic|gastro|dermatology|urology|cardiology/.test(s))return 'Physician / Medical Practice';
-  if(/cpa|tax|accounting/.test(s))return 'CPA / Tax Advisor';
-  if(/attorney|law firm|estate planning|partner/.test(s))return 'Attorney / Law Partner';
-  if(/oil|gas|energy|mineral|royalty|operator/.test(s))return 'Energy Executive';
-  if(/real estate|developer/.test(s))return 'Real Estate Developer';
-  if(/founder|ceo|owner|president|business/.test(s))return 'Business Owner / Executive';
+  const s = String(text||'').toLowerCase();
+  if(/surgeon|orthopedic|physician|doctor|medical practice|clinic|gastro|dermatology|urology|cardiology/.test(s)) return 'Physician / Medical Practice';
+  if(/cpa|tax|accounting/.test(s)) return 'CPA / Tax Advisor';
+  if(/attorney|law firm|estate planning|partner/.test(s)) return 'Attorney / Law Partner';
+  if(/oil|gas|energy|mineral|royalty|operator/.test(s)) return 'Energy Executive';
+  if(/real estate|developer/.test(s)) return 'Real Estate Developer';
+  if(/founder|ceo|owner|president|business/.test(s)) return 'Business Owner / Executive';
   return type || 'Prospect Signal';
 }
+
+function scoreLead(l){
+  const blob = [l.name,l.title,l.company,l.signal,l.summary,l.sourceFeed,l.priority].join(' ').toLowerCase();
+  let s = 40;
+  const signals = [];
+  const add = (pts, txt)=>{s+=pts; signals.push(txt);};
+  if(l.name) add(18,'named human contact found');
+  if(l.contactMethods && l.contactMethods.length) add(12,'manual contact path available');
+  if(/physician|surgeon|medical|clinic|doctor/.test(blob)) add(20,'physician/medical ICP');
+  if(/owner|founder|ceo|president|partner|executive/.test(blob)) add(16,'owner/executive signal');
+  if(/cpa|tax|accounting/.test(blob)) add(14,'CPA/tax planning signal');
+  if(/attorney|law/.test(blob)) add(10,'attorney/referral partner signal');
+  if(/oil|gas|energy|mineral|royalty|idc|depletion/.test(blob)) add(12,'energy/tax angle');
+  if(/acquir|sold|exit|liquidity|opened|launch|promoted|named|speaker|podcast|interview/.test(blob)) add(10,'timely public trigger');
+  if(/texas|dallas|houston|austin|fort worth|midland/.test(blob) || l.priority === 'texas') add(5,'Texas-first priority');
+  s = Math.max(1, Math.min(98, Math.round(s)));
+  l.scoreSignals = signals;
+  l.score = s;
+  l.grade = s >= 85 ? 'A' : s >= 70 ? 'B' : s >= 55 ? 'C' : 'D';
+}
+
 function makeContactMethods(name, company){
-  const li=encodeURIComponent([name,company].filter(Boolean).join(' '));
-  const q=encodeURIComponent([name,company,'contact LinkedIn email'].filter(Boolean).join(' '));
+  const q = encodeURIComponent([name, company, 'contact LinkedIn email'].filter(Boolean).join(' '));
+  const li = encodeURIComponent([name, company].filter(Boolean).join(' '));
   return [
-    {type:'LinkedIn Search', value:`https://www.linkedin.com/search/results/people/?keywords=${li}`, confidence:'Medium', source:'manual verification path'},
-    {type:'Google Search', value:`https://www.google.com/search?q=${q}`, confidence:'Medium', source:'manual verification path'}
+    {type:'LinkedIn Search', value:`https://www.linkedin.com/search/results/people/?keywords=${li}`, confidence:'Medium', source:'free search path'},
+    {type:'Google Search', value:`https://www.google.com/search?q=${q}`, confidence:'Medium', source:'free search path'}
   ];
 }
-function validLead(l){
-  return !badName(l.name) && Array.isArray(l.contactMethods) && l.contactMethods.length>0;
-}
-function scoreLead(l){
-  const blob=[l.name,l.title,l.company,l.signal,l.summary,l.sourceFeed,l.priority].join(' ').toLowerCase();
-  let s=44, signals=[];
-  const add=(n,t)=>{s+=n;signals.push(t)};
-  add(15,'named human contact');
-  add(10,'manual contact path');
-  if(/physician|surgeon|medical|clinic|doctor/.test(blob))add(15,'physician/medical ICP');
-  if(/owner|founder|ceo|president|partner|executive/.test(blob))add(12,'owner/executive signal');
-  if(/cpa|tax|accounting/.test(blob))add(10,'CPA/tax signal');
-  if(/attorney|law/.test(blob))add(8,'attorney/referral signal');
-  if(/oil|gas|energy|mineral|royalty|idc|depletion/.test(blob))add(10,'energy/tax angle');
-  if(/acquir|sold|exit|liquidity|opened|launch|promoted|named|speaker|podcast|interview/.test(blob))add(8,'timely trigger');
-  if(/texas|dallas|houston|austin|fort worth|midland/.test(blob)||l.priority==='texas')add(4,'Texas-first');
-  s=Math.max(1,Math.min(94,Math.round(s)));
-  l.score=s; l.grade=s>=85?'A':s>=70?'B':s>=55?'C':'D'; l.scoreSignals=signals;
-}
-function toLead(item, feed, skipSet){
-  const title=clean(item.title,240), summary=clean(item.description||title,700);
-  const raw={rawTitle:title, url:item.link, sourceFeed:feed.name};
-  const fp=fingerprint(raw);
-  if(skipSet.has(fp))return {reject:true, reason:'skip window active', ...raw};
 
-  const name=extractHumanName(title);
-  if(!name || badName(name))return {reject:true, reason:'no real named human contact', ...raw, nextEligibleCheck:new Date(Date.now()+14*86400000).toISOString()};
+function toLead(item, feed){
+  const title = clean(item.title, 240);
+  const summary = clean(item.description || title, 700);
+  const name = extractHumanName(title);
+  const company = extractCompany(title, summary);
+  if(!name) return {reject:true, reason:'no named human contact', rawTitle:title, sourceFeed:feed.name};
 
-  const company=extractCompany(title, summary);
-  const lead={
-    id:id(), name, title:inferTitle(feed.type, `${title} ${summary}`), company,
-    location:feed.priority==='texas'?'Texas-first':'Nationwide USA',
-    url:item.link, sourceUrl:item.link, source:'Free Feed Radar', sourceFeed:feed.name, sourceQuery:feed.query,
-    sourceDate:item.pubDate||'', sourceType:feed.type, priority:feed.priority, summary, signal:title, foundAt:now(),
-    status:'New', qualificationStatus:'Qualified', contactable:true, usaBased:true, workflowEligible:true,
-    contactMethods:makeContactMethods(name, company), contactSummary:'LinkedIn Search + Google Search',
-    nextAction:`Day 1: verify ${name}, confirm LinkedIn/contact path, then send reviewed email or LinkedIn touch using the public signal.`
+  const role = inferTitle(feed.type, `${title} ${summary}`);
+  const lead = {
+    id: id(),
+    name,
+    title: role,
+    company,
+    location: feed.priority === 'texas' ? 'Texas-first' : 'Nationwide USA',
+    url: item.link,
+    sourceUrl: item.link,
+    source: 'Free Feed Radar',
+    sourceFeed: feed.name,
+    sourceQuery: feed.query,
+    sourceDate: item.pubDate || '',
+    sourceType: feed.type,
+    priority: feed.priority,
+    summary,
+    signal: title,
+    foundAt: now(),
+    status: 'New',
+    leadType: 'basinos',
+    contactMethods: makeContactMethods(name, company),
+    qualificationStatus: 'Qualified',
+    nextAction: `Day 1: verify ${name} and use the source signal for first email + LinkedIn/manual research touch. Do not call until contact route is confirmed.`,
+    nurture: {
+      subject: 'Reason for reaching out',
+      body: `Hi ${name.split(' ')[0]}, I came across a public signal related to ${title}. Basin Ventures may be relevant if alternative investment planning is on your radar. Worth a short director call to see if there is a fit?`
+    },
+    contactable: true,
+    usaBased: true,
+    workflowEligible: true,
+    missingQualificationFields: [],
+    pipelineBlockReason: '',
+    contactSummary: 'LinkedIn Search + Google Search'
   };
-  if(!validLead(lead))return {reject:true, reason:'failed strict lead validation', ...raw, name, company, nextEligibleCheck:new Date(Date.now()+14*86400000).toISOString()};
   scoreLead(lead);
   return lead;
 }
-function loadExistingRejected(){
-  const files=[REJ_ROOT,REJ_DATA];
-  const set=new Set();
-  for(const f of files){
-    try{
-      const j=JSON.parse(fs.readFileSync(f,'utf8'));
-      const arr=Array.isArray(j.rejected)?j.rejected:[];
-      for(const r of arr){
-        if(r.nextEligibleCheck && new Date(r.nextEligibleCheck).getTime()>Date.now()){
-          set.add(fingerprint(r));
-        }
-      }
-    }catch(e){}
-  }
-  return set;
+
+function key(l){
+  return [l.name,l.company,l.signal].join('|').toLowerCase().replace(/[^a-z0-9|]+/g,'');
 }
+
+async function gdeltSearch(query){
+  const url = 'https://api.gdeltproject.org/api/v2/doc/doc?query=' + encodeURIComponent(query) + '&mode=artlist&format=json&maxrecords=10&sort=HybridRel';
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`GDELT ${res.status}`);
+  const json = await res.json();
+  return (json.articles || []).map(a => ({
+    title: a.title || '',
+    link: a.url || '',
+    pubDate: a.seendate || '',
+    description: a.sourceCommonName || ''
+  }));
+}
+
 async function main(){
-  const started=now(), leads=[], rejected=[], errors=[], skipSet=loadExistingRejected();
+  const started = now();
+  const leads = [];
+  const rejected = [];
+  const errors = [];
+
   for(const feed of FEEDS){
+    const url = googleNewsUrl(feed.query);
     try{
-      const xml=await fetchText(googleNewsUrl(feed.query));
-      const items=parseRss(xml).slice(0,MAX_PER_FEED);
+      const xml = await fetchText(url);
+      const items = parseRss(xml).slice(0, MAX_PER_FEED);
       for(const item of items){
-        const l=toLead(item,feed,skipSet);
-        if(l.reject)rejected.push({...l, skippedAt:now(), nextEligibleCheck:l.nextEligibleCheck||new Date(Date.now()+14*86400000).toISOString()});
-        else leads.push(l);
+        const l = toLead(item, feed);
+        if(l.reject) rejected.push(l); else leads.push(l);
       }
-      console.log(`${feed.name}: ${items.length} items`);
-    }catch(e){errors.push({source:feed.name,error:String(e.message||e)});}
+      console.log(`${feed.name}: ${items.length} RSS items`);
+    }catch(e){
+      errors.push({source:feed.name, error:String(e.message||e)});
+      console.warn(`${feed.name} failed: ${e.message}`);
+    }
   }
-  const seen=new Set(), usable=[];
+
+  // GDELT backup, also free
+  for(const feed of FEEDS.slice(0,6)){
+    try{
+      const items = await gdeltSearch(feed.query);
+      for(const item of items.slice(0,6)){
+        const l = toLead(item, {...feed, name: feed.name + ' GDELT'});
+        if(l.reject) rejected.push(l); else leads.push(l);
+      }
+      console.log(`${feed.name}: GDELT backup checked`);
+    }catch(e){
+      errors.push({source:feed.name + ' GDELT', error:String(e.message||e)});
+    }
+  }
+
+  const seen = new Set();
+  const usable = [];
   for(const l of leads.sort((a,b)=>(b.score||0)-(a.score||0))){
-    const k=fingerprint(l); if(seen.has(k))continue; seen.add(k); usable.push(l); if(usable.length>=MAX_LEADS)break;
+    const k = key(l);
+    if(seen.has(k)) continue;
+    seen.add(k);
+    usable.push(l);
+    if(usable.length >= MAX_LEADS) break;
   }
-  const output={generatedAt:now(),engine:'Strict Free Feed Radar V5',geoMode:'texas_first_nationwide',tavilyUsed:false,groqUsed:false,hardRules:{requiresRealHumanName:true,requiresContactMethod:true,skipRejectedForDays:14},sources:{googleNewsQueries:FEEDS.length,paidSearchApis:0},stats:{rawSignals:leads.length+rejected.length,candidates:leads.length,usableLeads:usable.length,rejected:rejected.length,collectionErrors:errors.length},errors,leads:usable};
-  const rejectedOutput={generatedAt:output.generatedAt,engine:output.engine,stats:{totalRejected:rejected.length,noHumanContact:rejected.filter(x=>/human/i.test(x.reason)).length,noContactMethod:rejected.filter(x=>/contact/i.test(x.reason)).length,skipWindow:rejected.filter(x=>/skip/i.test(x.reason)).length,collectionErrors:errors.length},errors,rejected:rejected.slice(0,1000)};
-  fs.mkdirSync(path.join(process.cwd(),'data'),{recursive:true});
-  fs.writeFileSync(OUT_ROOT,JSON.stringify(output,null,2));
-  fs.writeFileSync(OUT_DATA,JSON.stringify(output,null,2));
-  fs.writeFileSync(REJ_ROOT,JSON.stringify(rejectedOutput,null,2));
-  fs.writeFileSync(REJ_DATA,JSON.stringify(rejectedOutput,null,2));
-  fs.writeFileSync(RUN_LOG,JSON.stringify({lastRunAt:output.generatedAt,startedAt:started,status:'complete',usableLeads:usable.length,rejected:rejected.length,errors:errors.length,message:`Strict free radar completed with ${usable.length} usable named-human leads.`},null,2));
-  console.log(`Wrote ${usable.length} strict usable leads. Rejected ${rejected.length}. Errors ${errors.length}.`);
+
+  const output = {
+    generatedAt: now(),
+    engine: 'Free Feed Radar V4.2',
+    geoMode: 'texas_first_nationwide',
+    tavilyUsed: false,
+    sources: {
+      googleNewsQueries: FEEDS.length,
+      gdeltQueries: 6,
+      paidSearchApis: 0
+    },
+    stats: {
+      rawSignals: leads.length + rejected.length,
+      candidates: leads.length,
+      usableLeads: usable.length,
+      rejected: rejected.length,
+      collectionErrors: errors.length
+    },
+    errors,
+    leads: usable
+  };
+
+  const rejectedOutput = {
+    generatedAt: output.generatedAt,
+    engine: output.engine,
+    stats: {
+      totalRejected: rejected.length,
+      noHumanContact: rejected.filter(x=>x.reason==='no named human contact').length,
+      collectionErrors: errors.length
+    },
+    errors,
+    rejected: rejected.slice(0,500)
+  };
+
+  fs.mkdirSync(path.join(process.cwd(),'data'), {recursive:true});
+  fs.writeFileSync(OUT_ROOT, JSON.stringify(output,null,2));
+  fs.writeFileSync(OUT_DATA, JSON.stringify(output,null,2));
+  fs.writeFileSync(REJ_ROOT, JSON.stringify(rejectedOutput,null,2));
+  fs.writeFileSync(REJ_DATA, JSON.stringify(rejectedOutput,null,2));
+  fs.writeFileSync(RUN_LOG, JSON.stringify({
+    lastRunAt: output.generatedAt,
+    startedAt: started,
+    status: 'complete',
+    usableLeads: usable.length,
+    rejected: rejected.length,
+    errors: errors.length,
+    message: `Free radar completed with ${usable.length} usable leads.`
+  }, null, 2));
+
+  console.log(`Wrote ${usable.length} usable leads. Rejected ${rejected.length}. Errors ${errors.length}.`);
 }
-main().catch(e=>{console.error(e);process.exitCode=1});
+
+main().catch(err => {
+  console.error(err);
+  process.exitCode = 1;
+});

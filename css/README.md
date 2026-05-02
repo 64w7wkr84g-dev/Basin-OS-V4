@@ -1,3 +1,3 @@
 # CSS
 
-V4.2 feature-parity baseline keeps production CSS inside index.html for stability. The full UI refactor moves styles here after parity testing.
+This restore package returns to the pre-redesign stable monolithic index. No V5 redesign shell files are used.

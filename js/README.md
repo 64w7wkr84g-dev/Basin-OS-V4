@@ -1,3 +1,3 @@
 # JS
 
-V4.2 feature-parity baseline keeps production JavaScript inside index.html for stability. The full modular split happens after parity testing.
+This restore package returns to the pre-redesign stable monolithic index. Do not upload V5 mission-control.js.
