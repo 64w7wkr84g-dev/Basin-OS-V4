@@ -781,7 +781,114 @@ function copySelectedHandoff(){let note=selectedHandoffNote();if(!note)return to
 function downloadSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');download('director-handoff-'+(note.name||'prospect').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt',buildHandoffText(note));toast('HANDOFF DOWNLOADED')}
 function printHandoffById(id){let note=handoffMeetings().find(n=>n.id===id);if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
 function printSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
-function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
+function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style>
+<style id="basin-core-embedded-mission-style">
+/* Embedded core mode: removes the old nested OS shell and makes legacy pages live inside the new Mission Control shell. */
+body.basin-embedded-core{
+  background:
+    radial-gradient(circle at 50% 0%,rgba(35,213,192,.10),transparent 28%),
+    linear-gradient(135deg,#05080c,#071019 55%,#06120f) !important;
+  overflow:auto !important;
+}
+body.basin-embedded-core .sidebar,
+body.basin-embedded-core aside,
+body.basin-embedded-core .leftnav,
+body.basin-embedded-core .side{
+  display:none !important;
+  width:0 !important;
+  min-width:0 !important;
+}
+body.basin-embedded-core .app,
+body.basin-embedded-core .layout,
+body.basin-embedded-core #app{
+  display:block !important;
+  grid-template-columns:1fr !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+body.basin-embedded-core .main,
+body.basin-embedded-core main,
+body.basin-embedded-core .content,
+body.basin-embedded-core .workspace{
+  margin-left:0 !important;
+  left:0 !important;
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+}
+body.basin-embedded-core .page{
+  padding:0 !important;
+  width:100% !important;
+  max-width:none !important;
+}
+body.basin-embedded-core .hdr{
+  background:linear-gradient(180deg,rgba(12,18,28,.96),rgba(8,13,20,.88)) !important;
+  border-bottom:1px solid rgba(151,172,205,.18) !important;
+  padding:22px 28px !important;
+  box-shadow:0 14px 38px rgba(0,0,0,.22) !important;
+}
+body.basin-embedded-core .hdr .title,
+body.basin-embedded-core .title{
+  font-family:"Libre Baskerville",Georgia,serif !important;
+  color:#fff !important;
+  letter-spacing:-.035em !important;
+}
+body.basin-embedded-core .body{
+  padding:18px 24px 48px !important;
+}
+body.basin-embedded-core .panel,
+body.basin-embedded-core .record,
+body.basin-embedded-core .card,
+body.basin-embedded-core .box,
+body.basin-embedded-core .operator-hero{
+  background:linear-gradient(180deg,rgba(16,25,37,.96),rgba(11,17,26,.96)) !important;
+  border:1px solid rgba(151,172,205,.18) !important;
+  border-radius:18px !important;
+  box-shadow:0 20px 70px rgba(0,0,0,.28) !important;
+}
+body.basin-embedded-core .panel-hd,
+body.basin-embedded-core .card-hd{
+  background:linear-gradient(180deg,rgba(25,37,53,.90),rgba(19,29,42,.76)) !important;
+  border-bottom:1px solid rgba(151,172,205,.18) !important;
+}
+body.basin-embedded-core .btn-primary,
+body.basin-embedded-core .primary{
+  background:linear-gradient(135deg,#d89424,#ffc45a) !important;
+  color:#08090d !important;
+  border:0 !important;
+}
+body.basin-embedded-core .btn-teal{
+  background:linear-gradient(135deg,#23d5c0,#61f2e1) !important;
+  color:#06110f !important;
+  border:0 !important;
+}
+body.basin-embedded-core .btn,
+body.basin-embedded-core button{
+  border-radius:12px !important;
+  font-weight:900 !important;
+}
+body.basin-embedded-core .input,
+body.basin-embedded-core .select,
+body.basin-embedded-core textarea,
+body.basin-embedded-core input,
+body.basin-embedded-core select{
+  background:#121b28 !important;
+  border:1px solid rgba(151,172,205,.20) !important;
+  color:#f4f7fb !important;
+  border-radius:12px !important;
+}
+body.basin-embedded-core .badge,
+body.basin-embedded-core .tag,
+body.basin-embedded-core .pill{
+  border-radius:999px !important;
+}
+/* Hide duplicated legacy brand/hero on embedded dashboard if it appears. */
+body.basin-embedded-core #page-dashboard .operator-hero{
+  display:none !important;
+}
+</style>
+
+</head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
 function snoozeFollowup(id,days){let n=STORE.notes.find(x=>x.id===id);if(!n)return;let base=new Date();base.setDate(base.getDate()+days);base.setHours(9,0,0,0);n.due=toLocalInputValue(base);if((n.status||'Open')==='Done')n.status='Follow-Up Needed';save();refresh();toast(days===1?'MOVED TO TOMORROW':'MOVED +7 DAYS')}
 function toLocalInputValue(d){let pad=x=>String(x).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function syncNoteToPipeline(note){let inv=(STORE.investors||[]).find(x=>(x.name||'').toLowerCase()===(note.name||'').toLowerCase());if(!inv)return;let o=(note.outcome||'').toLowerCase(),s=(note.status||'').toLowerCase();if(o.includes('appointment booked')||s.includes('meeting')){let old=inv.status;inv.status='Appt Booked';inv.statusUpdated=new Date().toISOString();if(old!=='Appt Booked'&&note.id.indexOf('handoff')===-1)autoCreateHandoffTask(inv)}else if(o.includes('director call held'))inv.status='Call Held';else if(o.includes('closed won'))inv.status='Closed';else if(o.includes('connected')||o.includes('voicemail')||o.includes('no answer')){if(inv.status==='New')inv.status='Contacted'}}
@@ -1972,7 +2079,7 @@ applyApiCorsClarity();
 console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 </script>
 
-<script id="basin-core-hash-bridge">
+<script id="basin-core-embedded-router">
 (function(){
   function mapPage(p){
     return ({
@@ -1989,7 +2096,6 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
       profiler:'profiler',
       investorprofiler:'profiler',
       cpaprofiler:'cpa-profiler',
-      cpa_profiler:'cpa-profiler',
       investors:'investors',
       leads:'leads',
       cpas:'cpas',
@@ -2007,27 +2113,35 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
       apicenter:'apicenter'
     })[String(p||'').replace(/^#/,'').toLowerCase()] || 'dashboard';
   }
+  function setEmbeddedMode(){
+    try{
+      if(window.self !== window.top){
+        document.body.classList.add('basin-embedded-core');
+      }
+    }catch(e){
+      document.body.classList.add('basin-embedded-core');
+    }
+  }
   function route(){
-    var raw = (location.hash || '#dashboard').replace(/^#/,'');
-    var page = mapPage(raw);
+    setEmbeddedMode();
+    var page = mapPage(location.hash || '#dashboard');
     var tries = 0;
     var timer = setInterval(function(){
       tries++;
       try{
         if(typeof goPage === 'function'){
           goPage(page, null);
+          document.body.classList.add('basin-embedded-core');
           clearInterval(timer);
         }
-      }catch(e){
-        if(tries > 30) clearInterval(timer);
-      }
-      if(tries > 30) clearInterval(timer);
-    }, 100);
+      }catch(e){}
+      if(tries > 40) clearInterval(timer);
+    },100);
   }
   window.addEventListener('hashchange', route);
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', route);
-  } else {
+  }else{
     route();
   }
 })();
