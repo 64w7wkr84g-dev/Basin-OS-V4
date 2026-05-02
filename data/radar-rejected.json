@@ -1,13 +1,195 @@
 {
-  "generatedAt": "2026-05-02T08:37:02Z",
-  "engine": "Basin OS V4 rejected radar starter file",
-  "rejected": [],
+  "generatedAt": "2026-05-02T10:18:01.949Z",
+  "engine": "Free Feed Radar V4.2",
   "stats": {
-    "totalRejected": 0,
-    "noHumanContact": 0,
-    "noContactMethod": 0,
-    "notUsBased": 0,
-    "duplicate": 0,
-    "notQualified": 0
-  }
+    "totalRejected": 27,
+    "noHumanContact": 27,
+    "collectionErrors": 5
+  },
+  "errors": [
+    {
+      "source": "Texas physician practice owners GDELT",
+      "error": "fetch failed"
+    },
+    {
+      "source": "Nationwide physician practice openings GDELT",
+      "error": "fetch failed"
+    },
+    {
+      "source": "Texas business owner liquidity events GDELT",
+      "error": "fetch failed"
+    },
+    {
+      "source": "Nationwide founder exits GDELT",
+      "error": "Unexpected token 'B', \"Boolean OR\"... is not valid JSON"
+    },
+    {
+      "source": "CPA tax planning partners GDELT",
+      "error": "fetch failed"
+    }
+  ],
+  "rejected": [
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "2 physicians to take additional seats on ACIP vaccine board; meeting scheduled for March - Medical Economics",
+      "sourceFeed": "Texas physician practice owners"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "CityVet opens new Fort Worth practice - Vet Times",
+      "sourceFeed": "Texas physician practice owners"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "10 Under 10 Awards: Recognizing the 'future of the dental profession' - American Dental Association",
+      "sourceFeed": "Texas physician practice owners"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "AMISTAD 2025 launches final iteration in Panamá - southcom.mil",
+      "sourceFeed": "Nationwide physician practice openings"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Hugo robot-assisted surgery system launches on US market - Urology Times",
+      "sourceFeed": "Nationwide physician practice openings"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Orthopedic surgeon, outdoorsman joins St. Mary's in Athens - Online Athens",
+      "sourceFeed": "Nationwide physician practice openings"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "O’Hare consultant Unison acquired by Texas firm - Crain's Chicago Business",
+      "sourceFeed": "Texas business owner liquidity events"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Family behind beloved Texas brand exits after PepsiCo sale - MySA",
+      "sourceFeed": "Texas business owner liquidity events"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Alabama healthcare company to be acquired by Texas firm in $565 million deal - AL.com",
+      "sourceFeed": "Texas business owner liquidity events"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "United CEO had been considering a merger last fall, months before bringing it up to the Trump administration - CNBC",
+      "sourceFeed": "Nationwide founder exits"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Looking ahead: M&A watch for 2026 - Light Reading",
+      "sourceFeed": "Nationwide founder exits"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "PN Bakken: Something new in the making - Petroleum News",
+      "sourceFeed": "Energy-state oil and gas executives"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Trump names CEO of Denver-based oil and gas company as energy secretary - The Colorado Sun",
+      "sourceFeed": "Energy-state oil and gas executives"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Trump loves VP contender’s energy cred - E&E News by POLITICO",
+      "sourceFeed": "Energy-state oil and gas executives"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Entrepreneurs reflect on Bakken boom at MSU event - minotdailynews.com",
+      "sourceFeed": "Energy-state oil and gas executives"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Succession and tax strategy for farmers and business owners post-Budget - Charles Russell Speechlys",
+      "sourceFeed": "CPA tax planning partners"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "The best online will-makers of 2026 - CNBC",
+      "sourceFeed": "Law partners estate planning"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Single-owner firms: The thrill of flying solo - Journal of Accountancy",
+      "sourceFeed": "Speaker authority signals"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Trump's tax bill could end popular 'SALT' deduction workaround for certain business owners - CNBC",
+      "sourceFeed": "Speaker authority signals"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Rheinmetall acquires stake in Croatian company DOK-ING - Rheinmetall",
+      "sourceFeed": "Real estate developer signals"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "OpenAI acquires TBPN, the buzzy founder-led business talk show - TechCrunch",
+      "sourceFeed": "Real estate developer signals"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "See the biggest donors to Texa competitive U . S . Senate race",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "AP Business SummaryBrief at 12 : 57 p . m . EDT",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Asia – børsene faller – Nikkei ned over tre prosent",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Kongsberg skal designe Norges nye standardfartøy",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Utbytte fra Kistefos - dominerte Sea1 Offshore",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    },
+    {
+      "reject": true,
+      "reason": "no named human contact",
+      "rawTitle": "Senate committee revises governor property tax bill for Alaska LNG project , proposing significantly more state revenue",
+      "sourceFeed": "Energy-state oil and gas executives GDELT"
+    }
+  ]
 }

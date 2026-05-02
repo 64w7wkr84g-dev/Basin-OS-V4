@@ -1,6 +1,9 @@
 {
-  "lastRunAt": "2026-05-02T08:37:02Z",
-  "status": "starter",
-  "message": "Starter file uploaded. Run the GitHub Action to generate live radar data.",
-  "runs": []
+  "lastRunAt": "2026-05-02T10:18:01.949Z",
+  "startedAt": "2026-05-02T10:16:54.134Z",
+  "status": "complete",
+  "usableLeads": 80,
+  "rejected": 27,
+  "errors": 5,
+  "message": "Free radar completed with 80 usable leads."
 }
