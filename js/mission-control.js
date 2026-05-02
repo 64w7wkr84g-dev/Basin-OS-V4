@@ -130,35 +130,61 @@ function routeCoreFrame(mapped){
   const frame=$('core-frame');
   if(!frame)return;
 
-  // Use cache-bust so GitHub Pages/browser does not keep the iframe stuck on the old dashboard route.
-  const src='app-core.html?v=core-route-2#'+encodeURIComponent(mapped);
+  const targetId='page-'+mapped;
 
-  function tryRoute(){
+  function hardRoute(){
     try{
       const w=frame.contentWindow;
-      if(w && typeof w.goPage==='function'){
-        w.goPage(mapped,null);
-        return true;
+      const d=frame.contentDocument || (w && w.document);
+      if(!w || !d)return false;
+
+      // 1) Directly force the correct page visible in the preserved core app.
+      const target=d.getElementById(targetId);
+      if(!target)return false;
+
+      d.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      target.classList.add('active');
+
+      // 2) Force the matching old sidebar item active so the embedded core does not look stuck on Dashboard.
+      d.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      const nav=[...d.querySelectorAll('.nav-item')].find(n=>{
+        const on=n.getAttribute('onclick')||'';
+        return on.includes("'"+mapped+"'") || on.includes('"'+mapped+'"');
+      });
+      if(nav)nav.classList.add('active');
+
+      // 3) Run the core page renderer after the active page is set.
+      if(typeof w.updateCounts==='function')w.updateCounts();
+      if(typeof w.renderActivePage==='function')w.renderActivePage();
+      if(typeof w.refresh==='function'){
+        // Do not call refresh first. It can rerender the wrong active page if the class has not stuck.
+        setTimeout(()=>{try{w.renderActivePage();w.updateCounts&&w.updateCounts();}catch(e){}},100);
       }
-      if(w && w.location){
-        w.location.hash=mapped;
-      }
-    }catch(e){}
-    return false;
+
+      // 4) Reset scroll positions so the selected page starts at the top.
+      try{w.scrollTo(0,0);d.documentElement.scrollTop=0;d.body.scrollTop=0;}catch(e){}
+
+      return true;
+    }catch(e){
+      return false;
+    }
   }
 
   frame.onload=function(){
     let tries=0;
     const timer=setInterval(function(){
       tries++;
-      if(tryRoute() || tries>40) clearInterval(timer);
-    },125);
+      if(hardRoute() || tries>50)clearInterval(timer);
+    },100);
   };
 
-  frame.src=src;
-  setTimeout(tryRoute,300);
-  setTimeout(tryRoute,900);
-  setTimeout(tryRoute,1800);
+  // Force a fresh iframe URL every time so GitHub/browser cache cannot keep the core on Dashboard.
+  frame.src='app-core.html?v=hard-route-'+Date.now()+'#'+encodeURIComponent(mapped);
+
+  setTimeout(hardRoute,250);
+  setTimeout(hardRoute,750);
+  setTimeout(hardRoute,1500);
+  setTimeout(hardRoute,2500);
 }
 function showMission(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page==='dashboard'));
