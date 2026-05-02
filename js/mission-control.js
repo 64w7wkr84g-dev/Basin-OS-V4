@@ -17,7 +17,7 @@ function loadStore(){
 function score(l){return Number(l?.score||l?.leadScore||0)}
 function grade(l){const g=l?.grade; if(g)return g; const s=score(l); return s>=82?'A':s>=68?'B':s>=52?'C':'D'}
 function rankGrade(g){return {A:4,B:3,C:2,D:1}[g]||0}
-function allLeads(){
+function mergedLeads(limit){
   loadStore();
   const inv=(STORE.investors||[]).map(x=>({...x,_type:'Investor'}));
   const wf=(STORE.leadWorkflow||[]).map(x=>({...x,_type:'Workflow'}));
@@ -29,7 +29,18 @@ function allLeads(){
     if(!key||seen.has(key))continue;
     seen.add(key); out.push(l);
   }
-  return out.sort((a,b)=>rankGrade(grade(b))-rankGrade(grade(a))||score(b)-score(a)).slice(0,100);
+  const sorted=out.sort((a,b)=>rankGrade(grade(b))-rankGrade(grade(a))||score(b)-score(a));
+  return Number.isFinite(limit) ? sorted.slice(0,limit) : sorted;
+}
+function allLeads(){
+  return mergedLeads(100);
+}
+function trueLeadTotal(){
+  const wf=(STORE.leadWorkflow||[]).length;
+  const radar=(STORE.radarLeads||[]).filter(x=>x.status!=='Suppressed').length;
+  const inv=(STORE.investors||[]).length;
+  // Lead Workflow is the active bucket once shared radar is loaded; prefer it so the shell matches the original OS count.
+  return wf || radar || inv || mergedLeads().length;
 }
 function contactPath(l){
   if(l?.linkedin)return 'LinkedIn';
@@ -77,7 +88,7 @@ function render(){
   const due=(STORE.leadWorkflow||[]).filter(l=>/^day/i.test(l.bucket||'day1')).length || leads.length;
   const cpas=(STORE.cpas||[]).length;
   const radar=(STORE.radarLeads||[]).filter(l=>l.status!=='Suppressed').length;
-  const total=leads.length;
+  const total=trueLeadTotal();
   const groq=localStorage.getItem('basin_groq_api_key')||localStorage.getItem('basin_groq_key')?'ON':'OFF';
 
   setText('kpi-total',total); setText('kpi-a',aCount); setText('kpi-due',due); setText('kpi-callbacks',callbacks); setText('kpi-cpas',cpas);
@@ -107,10 +118,47 @@ function openCore(page){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
   const titles={radar:'Lead Radar',leads:'Leads Workflow',investors:'Investor Pipeline',cpas:'CPA Pipeline',coach:'Call Coach',apicenter:'API Command Center',notes:'Call Notes',analytics:'Analytics',followups:'Follow-Up Dashboard',calendar:'Appointment Calendar',handoffs:'Director Handoffs',sequences:'7-Channel Sequence Builder',linkedinbuilder:'LinkedIn Builder',salesnav:'SalesNav + NPI',rssmonitor:'RSS Signal Monitor',playbook:'Master Playbook',settings:'Settings'};
   if(page==='dashboard'){showMission();return;}
-  $('mission-view').classList.add('hidden'); $('core-view').classList.remove('hidden');
-  setText('view-title',titles[page]||'Basin OS Workspace'); setText('core-title',titles[page]||'Basin OS Workspace');
+  $('mission-view').classList.add('hidden'); 
+  $('core-view').classList.remove('hidden');
+  setText('view-title',titles[page]||'Basin OS Workspace'); 
+  setText('core-title',titles[page]||'Basin OS Workspace');
   const mapped=page==='salesnav'?'salesnavnpi':page;
-  $('core-frame').src='app-core.html#'+mapped;
+  routeCoreFrame(mapped);
+}
+
+function routeCoreFrame(mapped){
+  const frame=$('core-frame');
+  if(!frame)return;
+
+  function tryRoute(){
+    try{
+      const w=frame.contentWindow;
+      if(w && typeof w.goPage==='function'){
+        w.goPage(mapped,null);
+        return true;
+      }
+      if(w && typeof w.location!=='undefined'){
+        w.location.hash=mapped;
+      }
+    }catch(e){}
+    return false;
+  }
+
+  frame.onload=function(){
+    let tries=0;
+    const timer=setInterval(function(){
+      tries++;
+      if(tryRoute() || tries>20) clearInterval(timer);
+    },150);
+  };
+
+  // Force a real reload for every workspace page. Hash-only changes were not reliably firing inside the preserved core app.
+  frame.src='app-core.html#'+encodeURIComponent(mapped);
+
+  // Also attempt immediately in case the frame is already loaded and same-origin.
+  setTimeout(tryRoute,250);
+  setTimeout(tryRoute,800);
+  setTimeout(tryRoute,1500);
 }
 function showMission(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page==='dashboard'));
