@@ -33,14 +33,14 @@ function mergedLeads(limit){
   return Number.isFinite(limit) ? sorted.slice(0,limit) : sorted;
 }
 function allLeads(){
-  return mergedLeads(100);
+  const all=mergedLeads ? mergedLeads() : [];
+  return all.filter(validLead).slice(0,100);
 }
 function trueLeadTotal(){
-  const wf=(STORE.leadWorkflow||[]).length;
-  const radar=(STORE.radarLeads||[]).filter(x=>x.status!=='Suppressed').length;
-  const inv=(STORE.investors||[]).length;
-  // Lead Workflow is the active bucket once shared radar is loaded; prefer it so the shell matches the original OS count.
-  return wf || radar || inv || mergedLeads().length;
+  const wf=(STORE.leadWorkflow||[]).filter(validLead).length;
+  const radar=(STORE.radarLeads||[]).filter(x=>x.status!=='Suppressed').filter(validLead).length;
+  const inv=(STORE.investors||[]).filter(validLead).length;
+  return wf || radar || inv || (mergedLeads?mergedLeads().filter(validLead).length:0);
 }
 function contactPath(l){
   if(l?.linkedin)return 'LinkedIn';
@@ -63,9 +63,76 @@ function segment(l){
 }
 function nextAction(l){return l?.nextAction||l?.requiredToday||l?.status||l?.bucket||'Review and disposition'}
 function hasContact(l){return !!(l?.email||l?.phone||l?.linkedin||l?.sourceUrl||l?.url||(l?.contactMethods||[]).length)}
+
+function isRealHumanName(name){
+  name=String(name||'').trim();
+  if(!name)return false;
+  const lower=name.toLowerCase();
+  const bad=[
+    'names new','tax strategies','essential financial','bay legal','virtruvian partners',
+    'email addresses','licensure supervision','via llp','los angeles','new york','houston',
+    'dallas','austin','san antonio','nationwide','how bennett','practice owner',
+    'business owner','law partner','attorney','physician','doctor','cpa','tax advisor'
+  ];
+  if(bad.some(x=>lower===x || lower.includes(x)))return false;
+  if(/\b(strategies|financial|partners|legal|capital|ventures|group|llc|inc|firm|clinic|practice|medical|health|associates|company|services|advisors|consulting|solutions|bank|hospital|center)\b/i.test(name))return false;
+  if(!/^[A-Z][a-zA-Z'.-]{1,}(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'.-]{1,}$/.test(name))return false;
+  return true;
+}
+function realContactMethod(l){
+  if(l?.email && /@/.test(String(l.email)))return true;
+  if(l?.phone && String(l.phone).replace(/\D/g,'').length>=10)return true;
+  if(l?.linkedin && /linkedin\.com/i.test(String(l.linkedin)))return true;
+  const methods=Array.isArray(l?.contactMethods)?l.contactMethods:[];
+  if(methods.some(m=>/linkedin|email|phone|google search|source/i.test([m.type,m.value,m.source].join(' '))))return true;
+  if(l?.sourceUrl||l?.url)return true; // source URL counts as a research contact path, not direct contact.
+  return false;
+}
+function validLead(l){
+  return isRealHumanName(l?.name) && realContactMethod(l);
+}
+function quarantineInvalidLeads(){
+  loadStore();
+  let changed=false;
+  const now=new Date().toISOString();
+  const next=new Date(Date.now()+14*86400000).toISOString();
+  STORE.radarRejected=Array.isArray(STORE.radarRejected)?STORE.radarRejected:[];
+  function rejectify(l,from){
+    const reason=!isRealHumanName(l?.name)?'Rejected: not a named human contact':'Rejected: no contact method/path';
+    STORE.radarRejected.push({
+      id:'reject-'+Date.now()+'-'+Math.random().toString(16).slice(2),
+      name:l?.name||l?.title||'Unknown',
+      company:l?.company||'',
+      source:l?.source||l?.sourceFeed||from,
+      reason,
+      skippedAt:now,
+      nextEligibleCheck:next,
+      original:l
+    });
+  }
+  ['radarLeads','leadWorkflow','investors'].forEach(key=>{
+    if(!Array.isArray(STORE[key]))return;
+    const before=STORE[key].length;
+    STORE[key]=STORE[key].filter(l=>{
+      if(validLead(l))return true;
+      rejectify(l,key);
+      changed=true;
+      return false;
+    });
+    if(before!==STORE[key].length)changed=true;
+  });
+  if(changed){
+    try{
+      const k=STORE.__key||'basin_os_integrated';
+      localStorage.setItem(k,JSON.stringify(STORE));
+    }catch(e){}
+  }
+  return changed;
+}
+
 function tagHtml(l){
   const tags=[];
-  tags.push(hasContact(l)?'<span class="tag green">Has Contact</span>':'<span class="tag redchip">Needs Verify</span>');
+  tags.push(realContactMethod(l)?'<span class="tag green">Has Contact</span>':'<span class="tag redchip">Needs Verify</span>');
   if(/linkedin/i.test(JSON.stringify(l||{})))tags.push('<span class="tag bluechip">LinkedIn</span>');
   if(/npi/i.test(JSON.stringify(l||{})))tags.push('<span class="tag bluechip">NPI</span>');
   if(/referral/i.test(JSON.stringify(l||{})))tags.push('<span class="tag goldchip">Referral</span>');
@@ -80,16 +147,19 @@ function leadCard(l,i){
 }
 function setText(id,val){const el=$(id); if(el)el.textContent=val}
 function render(){
+  quarantineInvalidLeads();
   const leads=allLeads();
   if(selectedIndex>=leads.length)selectedIndex=0;
   const active=leads[selectedIndex]||{};
-  const aCount=leads.filter(l=>grade(l)==='A').length;
-  const callbacks=(STORE.leadWorkflow||[]).filter(l=>/callback/i.test([l.bucket,l.status].join(' '))).length;
-  const due=(STORE.leadWorkflow||[]).filter(l=>/^day/i.test(l.bucket||'day1')).length || leads.length;
+  const aCount=leads.filter(l=>grade(l)==='A' && validLead(l)).length;
+  const callbacks=(STORE.leadWorkflow||[]).filter(validLead).filter(l=>/callback/i.test([l.bucket,l.status].join(' '))).length;
+  const due=(STORE.leadWorkflow||[]).filter(validLead).filter(l=>/^day/i.test(l.bucket||'day1')).length || leads.length;
   const cpas=(STORE.cpas||[]).length;
-  const radar=(STORE.radarLeads||[]).filter(l=>l.status!=='Suppressed').length;
+  const radar=(STORE.radarLeads||[]).filter(l=>l.status!=='Suppressed').filter(validLead).length;
   const total=trueLeadTotal();
-  const groq=localStorage.getItem('basin_groq_api_key')||localStorage.getItem('basin_groq_key')?'ON':'OFF';
+  const groqKey=localStorage.getItem('basin_groq_api_key')||localStorage.getItem('basin_groq_key')||'';
+  const groqLive=STORE?.api?.groqLive===true || STORE?.api?.groqConnected===true || STORE?.api?.lastConnect;
+  const groq=groqKey?(groqLive?'ON':'SAVED'):'OFF';
 
   setText('kpi-total',total); setText('kpi-a',aCount); setText('kpi-due',due); setText('kpi-callbacks',callbacks); setText('kpi-cpas',cpas);
   setText('nav-total',total); setText('nav-radar',radar); setText('nav-leads',(STORE.leadWorkflow||[]).length); setText('nav-investors',(STORE.investors||[]).length); setText('nav-cpas',cpas); setText('nav-notes',(STORE.notes||[]).length);
