@@ -1,15 +1,14 @@
 {
-  "name": "basin-os-v4-radar",
-  "version": "4.2.0",
+  "name": "basin-os-v4-free-radar",
+  "version": "4.2.1",
   "private": true,
   "type": "commonjs",
-  "description": "Basin OS V4 scheduled radar runner for GitHub Actions.",
   "scripts": {
     "radar": "node basin-radar-runner.js",
     "start": "node basin-radar-runner.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "dependencies": {}
 }
