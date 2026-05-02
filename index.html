@@ -65,47 +65,6 @@
 @media(max-width:640px){.operator-hero{grid-template-columns:1fr;text-align:center}.operator-logo{margin:0 auto}.operator-photo-wrap{justify-self:center}.operator-meta{justify-content:center}.version-footer{margin:14px 16px 20px}}
 
 </style>
-<style id="basin-mission-control-css">
-
-/* ======================================================================
-   BASIN OS V4.4 MISSION CONTROL HYBRID
-   Real dashboard redesign layer. Logic-safe: no store/schema changes.
-   ====================================================================== */
-:root{
-  --mc-bg:#05080c; --mc-panel:#0e1722; --mc-panel2:#121e2c; --mc-panel3:#182638;
-  --mc-line:rgba(151,172,205,.18); --mc-line2:rgba(216,148,36,.38);
-  --mc-text:#f4f7fb; --mc-muted:#a7b4c7; --mc-dim:#617087;
-  --mc-gold:#d89424; --mc-gold2:#ffc45a; --mc-teal:#23d5c0; --mc-blue:#5aa7ff;
-  --mc-green:#5bf08c; --mc-red:#ff6b6b; --mc-violet:#a76dff; --mc-orange:#ff9b3d;
-  --mc-shadow:0 24px 90px rgba(0,0,0,.38); --mc-r:20px;
-}
-#page-dashboard.mc-dashboard{
-  padding:0 !important;
-  background:
-    radial-gradient(circle at 50% 10%,rgba(35,213,192,.12),transparent 28%),
-    radial-gradient(circle at 100% 90%,rgba(216,148,36,.10),transparent 36%),
-    linear-gradient(135deg,#040609,#071019 48%,#06120f) !important;
-}
-.mc-wrap{padding:18px;display:grid;grid-template-columns:340px minmax(460px,1fr) 330px;grid-template-rows:138px minmax(0,1fr) 180px;gap:16px;min-height:calc(100vh - 80px);}
-.mc-commandbar{position:sticky;top:0;z-index:4;border-bottom:1px solid var(--mc-line);background:linear-gradient(180deg,rgba(10,16,24,.96),rgba(8,12,18,.86));backdrop-filter:blur(18px);display:flex;align-items:center;gap:16px;padding:14px 24px;}
-.mc-title{min-width:250px}.mc-eyebrow{font:900 9px "JetBrains Mono",monospace;color:var(--mc-gold2);letter-spacing:.20em;text-transform:uppercase}.mc-title h1{font:700 25px "Libre Baskerville",serif;letter-spacing:-.035em;color:#fff}
-.mc-search{flex:1;min-height:42px;border:1px solid var(--mc-line);background:rgba(255,255,255,.045);border-radius:999px;display:flex;align-items:center;padding:0 16px;color:var(--mc-dim);font-size:13px}
-.mc-status-strip{display:flex;gap:8px;flex-wrap:wrap}.mc-status{border:1px solid var(--mc-line);background:rgba(255,255,255,.035);border-radius:14px;padding:8px 12px;min-width:92px}.mc-status small{display:block;font:800 8px "JetBrains Mono",monospace;color:var(--mc-dim);text-transform:uppercase;letter-spacing:.12em}.mc-status b{color:var(--mc-green);font:900 12px "JetBrains Mono",monospace}
-.mc-kpis{grid-column:1/4;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.mc-kpi{position:relative;overflow:hidden;border:1px solid var(--mc-line);border-radius:20px;background:linear-gradient(135deg,rgba(90,167,255,.11),rgba(255,255,255,.035));padding:18px;box-shadow:var(--mc-shadow)}.mc-kpi:after{content:"";position:absolute;inset:auto -40px -60px auto;width:150px;height:150px;border-radius:50%;background:var(--glow);filter:blur(40px);opacity:.26}.mc-icon{font-size:22px;color:var(--color)}.mc-num{font:800 34px "Libre Baskerville",serif;margin-top:8px;color:#fff}.mc-label{font:900 10px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mc-dim);margin-top:4px}.mc-detail{font-size:12px;color:var(--mc-muted);margin-top:4px}
-.mc-panel{background:linear-gradient(180deg,rgba(16,25,37,.94),rgba(11,17,26,.94));border:1px solid var(--mc-line);border-radius:var(--mc-r);box-shadow:var(--mc-shadow);overflow:hidden}.mc-hd{height:48px;border-bottom:1px solid var(--mc-line);background:linear-gradient(180deg,rgba(25,37,53,.88),rgba(19,29,42,.72));display:flex;align-items:center;justify-content:space-between;padding:0 14px}.mc-pt{font:900 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:#ecf5ff}.mc-ps{font-size:11px;color:var(--mc-dim)}.mc-bd{padding:14px}
-.mc-queue{grid-row:2/4;min-height:0;display:flex;flex-direction:column}.mc-queue .mc-bd{overflow:auto;min-height:0}.mc-lead{border:1px solid var(--mc-line);background:rgba(255,255,255,.035);border-radius:16px;padding:12px;margin-bottom:10px;display:grid;grid-template-columns:58px 1fr;gap:12px;transition:.15s;cursor:pointer}.mc-lead.active{border-color:rgba(35,213,192,.45);background:linear-gradient(135deg,rgba(35,213,192,.11),rgba(255,255,255,.035));box-shadow:0 16px 40px rgba(35,213,192,.07)}
-.mc-score{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(91,240,140,.34);background:rgba(91,240,140,.08);color:var(--mc-green);font:900 16px "JetBrains Mono",monospace}.mc-score.b{color:var(--mc-gold2);border-color:rgba(216,148,36,.38);background:rgba(216,148,36,.10)}.mc-score.c{color:#c4b5fd;border-color:rgba(167,109,255,.38);background:rgba(167,109,255,.10)}
-.mc-lead h3{font-size:14px;margin-bottom:3px;color:#fff}.mc-lead p{font-size:11px;color:var(--mc-muted);line-height:1.35}.mc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.mc-tag{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:var(--mc-muted);padding:3px 7px;border-radius:999px;font:800 9px "JetBrains Mono",monospace;text-transform:uppercase}.mc-tag.green{color:#a6ffbf;border-color:rgba(91,240,140,.28);background:rgba(91,240,140,.07)}.mc-tag.blue{color:#aad1ff;border-color:rgba(90,167,255,.30);background:rgba(90,167,255,.08)}.mc-tag.gold{color:#ffd891;border-color:rgba(216,148,36,.34);background:rgba(216,148,36,.09)}.mc-tag.red{color:#ffb4b4;border-color:rgba(255,107,107,.30);background:rgba(255,107,107,.08)}
-.mc-center{grid-column:2;grid-row:2;display:grid;grid-template-rows:1fr 185px;gap:16px;min-height:0}.mc-active{position:relative;overflow:hidden}.mc-active:before{content:"";position:absolute;inset:55px 35px auto auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(35,213,192,.18),transparent 62%);pointer-events:none}.mc-active-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.mc-active-head h2{font:700 28px "Libre Baskerville",serif;letter-spacing:-.035em;color:#fff}.mc-active-head p{color:var(--mc-muted);font-size:13px;margin-top:4px}
-.mc-bigscore{width:76px;height:76px;border-radius:18px;border:1px solid rgba(91,240,140,.35);display:grid;place-items:center;color:var(--mc-green);background:rgba(91,240,140,.08);font:900 25px "JetBrains Mono",monospace}.mc-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.mc-info{border:1px solid var(--mc-line);background:rgba(255,255,255,.035);border-radius:14px;padding:11px}.mc-info small{display:block;font:900 8px "JetBrains Mono",monospace;color:var(--mc-dim);text-transform:uppercase;letter-spacing:.11em;margin-bottom:5px}.mc-info b{font-size:13px;color:#fff}.mc-copy{border:1px solid rgba(35,213,192,.22);background:rgba(35,213,192,.055);border-radius:16px;padding:13px;margin-top:10px}.mc-copy strong{display:block;color:var(--mc-teal);font:900 9px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}.mc-copy p{color:#d6f9f3;line-height:1.5;font-size:13px}
-.mc-globe{position:absolute;right:30px;bottom:20px;width:320px;height:160px;border-radius:320px 320px 0 0;background:radial-gradient(circle at center bottom,rgba(35,213,192,.32),transparent 70%),linear-gradient(180deg,rgba(90,167,255,.12),rgba(35,213,192,.02));border:1px solid rgba(35,213,192,.25);opacity:.65;pointer-events:none}.mc-globe:before,.mc-globe:after{content:"";position:absolute;inset:20px;border-top:1px solid rgba(35,213,192,.25);border-radius:50%}.mc-globe:after{inset:45px;border-color:rgba(216,148,36,.22)}
-.mc-taskbar{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.mc-tasks,.mc-actions{border:1px solid var(--mc-line);background:rgba(255,255,255,.03);border-radius:18px;padding:14px}.mc-tasks h3,.mc-actions h3{font:900 10px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.11em;margin-bottom:10px;color:#fff}.mc-task{display:flex;align-items:center;gap:8px;color:var(--mc-muted);font-size:12px;margin-bottom:8px}.mc-task span{width:13px;height:13px;border-radius:4px;border:1px solid rgba(91,240,140,.38);display:inline-block}.mc-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mc-action{border:1px solid var(--mc-line);background:linear-gradient(180deg,var(--mc-panel3),#121b29);color:var(--mc-text);padding:10px;border-radius:13px;font-size:12px;font-weight:900;text-align:center;text-decoration:none}.mc-action.primary{background:linear-gradient(135deg,var(--mc-gold),var(--mc-gold2));color:#08090d;border:0;grid-column:1/3}
-.mc-right{grid-column:3;grid-row:2/4;display:grid;grid-template-rows:1fr 1fr;gap:16px;min-height:0}.mc-brief-list{display:flex;flex-direction:column;gap:10px}.mc-brief-item{display:flex;gap:10px;align-items:flex-start;color:var(--mc-muted);font-size:12px;line-height:1.45}.mc-check{width:18px;height:18px;border-radius:6px;background:rgba(91,240,140,.10);color:var(--mc-green);display:grid;place-items:center;flex:none;font-size:11px}.mc-ring{width:150px;height:150px;border-radius:50%;margin:12px auto;background:radial-gradient(circle at center,#0e1722 0 54%,transparent 55%),conic-gradient(var(--mc-teal) 0 86%,rgba(255,255,255,.08) 86% 100%);display:grid;place-items:center;box-shadow:0 0 45px rgba(35,213,192,.10)}.mc-ring b{font:900 30px "Libre Baskerville",serif;color:#fff}.mc-ring span{display:block;text-align:center;color:var(--mc-muted);font-size:11px;margin-top:2px}
-.mc-activity{grid-column:2/4;grid-row:3}.mc-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.mc-time{border:1px solid var(--mc-line);background:rgba(255,255,255,.03);border-radius:15px;padding:12px}.mc-time small{color:var(--mc-teal);font:900 10px "JetBrains Mono",monospace}.mc-time p{color:var(--mc-muted);font-size:12px;margin-top:6px;line-height:1.35}
-.mc-empty{padding:20px;color:var(--mc-muted);font-size:13px;line-height:1.5}
-@media(max-width:1260px){.mc-wrap{grid-template-columns:1fr;grid-template-rows:auto;overflow:visible}.mc-kpis,.mc-queue,.mc-center,.mc-right,.mc-activity{grid-column:auto;grid-row:auto}.mc-kpis{grid-template-columns:repeat(2,1fr)}.mc-commandbar{position:relative;flex-direction:column;align-items:stretch}.mc-status-strip{justify-content:flex-start}.mc-info-grid,.mc-taskbar,.mc-timeline{grid-template-columns:1fr}}
-
-</style>
 </head>
 <body>
 <div id="offline-banner" class="offline-banner">OFFLINE — API/RSS actions may not run. Local tools still work.</div>
@@ -120,7 +79,7 @@
   <div class="section"><div class="section-label">Data</div><div class="nav-item" onclick="goPage('notes',this)">📝 <span>Call Notes</span><span class="badge" id="notes-badge">0</span></div><div class="nav-item" onclick="goPage('analytics',this)">📊 <span>Call Analytics</span></div><div class="nav-item" onclick="goPage('followups',this)">📅 <span>Follow-Up Dashboard</span><span class="badge" id="followup-badge">0</span></div><div class="nav-item" onclick="goPage('calendar',this)">🗓️ <span>Appointment Calendar</span><span class="badge" id="calendar-badge">0</span></div><div class="nav-item" onclick="goPage('handoffs',this)">📄 <span>Director Handoffs</span><span class="badge" id="handoff-badge">0</span></div></div>
   <div class="section"><div class="section-label">System</div><div class="nav-item" onclick="goPage('settings',this)">⚙️ <span>Settings</span></div><div class="nav-item" onclick="goPage('apicenter',this)">🧠 <span>API Command Center</span><span class="badge" id="api-badge">OFF</span></div><div class="nav-item" onclick="exportData()">💾 <span>Export All Data</span></div></div>
       <div class="compliance"><strong>Compliance Always</strong>Never guarantee returns · Never “SEC registered” · Always “consult your CPA” · Accredited investors only · Targeted IRR, not guaranteed.</div>
-      <div class="sidebar-version">Basin OS V4.4 — Mission Control Hybrid</div>
+      <div class="sidebar-version">Basin OS V4.2 — Feature-Parity Baseline + SalesNav/NPI Embedded</div>
 </nav>
 <main class="main">
   <section id="page-dashboard" class="page active">
@@ -822,122 +781,7 @@ function copySelectedHandoff(){let note=selectedHandoffNote();if(!note)return to
 function downloadSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');download('director-handoff-'+(note.name||'prospect').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt',buildHandoffText(note));toast('HANDOFF DOWNLOADED')}
 function printHandoffById(id){let note=handoffMeetings().find(n=>n.id===id);if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
 function printSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
-function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'
-<script id="basin-mission-control-js">
-(function(){
-  function q(id){return document.getElementById(id)}
-  function safe(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-  function scoreOf(l){try{return typeof effectiveScore==='function'?effectiveScore(l):Number(l&&l.score||0)}catch(e){return Number(l&&l.score||0)}}
-  function gradeOf(l){try{return l.grade||(typeof effectiveGrade==='function'?effectiveGrade(l):grade(scoreOf(l)))}catch(e){var s=scoreOf(l);return s>=82?'A':s>=68?'B':s>=52?'C':'D'}}
-  function ctxOf(l){try{return typeof inferLeadContext==='function'?inferLeadContext(l):{icp:l.title||'Prospect'}}catch(e){return {icp:l.title||'Prospect'}}}
-  function allLeadCandidates(){
-    var inv=(STORE.investors||[]).map(function(x){return Object.assign({mcType:'investor'},x)});
-    var wf=(STORE.leadWorkflow||[]).map(function(x){return Object.assign({mcType:'workflow'},x)});
-    var rad=(STORE.radarLeads||[]).filter(function(x){return x.status!=='Suppressed'}).map(function(x){return Object.assign({mcType:'radar'},x)});
-    var arr=inv.length?inv:(wf.length?wf:rad);
-    return arr.sort(function(a,b){return scoreOf(b)-scoreOf(a)}).slice(0,30)
-  }
-  function contactTags(l){
-    var out=[];
-    var text=[l.email,l.phone,l.linkedin,l.url,l.sourceUrl,(l.contactMethods||[]).map(function(x){return x.type}).join(' ')].join(' ');
-    if(l.email||l.phone||l.linkedin||l.sourceUrl||l.url||(l.contactMethods||[]).length)out.push('<span class="mc-tag green">Has Contact</span>');
-    if(/linkedin/i.test(text))out.push('<span class="mc-tag blue">LinkedIn</span>');
-    if(/npi/i.test([l.source,l.sourceFeed,l.tags,l.summary].join(' ')))out.push('<span class="mc-tag blue">NPI</span>');
-    if(/referral/i.test([l.source,l.tags,l.pipelinePriority].join(' ')))out.push('<span class="mc-tag gold">Referral</span>');
-    if(!out.length)out.push('<span class="mc-tag red">Needs Verify</span>');
-    return out.join('');
-  }
-  function selectedLead(leads){return (STORE.activeLead&&leads.find(function(l){return l.id===STORE.activeLead.id||l.name===STORE.activeLead.name}))||leads[0]||{}}
-  function dueTodayCount(){
-    try{return followupItems().filter(function(n){return asDate(n.due)&&asDate(n.due)<=endOfDay(new Date())}).length}catch(e){return 0}
-  }
-  function actionDueLabel(l){
-    var bucket=l.bucket||l.status||'Day 1';
-    if(/^day/i.test(bucket))return bucket.replace(/^day/i,'Day ');
-    if(l.sequenceStage)return String(l.sequenceStage).replace(/-/g,' ');
-    return l.nextAction||'Review';
-  }
-  function leadCard(l,i,active){
-    var sc=scoreOf(l), g=gradeOf(l), cls=g==='A'?'':'b';
-    if(g==='C'||g==='D')cls='c';
-    return '<div class="mc-lead '+(active?'active':'')+'" onclick="window.mcSelectLead('+i+')">'+
-      '<div class="mc-score '+cls+'">'+safe(g+' '+sc)+'</div>'+
-      '<div><h3>'+safe(l.name||l.title||'Unnamed Lead')+'</h3><p>'+safe((l.title||l.company||l.sourceFeed||'Prospect')+' • '+actionDueLabel(l))+'</p><div class="mc-tags">'+contactTags(l)+'</div></div>'+
-    '</div>';
-  }
-  window.mcSelectLead=function(i){STORE.mcSelectedIndex=i;try{save()}catch(e){};renderMissionControlDashboard()}
-  window.mcGo=function(page){try{goPage(page,null)}catch(e){}}
-  function renderMissionControlDashboard(){
-    if(!window.STORE) return;
-    try{ensureStore()}catch(e){}
-    var root=q('page-dashboard'); if(!root)return;
-    root.classList.add('mc-dashboard');
-    var leads=allLeadCandidates();
-    var idx=Number(STORE.mcSelectedIndex||0); if(idx<0||idx>=leads.length)idx=0;
-    var active=selectedLead(leads.slice(idx,idx+1).length?leads.slice(idx):leads);
-    if(!active||!active.name)active=leads[0]||{};
-    var total=(STORE.radarLeads||[]).filter(function(l){return l.status!=='Suppressed'}).length+(STORE.investors||[]).length;
-    if(!total)total=(STORE.leadWorkflow||[]).length;
-    var aCount=leads.filter(function(l){return gradeOf(l)==='A'}).length;
-    var callbacks=(STORE.leadWorkflow||[]).filter(function(l){return /callback/i.test(l.bucket||l.status||'')}).length;
-    var cpas=(STORE.cpas||[]).length;
-    var due=dueTodayCount()||(STORE.leadWorkflow||[]).filter(function(l){return /^day/i.test(l.bucket||'day1')}).length;
-    var groq=(window.BV_API&&BV_API.groqLive)?'Online':'Saved';
-    var radarCount=(STORE.radarLeads||[]).length||(STORE.leadWorkflow||[]).length;
-    var sc=scoreOf(active), g=gradeOf(active), ctx=ctxOf(active);
-    var brief=(STORE.briefs&&STORE.briefs[0]&&STORE.briefs[0].text)||STORE.morningBrief||'Build the morning brief after radar runs. Groq can summarize highest-leverage action, top leads, overdue work, and likely objections.';
-    var angle=active.aiAngle||active.bestAngle||(active.ai&&active.ai.bestAngle)||active.summary||active.signal||'Use the source signal as the opener. Keep the first touch short, compliant, and focused on whether a director call is worth their time.';
-    var objection=(active.ai&&active.ai.likelyObjection)||active.likelyObjection||'Need to review with CPA first.';
-    var next=active.nextAction||'Verify source + LinkedIn / Google contact path, complete first outreach, then disposition before advancing.';
-    var activities=(STORE.activity||[]).slice(0,4);
-    if(!activities.length)activities=[{ts:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),m:'Radar loaded '+radarCount+' leads'},{ts:'Now',m:'Mission Control ready'}];
-    root.innerHTML =
-      '<div class="mc-commandbar">'+
-        '<div class="mc-title"><div class="mc-eyebrow">Basin OS V4.4</div><h1>Mission Control</h1></div>'+
-        '<div class="mc-search" onclick="mcGo(\\'leads\\')">Search leads, companies, notes, scripts, objections, or actions...</div>'+
-        '<div class="mc-status-strip"><div class="mc-status"><small>Radar</small><b>Loaded '+safe(radarCount)+'</b></div><div class="mc-status"><small>Groq</small><b>'+safe(groq)+'</b></div><div class="mc-status"><small>System</small><b>Healthy</b></div></div>'+
-      '</div>'+
-      '<div class="mc-wrap">'+
-        '<div class="mc-kpis">'+
-          kpi('🛰️',total,'Total Leads','+ radar/workflow','var(--mc-blue)','rgba(90,167,255,.55)')+
-          kpi('♛',aCount,'A-Grade Leads','Call-first priority','var(--mc-green)','rgba(91,240,140,.55)')+
-          kpi('⏱',due,'Due Today','Tasks & actions','var(--mc-orange)','rgba(255,155,61,.55)')+
-          kpi('☎',callbacks,'Callbacks','Follow up','var(--mc-teal)','rgba(35,213,192,.55)')+
-          kpi('🏛',cpas,'CPA Opportunities','Referral network','var(--mc-violet)','rgba(167,109,255,.55)')+
-        '</div>'+
-        '<div class="mc-panel mc-queue"><div class="mc-hd"><div><div class="mc-pt">Priority Queue</div><div class="mc-ps">A leads first, task due today</div></div><span class="mc-tag gold">Live</span></div><div class="mc-bd">'+(leads.length?leads.slice(0,12).map(function(l,i){return leadCard(l,i,i===idx)}).join(''):'<div class="mc-empty">No leads yet. Load shared GitHub radar or run radar.</div>')+'</div></div>'+
-        '<div class="mc-center">'+
-          '<div class="mc-panel mc-active"><div class="mc-hd"><div><div class="mc-pt">Active Lead Workspace</div><div class="mc-ps">Selected lead intelligence and next move</div></div><span class="mc-tag green">'+safe(active.qualificationStatus||'Qualified')+'</span></div><div class="mc-bd" style="position:relative"><div class="mc-globe"></div>'+
-            '<div class="mc-active-head"><div><h2>'+safe(active.name||'Select a Lead')+'</h2><p>'+safe((active.title||ctx.icp||'Prospect')+' • Score '+sc+' • '+actionDueLabel(active))+'</p></div><div class="mc-bigscore">'+safe(g+' '+sc)+'</div></div>'+
-            '<div class="mc-info-grid"><div class="mc-info"><small>Contact Path</small><b>'+safe(contactPath(active))+'</b></div><div class="mc-info"><small>Segment</small><b>'+safe(ctx.icp||active.title||'General')+'</b></div><div class="mc-info"><small>Next Action</small><b>'+safe(next).slice(0,90)+'</b></div></div>'+
-            '<div class="mc-copy"><strong>Groq / Best Angle</strong><p>'+safe(angle).slice(0,500)+'</p></div>'+
-            '<div class="mc-copy"><strong>Likely Objection</strong><p>'+safe(objection)+'</p></div>'+
-          '</div></div>'+
-          '<div class="mc-taskbar"><div class="mc-tasks"><h3>Required Today</h3>'+taskList()+'</div><div class="mc-actions"><h3>Quick Actions</h3><div class="mc-actions-grid">'+
-            '<button class="mc-action" onclick="mcGo(\\'sequences\\')">Open Sequence</button><button class="mc-action" onclick="mcGo(\\'coach\\')">Call Coach</button><button class="mc-action" onclick="mcGo(\\'notes\\')">Log Note</button><button class="mc-action" onclick="mcGo(\\'handoffs\\')">Handoff</button><button class="mc-action primary" onclick="mcGo(\\'leads\\')">Complete Day / Next Step</button>'+
-          '</div></div></div>'+
-        '</div>'+
-        '<div class="mc-right">'+
-          '<div class="mc-panel"><div class="mc-hd"><div><div class="mc-pt">Morning Brief</div><div class="mc-ps">Highest leverage actions</div></div><button class="mc-action" onclick="buildMorningBrief(true);setTimeout(renderMissionControlDashboard,300)">Build</button></div><div class="mc-bd">'+briefHtml(brief)+'</div></div>'+
-          '<div class="mc-panel"><div class="mc-hd"><div><div class="mc-pt">Pipeline Health</div><div class="mc-ps">System-level execution status</div></div></div><div class="mc-bd"><div class="mc-ring"><div><b>'+Math.min(99,Math.max(1,Math.round((aCount/Math.max(1,leads.length))*100)||86))+'%</b><span>Strong</span></div></div><div class="mc-info"><small>Risk</small><b>'+safe(due)+' leads need task completion or disposition before moving forward.</b></div></div></div>'+
-        '</div>'+
-        '<div class="mc-panel mc-activity"><div class="mc-hd"><div><div class="mc-pt">Live Activity Stream</div><div class="mc-ps">Everything important in one line</div></div><button class="mc-action" onclick="mcGo(\\'analytics\\')">View Full Feed</button></div><div class="mc-bd mc-timeline">'+activities.map(function(a){return '<div class="mc-time"><small>'+safe(a.ts||'Now')+'</small><p>'+safe(a.m||a.text||a.message||'Activity')+'</p></div>'}).join('')+'</div></div>'+
-      '</div>';
-  }
-  function kpi(icon,num,label,detail,color,glow){return '<div class="mc-kpi" style="--color:'+color+';--glow:'+glow+'"><div class="mc-icon">'+icon+'</div><div class="mc-num">'+safe(num||0)+'</div><div class="mc-label">'+safe(label)+'</div><div class="mc-detail">'+safe(detail)+'</div></div>'}
-  function contactPath(l){if(!l)return 'Needs verification';if(l.linkedin)return 'LinkedIn';if(l.email&&l.phone)return 'Email + Phone';if(l.email)return 'Email';if(l.phone)return 'Phone';if((l.contactMethods||[]).length)return (l.contactMethods||[]).map(function(x){return x.type}).slice(0,2).join(' + ');if(l.sourceUrl||l.url)return 'Source + Google Search';return 'Needs verification'}
-  function taskList(){return ['Verify source / evidence trail','Confirm contact route','Complete first outreach touch','Select disposition','Add note before advancing'].map(function(t){return '<div class="mc-task"><span></span>'+safe(t)+'</div>'}).join('')}
-  function briefHtml(text){var lines=String(text||'').split(/\n+/).filter(Boolean).slice(0,5);if(!lines.length)lines=['Build Morning Brief to generate today\\'s action plan.'];return '<div class="mc-brief-list">'+lines.map(function(x){return '<div class="mc-brief-item"><div class="mc-check">✓</div><div>'+safe(x).slice(0,170)+'</div></div>'}).join('')+'</div>'}
-  window.renderMissionControlDashboard=renderMissionControlDashboard;
-  var oldRenderDash=window.renderDash||(typeof renderDash==='function'?renderDash:null);
-  window.renderDash=renderDash=function(){renderMissionControlDashboard()};
-  var oldRenderActive=window.renderActivePage||(typeof renderActivePage==='function'?renderActivePage:null);
-  if(oldRenderActive){window.renderActivePage=renderActivePage=function(){var page=(typeof currentPageId==='function'?currentPageId():''); if(page==='dashboard')return renderMissionControlDashboard(); return oldRenderActive();}}
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{if((typeof currentPageId==='function'?currentPageId():'dashboard')==='dashboard')renderMissionControlDashboard()}catch(e){console.warn(e)}},500)});
-})();
-</script>
-
-</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
+function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
 function snoozeFollowup(id,days){let n=STORE.notes.find(x=>x.id===id);if(!n)return;let base=new Date();base.setDate(base.getDate()+days);base.setHours(9,0,0,0);n.due=toLocalInputValue(base);if((n.status||'Open')==='Done')n.status='Follow-Up Needed';save();refresh();toast(days===1?'MOVED TO TOMORROW':'MOVED +7 DAYS')}
 function toLocalInputValue(d){let pad=x=>String(x).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function syncNoteToPipeline(note){let inv=(STORE.investors||[]).find(x=>(x.name||'').toLowerCase()===(note.name||'').toLowerCase());if(!inv)return;let o=(note.outcome||'').toLowerCase(),s=(note.status||'').toLowerCase();if(o.includes('appointment booked')||s.includes('meeting')){let old=inv.status;inv.status='Appt Booked';inv.statusUpdated=new Date().toISOString();if(old!=='Appt Booked'&&note.id.indexOf('handoff')===-1)autoCreateHandoffTask(inv)}else if(o.includes('director call held'))inv.status='Call Held';else if(o.includes('closed won'))inv.status='Closed';else if(o.includes('connected')||o.includes('voicemail')||o.includes('no answer')){if(inv.status==='New')inv.status='Contacted'}}
@@ -2131,7 +1975,7 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 </html>
 
 <script>
-/* Basin OS V4.4 — Mission Control Hybrid */
+/* Basin OS v3.8.25 — Stable 3817 Upgrade */
 (function(){
   var VERSION='v3.8.25 — Stable 3817 Upgrade';
   window.BASIN_IMPORT_DEBUG=[];
@@ -2170,7 +2014,7 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 
 
 <script>
-/* Basin OS V4.4 — Mission Control Hybrid */
+/* Basin OS v3.8.25 — Stable 3817 Upgrade */
 (function(){
   var VERSION='v3.8.25 — Stable 3817 Upgrade';
   var HIGH_VALUE_RE=/physician|surgeon|doctor|md\b|medical practice|orthopedic|gastro|clinic owner|dentist|attorney|law partner|partner|cpa|tax advisor|accounting|owner|founder|ceo|president|business owner|executive|real estate developer|oil|gas|energy|mineral|royalty|operator|entrepreneur/i;
