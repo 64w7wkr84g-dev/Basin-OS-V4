@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-05-02T08:37:02Z",
+  "engine": "Basin OS V4 radar starter file",
+  "geoMode": "texas_first_nationwide",
+  "tavilyUsed": false,
+  "sources": {
+    "googleAlerts": 0,
+    "googleNewsQueries": 0,
+    "gdeltQueries": 0,
+    "secFeeds": 0,
+    "industryFeeds": 0,
+    "customFeeds": 0
+  },
+  "stats": {
+    "rawSignals": 0,
+    "candidates": 0,
+    "groqUsed": 0,
+    "usableLeads": 0,
+    "rejected": 0,
+    "collectionErrors": 0
+  },
+  "leads": []
+}

@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-05-02T08:37:02Z",
+  "engine": "Basin OS V4 rejected radar starter file",
+  "rejected": [],
+  "stats": {
+    "totalRejected": 0,
+    "noHumanContact": 0,
+    "noContactMethod": 0,
+    "notUsBased": 0,
+    "duplicate": 0,
+    "notQualified": 0
+  }
+}
