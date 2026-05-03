@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T16:25:19.021Z",
+  "generatedAt": "2026-05-03T16:34:09.273Z",
   "stats": {
     "totalFound": 77,
     "activeVisible": 0,
@@ -15,8 +15,8 @@
     "linkedinCandidatesFound": 0,
     "phoneFound": 0,
     "publicSearches": 90,
-    "groqCalls": 2,
-    "groqFailures": 146,
+    "groqCalls": 0,
+    "groqFailures": 148,
     "braveFailures": 90,
     "braveConfigured": true,
     "groqConfigured": true,
