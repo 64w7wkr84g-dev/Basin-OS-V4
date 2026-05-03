@@ -2208,6 +2208,169 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 })();
 </script>
 
+
+<script id="basin-v55-force-contact-visible-after-render">
+/* Basin OS v5.5 — Force Contact Visibility After Render
+   This patch does not depend on replacing the old card renderer.
+   It watches the Lead Workflow DOM after it renders and injects the actual contact values
+   under each lead by matching the visible lead name to STORE.leadWorkflow / STORE.radarLeads / STORE.investors.
+*/
+(function(){
+  function $(id){return document.getElementById(id)}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function attr(v){return esc(v).replace(/`/g,'&#96;')}
+  function norm(v){return String(v||'').trim().toLowerCase().replace(/\s+/g,' ')}
+  function digits(v){return String(v||'').replace(/\D/g,'')}
+  function fmtPhone(v){
+    var d=digits(v);
+    if(d.length===10)return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6);
+    if(d.length===11&&d[0]==='1')return '('+d.slice(1,4)+') '+d.slice(4,7)+'-'+d.slice(7);
+    return String(v||'');
+  }
+  function add(out,type,value,confidence,source){
+    value=String(value||'').trim(); if(!value)return;
+    if(type==='Phone')value=fmtPhone(value);
+    var k=(type+'|'+value).toLowerCase();
+    if(out.some(function(m){return (m.type+'|'+m.value).toLowerCase()===k}))return;
+    out.push({type:type,value:value,confidence:confidence||'',source:source||''});
+  }
+  function extractMethods(l){
+    var out=[];
+    if(!l)return out;
+    (Array.isArray(l.contactMethods)?l.contactMethods:[]).forEach(function(m){
+      if(typeof m==='string')add(out,m,m,'','existing');
+      else if(m&&m.value)add(out,m.type||'Contact',m.value,m.confidence||'',m.source||'existing');
+    });
+    if(l.email)add(out,'Email',l.email,'High','lead field');
+    if(l.phone)add(out,'Phone',l.phone,'High','lead field');
+    if(l.linkedin)add(out,'LinkedIn Profile',l.linkedin,'High','lead field');
+    if(l.npi)add(out,'NPI Profile','https://npiregistry.cms.hhs.gov/provider-view/'+l.npi,'High','NPI Registry');
+    if(l.url&&/npiregistry/i.test(l.url))add(out,'NPI Profile',l.url,'High','NPI Registry');
+    if(l.sourceUrl&&/npiregistry/i.test(l.sourceUrl))add(out,'NPI Profile',l.sourceUrl,'High','NPI Registry');
+    if(l.website)add(out,'Company Website',l.website,'Low','lead field');
+    if(l.companyUrl)add(out,'Company Website',l.companyUrl,'Low','lead field');
+    if(l.companyURL)add(out,'Company Website',l.companyURL,'Low','lead field');
+    return out;
+  }
+  function isActual(m){
+    var t=String(m.type||'').toLowerCase(), v=String(m.value||'');
+    if(t.indexOf('email')>-1 && /@/.test(v))return true;
+    if(t.indexOf('phone')>-1 && digits(v).length>=10)return true;
+    if(/linkedin\.com\/in\//i.test(v))return true;
+    if(t.indexOf('npi')>-1 && v)return true;
+    return false;
+  }
+  function buttonFor(m){
+    var t=String(m.type||''), v=String(m.value||'');
+    if(/email/i.test(t)&&/@/.test(v))return '<a class="btn btn-primary btn-sm" href="mailto:'+attr(v)+'">Email</a>';
+    if(/phone/i.test(t)&&digits(v).length>=10)return '<a class="btn btn-primary btn-sm" href="tel:'+attr(digits(v))+'">Call</a>';
+    if(/^https?:\/\//i.test(v))return '<a class="btn btn-primary btn-sm" target="_blank" href="'+attr(v)+'">Open</a>';
+    return '';
+  }
+  window.basinV55Copy=function(btn){
+    var v=btn&&btn.getAttribute('data-copy')||'';
+    if(!v)return;
+    try{navigator.clipboard.writeText(v); if(typeof toast==='function')toast('CONTACT COPIED')}catch(e){prompt('Copy contact',v)}
+  };
+  function contactHtml(l){
+    var methods=extractMethods(l), actual=methods.filter(isActual), support=methods.filter(function(m){return !isActual(m)&&/^https?:\/\//i.test(m.value)});
+    var rows=[];
+    actual.forEach(function(m){
+      rows.push('<div class="v55-contact-row v55-verified"><div class="v55-contact-value"><b>'+esc(m.type)+'</b><span>'+esc(m.value)+'</span></div><div class="v55-contact-actions">'+buttonFor(m)+'<button class="btn btn-ghost btn-sm" data-copy="'+attr(m.value)+'" onclick="basinV55Copy(this)">Copy</button></div></div>');
+    });
+    support.forEach(function(m){
+      rows.push('<div class="v55-contact-row v55-support"><div class="v55-contact-value"><b>'+esc(m.type)+'</b><span>'+esc(m.value)+'</span></div><div class="v55-contact-actions">'+buttonFor(m)+'<button class="btn btn-ghost btn-sm" data-copy="'+attr(m.value)+'" onclick="basinV55Copy(this)">Copy</button></div></div>');
+    });
+    if(!actual.length){
+      rows.push('<div class="v55-contact-row v55-missing"><div class="v55-contact-value"><b>No usable contact method visible</b><span>This should be research only until phone, email, direct LinkedIn, or NPI contact is present.</span></div></div>');
+    }
+    return '<div class="v55-contact-box" data-v55-contact-box="1"><div class="v55-contact-head">Visible Contact Method'+(actual.length!==1?'s':'')+'</div>'+rows.join('')+'</div>';
+  }
+  function allLeads(){
+    if(!window.STORE)return [];
+    return [].concat(STORE.leadWorkflow||[], STORE.radarLeads||[], STORE.investors||[], STORE.cpas||[]);
+  }
+  function findLeadByName(name){
+    name=norm(name);
+    if(!name)return null;
+    var list=allLeads();
+    var exact=list.find(function(l){return norm(l.name)===name});
+    if(exact)return exact;
+    return list.find(function(l){return norm(l.name).indexOf(name)>-1 || name.indexOf(norm(l.name))>-1})||null;
+  }
+  function injectContacts(){
+    var root=$('leads-workflow-root') || document;
+    var cards=[].slice.call(root.querySelectorAll('.record'));
+    cards.forEach(function(card){
+      if(card.querySelector('[data-v55-contact-box="1"]'))return;
+      var nameEl=card.querySelector('.rec-name,.radar-name');
+      if(!nameEl)return;
+      var lead=findLeadByName(nameEl.textContent);
+      if(!lead)return;
+      var tags=card.querySelector('.rec-tags') || nameEl.parentElement;
+      if(!tags)return;
+      tags.insertAdjacentHTML('afterend', contactHtml(lead));
+    });
+  }
+  function updateKpis(){
+    if(!window.STORE)return;
+    function has(l){return extractMethods(l).filter(isActual).length>0}
+    var radar=(STORE.radarLeads||[]), wf=(STORE.leadWorkflow||[]);
+    var usable=wf.filter(has).length || radar.filter(has).length;
+    var filtered=Math.max((STORE.rejectedRadarLeads||[]).length,(STORE.radarRejected||[]).length,(STORE.rejectedLeads||[]).length,0);
+    // Lead workflow page stat labels
+    [].slice.call(document.querySelectorAll('.stat')).forEach(function(stat){
+      var lbl=stat.querySelector('.stat-lbl'), val=stat.querySelector('.stat-val');
+      if(!lbl||!val)return;
+      var t=norm(lbl.textContent);
+      if(t==='usable leads')val.textContent=String(wf.filter(has).length);
+      if(t==='active lead work'||t==='active cadence')val.textContent=String(wf.filter(function(w){return /^day/.test(w.bucket||'day1')&&has(w)}).length);
+      if(t==='filtered / not usable')val.textContent=String(filtered);
+    });
+    // Lead Radar KPI cards
+    [].slice.call(document.querySelectorAll('.radar-kpi')).forEach(function(kpi){
+      var lbl=kpi.querySelector('.radar-kpi-lbl'), val=kpi.querySelector('.radar-kpi-num');
+      if(!lbl||!val)return;
+      var t=norm(lbl.textContent);
+      if(t==='has contact')val.textContent=String(radar.filter(has).length);
+      if(t==='total found'||t==='usable leads')val.textContent=String(radar.filter(has).length);
+      if(t==='active lead work'||t==='loaded workflow')val.textContent=String(wf.filter(has).length);
+      if(t==='suppressed'||t==='filtered / not usable')val.textContent=String(filtered);
+    });
+    var rb=$('radar-badge'); if(rb)rb.textContent=String(radar.filter(has).length);
+    var lb=$('lead-workflow-badge'); if(lb)lb.textContent=String(wf.filter(has).length);
+  }
+  function addCss(){
+    if($('basin-v55-force-contact-css'))return;
+    var s=document.createElement('style'); s.id='basin-v55-force-contact-css';
+    s.textContent=[
+      '.v55-contact-box{margin:10px 0 9px;border:1px solid rgba(39,208,167,.36);background:linear-gradient(180deg,rgba(39,208,167,.075),rgba(39,208,167,.035));border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}',
+      '.v55-contact-head{padding:8px 10px;border-bottom:1px solid rgba(39,208,167,.22);font:800 10px var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--green,#27d0a7)}',
+      '.v55-contact-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border-top:1px solid rgba(255,255,255,.065)}',
+      '.v55-contact-row:first-of-type{border-top:0}',
+      '.v55-contact-value b{display:block;color:var(--text,#e7edf7);font-size:11px;margin-bottom:2px}',
+      '.v55-contact-value span{display:block;color:var(--text2,#aab4c4);font-size:12px;line-height:1.35;word-break:break-word}',
+      '.v55-contact-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}',
+      '.v55-verified{background:rgba(39,208,167,.045)}',
+      '.v55-support{background:rgba(88,140,255,.04)}',
+      '.v55-missing{background:rgba(255,96,120,.08);border-color:rgba(255,96,120,.20)}',
+      '@media(max-width:760px){.v55-contact-row{grid-template-columns:1fr}.v55-contact-actions{justify-content:flex-start}}'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function run(){addCss();injectContacts();updateKpis()}
+  var obs=null;
+  function startObserver(){
+    if(obs)return;
+    obs=new MutationObserver(function(){clearTimeout(window.__basinV55Timer);window.__basinV55Timer=setTimeout(run,120)});
+    obs.observe(document.body,{childList:true,subtree:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){run();startObserver()});
+  else {run();startObserver()}
+  setInterval(run,1200);
+})();
+</script>
+
 </body>
 </html>
 
