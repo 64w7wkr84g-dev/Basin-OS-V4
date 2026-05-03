@@ -1,4 +1,4 @@
-/* Basin OS V6.5 — Automated Lead Factory + Manual LinkedIn Verification CRM
+/* Basin OS V6.7 — Automated Lead Factory + Manual LinkedIn Verification CRM
    Safe LinkedIn handling:
    - does not open LinkedIn automatically
    - does not read LinkedIn pages
@@ -136,7 +136,7 @@
     if(hasEmail(contacts)) return { queue:'Email First', bucket:'day1', text:'Day 1: send reviewed email first, then log outcome, disposition, and next step.' };
     if(hasVerifiedLinkedIn(contacts)) return { queue:'LinkedIn First', bucket:'day1', text:'Day 1: open verified LinkedIn/SalesNav profile manually and complete the appropriate manual action, then log result.' };
     if(hasCandidateLinkedIn(contacts)) return { queue:'LinkedIn Verify', bucket:'day1', text:'Day 1: open candidate LinkedIn URL manually, confirm or reject match, paste snapshot if useful, then complete next action.' };
-    if(hasPhone(contacts)) return { queue:'Call First / Verify', bucket:'day1', text:'Day 1: call or verify by phone. Ask for correct email/direct contact if needed, then log result.' };
+    if(hasPhone(contacts)) return { queue:'Ready to Work', bucket:'day1', text:'Day 1: call or verify by phone. Ask for correct email/direct contact if needed, then log result.' };
     return { queue:'Research Needed', bucket:'research', text:'Research: verify person and find a usable contact route before outreach.' };
   }
 
@@ -286,7 +286,7 @@
     'Email First':['Review evidence trail','Send reviewed email manually','Log result','Select disposition','Add note'],
     'LinkedIn First':['Open LinkedIn manually','Confirm profile is still correct','Complete manual LinkedIn action if appropriate','Select disposition','Add note'],
     'LinkedIn Verify':['Open candidate LinkedIn URL manually','Confirm or reject profile match','Paste profile snapshot if useful','Select disposition','Add note'],
-    'Call First / Verify':['Review evidence','Call / verify contact route','Ask for correct email or direct contact if needed','Select disposition','Add note'],
+    'Ready to Work':['Review evidence','Call / verify contact route','Ask for correct email or direct contact if needed','Select disposition','Add note'],
     'Research Needed':['Verify real person','Find usable contact method','Add evidence/contact details','Promote to Day 1 or suppress','Add note'],
     'day2':['Check replies/engagement','Second touch through best route','Update contact confidence','Select disposition','Add note'],
     'day3':['Alternate channel touch','Record objection/no answer/result','Check source/evidence again','Select disposition','Add note'],
@@ -300,7 +300,7 @@
   };
   function tasksFor(lead){
     if(lead.workflowDay && lead.workflowDay > 1) return TASKS['day'+lead.workflowDay] || TASKS.day10;
-    return TASKS[lead.queue] || TASKS['Call First / Verify'];
+    return TASKS[lead.queue] || TASKS['Ready to Work'];
   }
   function checked(lead,i){ return !!(lead.workflow && Array.isArray(lead.workflow.completedTasks) && lead.workflow.completedTasks[i]); }
   function canAdvance(lead){
@@ -360,7 +360,7 @@
       email: all.filter(l=>l.queue==='Email First').length,
       linkedin: all.filter(l=>l.queue==='LinkedIn First').length,
       verify: all.filter(l=>l.queue==='LinkedIn Verify').length,
-      call: all.filter(l=>l.queue==='Call First / Verify').length,
+      call: all.filter(l=>l.queue==='Ready to Work').length,
       research: (research||[]).length
     };
   }
@@ -373,13 +373,13 @@
       ['Email First','Email First',lf.leads.filter(l=>l.queue==='Email First')],
       ['LinkedIn First','LinkedIn First',lf.leads.filter(l=>l.queue==='LinkedIn First')],
       ['LinkedIn Verify','LinkedIn Verify',lf.leads.filter(l=>l.queue==='LinkedIn Verify')],
-      ['Call First / Verify','Call First / Verify',lf.leads.filter(l=>l.queue==='Call First / Verify')],
+      ['Ready to Work','Ready to Work',lf.leads.filter(l=>l.queue==='Ready to Work')],
       ['research','Research Needed',lf.research]
     ];
     return `<div class="lf-shell">
       <div class="lf-head"><div><h2>Basin Lead Factory V6.3</h2><p>Associate-ready leads, manual LinkedIn verification, profile snapshot parser, and Day 1–10 gating.</p></div>
         <div class="lf-actions"><button class="lf-btn primary" onclick="BasinLeadFactory.rebuild()">Load/Refresh GitHub Radar Leads</button><button class="lf-btn" onclick="BasinLeadFactory.addManualLead()">+ Manual Lead</button><button class="lf-btn danger" onclick="BasinLeadFactory.close()">Close</button></div></div>
-      <div class="lf-stats"><div><b>${st.ready}</b><span>Associate Ready</span></div><div><b>${st.email}</b><span>Email First</span></div><div><b>${st.linkedin}</b><span>LinkedIn First</span></div><div><b>${st.verify}</b><span>LinkedIn Verify</span></div><div><b>${st.call}</b><span>Call First / Verify</span></div><div><b>${st.research}</b><span>Research Needed</span></div></div>
+      <div class="lf-stats"><div><b>${st.ready}</b><span>Associate Ready</span></div><div><b>${st.email}</b><span>Email First</span></div><div><b>${st.linkedin}</b><span>LinkedIn First</span></div><div><b>${st.verify}</b><span>LinkedIn Verify</span></div><div><b>${st.call}</b><span>Ready to Work</span></div><div><b>${st.research}</b><span>Research Needed</span></div></div>
       <div class="lf-tabs">${qMap.map((q,i)=>`<button class="lf-tab ${i===0?'active':''}" onclick="BasinLeadFactory.showQueue('${attr(q[0])}',this)">${esc(q[1])} <b>${q[2].length}</b></button>`).join('')}</div>
       <div id="lf-queue-body">${(lf.leads||[]).map(leadCard).join('') || '<div class="lf-empty">No associate-ready leads yet. Run the GitHub radar workflow, then refresh.</div>'}</div>
     </div>`;
@@ -659,7 +659,7 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* Basin OS V6.5 — Auto Bridge
+/* Basin OS V6.7 — Auto Bridge
    Fixes the exact issue where radar records exist but Dashboard / Leads Workflow still show 0.
    This automatically mirrors Lead Factory + Radar records into the legacy Basin OS buckets the existing UI reads.
 */
@@ -740,7 +740,7 @@
     if(c.some(x=>/email/i.test(x.type)&&isEmail(x.value))) return ['Email First','day1','Day 1: send reviewed email first, then log outcome/disposition.'];
     if(c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value)&&!/candidate|needs/i.test(x.status||x.type))) return ['LinkedIn First','day1','Day 1: open verified LinkedIn manually and complete appropriate manual action.'];
     if(c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value))) return ['LinkedIn Verify','day1','Day 1: open candidate LinkedIn URL manually, confirm/reject match, paste profile snapshot if useful.'];
-    if(c.some(x=>/phone/i.test(x.type)&&isPhone(x.value))) return ['Call First / Verify','day1','Day 1: call or verify by phone; ask for correct email/direct contact if needed.'];
+    if(c.some(x=>/phone/i.test(x.type)&&isPhone(x.value))) return ['Ready to Work','day1','Day 1: call or verify by phone; ask for correct email/direct contact if needed.'];
     return ['Research Needed','research','Research: verify person and find a contact route.'];
   }
   function key(l){return clean([l.name,l.company,l.title,l.sourceUrl||l.url].join('|')).toLowerCase();}
@@ -788,7 +788,7 @@
       bucket:l.bucket||'day1',
       day:l.day||l.workflowDay||1,
       status:l.status||'Open',
-      queue:l.queue||l.contactPriority||'Call First / Verify',
+      queue:l.queue||l.contactPriority||'Ready to Work',
       nextAction:l.bestFirstAction||'Day 1: complete required first action and log outcome.',
       createdAt:l.createdAt||now(),
       updatedAt:now(),
@@ -894,7 +894,7 @@
 })();
 
 
-/* Basin OS V6.5 — Leads Workflow Source Tabs + Priority Filters
+/* Basin OS V6.7 — Leads Workflow Source Tabs + Priority Filters
    Adds source/route tabs above Day 1 so LinkedIn Verify leads can be worked first.
 */
 (function(){
@@ -975,7 +975,7 @@
       linkedin:'LinkedIn Verified',
       'linkedin-verify':'LinkedIn Verify',
       npi:'NPI / Physicians',
-      phone:'Phone / Call Verify',
+      phone:'Ready: Phone Verify',
       rss:'RSS / Public News',
       manual:'Manual Entry',
       research:'Research Needed',
@@ -1083,7 +1083,7 @@
       ['linkedin','LinkedIn Verified'],
       ['linkedin-verify','LinkedIn Verify'],
       ['npi','NPI / Physicians'],
-      ['phone','Phone / Call'],
+      ['phone','Ready: Phone'],
       ['rss','RSS / Public News'],
       ['manual','Manual'],
       ['research','Research']
@@ -1154,4 +1154,726 @@
     try { if(byId('page-leads') && byId('page-leads').classList.contains('active')) renderLeadsWorkflowPage(); } catch(e){}
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+
+/* Basin OS V6.7 — Clean Routing + Source Filter Overlay
+   Fixes:
+   1. Source filters are injected into Leads Workflow even if the legacy renderer wins.
+   2. Filters work across all workflow days, not just Day 1.
+   3. Lead Factory floating button hidden because sync is automatic now.
+   4. Tavily UI hidden; Groq auto-connect attempted on site load.
+*/
+(function(){
+  'use strict';
+
+  const STORE_KEY='basin_os_integrated';
+  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const digits=v=>String(v||'').replace(/\D/g,'');
+  const isEmail=v=>/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(String(v||''));
+  const isLI=v=>/linkedin\.com\/in\//i.test(String(v||''));
+  const isPhone=v=>digits(v).length>=10;
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+
+  window.BASIN_LEAD_SOURCE_FILTER = window.BASIN_LEAD_SOURCE_FILTER || 'all';
+
+  function getStore(){
+    let s={}; 
+    try { s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}'); } catch(e){}
+    if(window.STORE && typeof window.STORE === 'object') s = Object.assign({}, s, window.STORE);
+    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
+    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
+    s.leads=Array.isArray(s.leads)?s.leads:[];
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
+    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
+    return s;
+  }
+  function saveStore(s){
+    try{
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+      window.STORE = Object.assign(window.STORE||{}, s);
+      if(typeof window.save === 'function') window.save();
+      if(typeof window.flushSave === 'function') window.flushSave(true);
+    }catch(e){ console.warn('[V6.6] save failed', e); }
+  }
+  function contacts(l){
+    const out=[];
+    const add=(type,value,status)=>{
+      value=clean(value); if(!value) return;
+      const k=(type+'|'+value).toLowerCase();
+      if(out.some(x=>(x.type+'|'+x.value).toLowerCase()===k)) return;
+      out.push({type,value,status:status||''});
+    };
+    (Array.isArray(l.contactMethods)?l.contactMethods:[]).forEach(c=>add(c.type||c.kind||'', c.value||c.url||c.href||'', c.status||c.confidence||''));
+    add('Email',l.email,'Verified');
+    add('Phone',l.phone,'Verified');
+    add('LinkedIn Profile',l.linkedin||l.linkedinUrl||l.linkedInUrl, l.linkedinVerified?'Verified':'Needs Manual Confirmation');
+    add('LinkedIn Candidate URL',l.linkedinCandidateUrl||l.linkedInCandidateUrl,'Needs Manual Confirmation');
+    return out;
+  }
+  function linkedStatus(l){
+    const c=contacts(l);
+    const verified=c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value)&&(/verified/i.test(x.status)||x.verified));
+    const cand=c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value)&&!(/verified/i.test(x.status)||x.verified));
+    if(verified) return 'verified';
+    if(cand) return 'candidate';
+    return '';
+  }
+  function sourceOf(l){
+    const blob=[l.source,l.sourceType,l.queue,l.contactPriority,l.bestFirstAction,l.nextAction,l.url,l.sourceUrl,l.title,l.company,l.summary,l.signal,l.notes].join(' ').toLowerCase();
+    const c=contacts(l);
+    if(c.some(x=>/email/i.test(x.type)&&isEmail(x.value))) return 'email';
+    if(linkedStatus(l)==='verified') return 'linkedin';
+    if(linkedStatus(l)==='candidate' || /linkedin|salesnav|sales navigator/.test(blob)) return 'linkedin-verify';
+    if(/npi|npiregistry|provider-view|orthopedic surgery|physician|surgeon|medical/.test(blob)) return 'npi';
+    if(c.some(x=>/phone/i.test(x.type)&&isPhone(x.value)) || /phone|call first/.test(blob)) return 'phone';
+    if(/rss|google news|news\.google|article|public source/.test(blob)) return 'rss';
+    if(/manual/.test(blob)) return 'manual';
+    if(/research/.test(blob)) return 'research';
+    return 'other';
+  }
+  function grade(l){
+    const s=Number(l.score||0);
+    return l.grade || (s>=82?'A':s>=68?'B':s>=52?'C':'D');
+  }
+  function sourceRank(l){
+    return {email:1,linkedin:2,'linkedin-verify':3,npi:4,phone:5,rss:6,manual:7,research:8,other:9}[sourceOf(l)]||9;
+  }
+  function score(l){ return Number(l.score||0); }
+  function allLeads(){
+    const s=getStore();
+    const arr=[...(s.leadWorkflow||[]),...(s.leads||[]),...(s.radarLeads||[]),...(s.leadFactory.leads||[]),...(s.leadFactory.research||[])].filter(Boolean);
+    const map=new Map();
+    arr.forEach((l,i)=>{
+      const id=l.leadId||l.id||('tmp'+i);
+      const k=clean([l.name,l.company,l.title,l.sourceUrl||l.url,id].join('|')).toLowerCase();
+      if(!map.has(k) || score(map.get(k)) < score(l)) map.set(k,l);
+    });
+    return [...map.values()].sort((a,b)=>{
+      const f=window.BASIN_LEAD_SOURCE_FILTER;
+      if(f==='all'){
+        const sr=sourceRank(a)-sourceRank(b);
+        if(sr) return sr;
+      }
+      return score(b)-score(a);
+    });
+  }
+  function filterMatch(l,f){
+    if(f==='all') return true;
+    if(f==='a') return grade(l)==='A';
+    if(f==='day1') return Number(l.day||l.workflowDay||1)===1 || /^day1$/i.test(l.bucket||'day1');
+    return sourceOf(l)===f;
+  }
+  function counts(list){
+    const c={all:list.length,a:0,email:0,linkedin:0,'linkedin-verify':0,npi:0,phone:0,rss:0,manual:0,research:0,other:0};
+    list.forEach(l=>{
+      if(grade(l)==='A') c.a++;
+      const s=sourceOf(l);
+      c[s]=(c[s]||0)+1;
+    });
+    return c;
+  }
+  function routeText(key){
+    return ({
+      all:'All working leads from every source and route.',
+      a:'Highest preliminary grade first.',
+      email:'Leads with email available. Work these first when possible.',
+      linkedin:'Manually verified LinkedIn profile leads.',
+      'linkedin-verify':'Candidate LinkedIn URLs that need manual confirmation and profile snapshot enrichment.',
+      npi:'NPI/physician source leads, generally call/verify first unless email/LinkedIn exists.',
+      phone:'Phone/call verification leads.',
+      rss:'RSS/public-source trigger leads.',
+      manual:'Manually entered leads.',
+      research:'Research needed before outreach.'
+    })[key] || '';
+  }
+  function tabsHtml(){
+    const list=allLeads(), c=counts(list);
+    const tabs=[
+      ['all','All Sources'],['a','A Grade'],['email','Email First'],['linkedin','LinkedIn Verified'],
+      ['linkedin-verify','LinkedIn Verify'],['npi','NPI / Physicians'],['phone','Ready: Phone'],
+      ['rss','RSS / Public News'],['manual','Manual'],['research','Research']
+    ];
+    return '<div id="basin-v66-source-tabs" class="panel" style="margin-bottom:14px;border:1px solid rgba(216,148,36,.45)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Lead Source / Route Filters</div>'
+      + '<div class="panel-sub">Filter across every workflow day. Use LinkedIn Verify first when you want to manually confirm profile URLs and enrich CRM cards.</div></div></div>'
+      + '<div class="panel-bd"><div class="chips" style="gap:8px;display:flex;flex-wrap:wrap">'
+      + tabs.map(t=>'<button class="chip '+(window.BASIN_LEAD_SOURCE_FILTER===t[0]?'active':'')+'" onclick="BasinV66SourceFilters.set(\''+esc(t[0])+'\')">'+esc(t[1])+' <span class="badge" style="margin-left:6px">'+(c[t[0]]||0)+'</span></button>').join('')
+      + '</div><div class="mini-note" style="margin-top:10px"><strong>Current:</strong> '+esc(routeText(window.BASIN_LEAD_SOURCE_FILTER))+' Inside each filter, leads sort high score to low score.</div></div></div>';
+  }
+  function card(l){
+    const c=contacts(l);
+    const source=sourceOf(l);
+    const id=esc(l.leadId||l.id||'');
+    const contactHtml=c.slice(0,5).map(x=>{
+      let val=esc(x.value), label=esc(x.type);
+      if(/email/i.test(x.type)&&isEmail(x.value)) val='<a href="mailto:'+esc(x.value)+'" style="color:#8bd5ff">'+esc(x.value)+'</a>';
+      else if(/phone/i.test(x.type)&&isPhone(x.value)) val='<a href="tel:'+digits(x.value)+'" style="color:#8bd5ff">'+esc(x.value)+'</a>';
+      else if(/^https?:\/\//.test(x.value)) val='<a href="'+esc(x.value)+'" target="_blank" rel="noopener" style="color:#8bd5ff">Open</a>';
+      return '<span class="tag gray">'+label+': '+val+'</span>';
+    }).join('');
+    const verify = source==='linkedin-verify' ? '<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory&&BasinLeadFactory.openLead?BasinLeadFactory.openLead(\''+id+'\'):void(0)">Verify LinkedIn</button>' : '';
+    const full = window.BasinLeadFactory ? '<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory.openLead(\''+id+'\')">Open Full Lead Card</button>' : '';
+    return '<div class="record" data-v66-source="'+esc(source)+'" data-v66-score="'+score(l)+'" style="grid-template-columns:46px 1fr auto">'
+      + '<div class="score '+esc(grade(l))+'">'+esc(grade(l))+'</div>'
+      + '<div><div class="rec-name">'+esc(l.name||'Unnamed Lead')+'</div>'
+      + '<div class="rec-meta">'+esc([l.title,l.company,'Score '+score(l),l.status||'New'].filter(Boolean).join(' · '))+'</div>'
+      + '<div class="rec-tags"><span class="tag gold">'+esc((l.bucket||'day1').toUpperCase())+'</span><span class="tag teal">'+esc(({email:'Email First',linkedin:'LinkedIn Verified','linkedin-verify':'LinkedIn Verify',npi:'NPI / Physician',phone:'Ready: Phone',rss:'RSS / Public',manual:'Manual',research:'Research',other:'Other'})[source])+'</span></div>'
+      + '<div class="rec-tags" style="margin-top:8px">'+(contactHtml||'<span class="tag red">No visible contact route</span>')+'</div>'
+      + '<div class="mini-note" style="margin-top:8px"><strong>Next:</strong> '+esc(l.bestFirstAction||l.nextAction||'Complete first action and log result.')+'</div></div>'
+      + '<div class="rec-actions" style="max-width:360px;flex-wrap:wrap">'+verify+full+'</div></div>';
+  }
+  function renderFilteredPanel(){
+    const anchor=findInsertionAnchor();
+    if(!anchor) return;
+    $('#basin-v66-source-tabs')?.remove();
+    $('#basin-v66-filter-results')?.remove();
+    anchor.insertAdjacentHTML('afterend', tabsHtml());
+
+    if(window.BASIN_LEAD_SOURCE_FILTER !== 'all'){
+      const leads=allLeads().filter(l=>filterMatch(l,window.BASIN_LEAD_SOURCE_FILTER));
+      const html='<div id="basin-v66-filter-results" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)">'
+        + '<div class="panel-hd"><div><div class="panel-title">Filtered Leads — '+esc((window.BASIN_LEAD_SOURCE_FILTER||'all').replace('-', ' '))+'</div>'
+        + '<div class="panel-sub">'+leads.length+' leads across all workflow days · highest score first</div></div></div>'
+        + '<div class="panel-bd">'+(leads.length?leads.map(card).join(''):'<div class="empty"><div class="empty-title">No leads match this filter.</div></div>')+'</div></div>';
+      $('#basin-v66-source-tabs').insertAdjacentHTML('afterend', html);
+    }
+  }
+  function findInsertionAnchor(){
+    // Prefer the stats grid in Leads Workflow; fallback to the required daily execution info box.
+    const activePage=$('.page.active') || document;
+    const h=[...$$('h1,h2,.page-title')].find(x=>/leads workflow/i.test(x.textContent||''));
+    const scope=h ? (h.closest('.page') || activePage) : activePage;
+    const grids=$$('.grid3,.stats-grid,.kpi-grid', scope);
+    if(grids.length) return grids[0];
+    const info=[...$$('.info,.notice,.panel', scope)].find(x=>/Required Daily Execution|usable leads|active lead/i.test(x.textContent||''));
+    return info || null;
+  }
+  function applyFilterToLegacyCards(){
+    const f=window.BASIN_LEAD_SOURCE_FILTER;
+    // If all, show the original day sections normally. If filtered, keep original below but dim/hide? Hide to avoid duplicates.
+    const page=[...$$('.page')].find(p=>/Leads Workflow/i.test(p.textContent||'') && p.classList.contains('active')) || document;
+    $$('.panel', page).forEach(p=>{
+      if(p.id==='basin-v66-source-tabs'||p.id==='basin-v66-filter-results') return;
+      if(window.BASIN_LEAD_SOURCE_FILTER==='all') p.style.display='';
+      else if(/Day \d+|Callbacks|Long-Term Future|Not Interested/i.test(p.textContent||'')) p.style.display='none';
+    });
+  }
+  function render(){
+    hideRedundantUI();
+    renderFilteredPanel();
+    applyFilterToLegacyCards();
+  }
+  function set(filter){
+    window.BASIN_LEAD_SOURCE_FILTER=filter||'all';
+    render();
+  }
+
+  function hideRedundantUI(){
+    // Lead Factory button is now redundant because V6.4/V6.6 auto-bridges on load/reload.
+    const lf=$('#lf-launch');
+    if(lf) lf.style.display='none';
+
+    // Hide Tavily UI/fields/buttons because current plan uses free feeds + GitHub Models + Groq fallback.
+    $$('label,.field,.form-row,.setting-row,.api-row,.panel-bd div,.panel-bd button,.panel-bd input').forEach(el=>{
+      const txt=(el.textContent||'')+' '+(el.placeholder||'')+' '+(el.value||'')+' '+(el.getAttribute('id')||'')+' '+(el.getAttribute('name')||'');
+      if(/tavily/i.test(txt)) {
+        const row=el.closest('label,.field,.form-row,.setting-row,.api-row') || el;
+        row.style.display='none';
+      }
+    });
+    $$('button').forEach(b=>{
+      if(/connect tavily|tavily/i.test(b.textContent||'')) b.style.display='none';
+    });
+  }
+
+  function autoConnectGroq(){
+    const s=getStore();
+    const api=s.api||s.BV_API||{};
+    const savedKey = localStorage.getItem('BASIN_GROQ_API_KEY') || localStorage.getItem('GROQ_API_KEY') || api.groqKey || api.groqApiKey || '';
+    if(!savedKey && !(window.BV_API && (window.BV_API.groqKey || window.BV_API.groqLive))) return;
+    try{
+      window.BV_API = window.BV_API || {};
+      if(savedKey) window.BV_API.groqKey=savedKey;
+      window.BV_API.groqLive=true;
+      window.BV_API.groqConnected=true;
+      s.api=s.api||{};
+      if(savedKey) s.api.groqKey=savedKey;
+      s.api.groqLive=true;
+      saveStore(s);
+    }catch(e){}
+    // Try existing connect function only if present and not expensive; otherwise status flags are enough for UI.
+    ['connectGroq','basinConnectGroq','connectGroqApi','autoConnectGroq'].forEach(fn=>{
+      try{ if(typeof window[fn]==='function' && fn!=='autoConnectGroq') window[fn](); }catch(e){}
+    });
+  }
+
+  window.BasinV66SourceFilters={set,render,sourceOf,counts};
+
+  function boot(){
+    autoConnectGroq();
+    hideRedundantUI();
+    render();
+    const mo=new MutationObserver(()=>{ clearTimeout(window.__basinV66Timer); window.__basinV66Timer=setTimeout(render,300); });
+    mo.observe(document.body,{childList:true,subtree:true});
+    setTimeout(render,800);
+    setTimeout(render,2500);
+    setTimeout(render,6000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
+
+/* Basin OS V6.7 — Ready to Work + Official Day 1-10 Cadence
+   Corrects workflow architecture:
+   - "Call First / Verify" is removed as a bucket.
+   - Ready to Work becomes the execution bucket.
+   - Phone is only a best contact route inside Ready to Work when evidence supports it.
+   - LinkedIn candidate, Contact Route Needed, Research Needed, Suppressed remain prep queues.
+   - Official Basin Day 1/2/4/6/10 scripts and compliance blocks are attached to cards.
+*/
+(function(){
+  'use strict';
+
+  const STORE_KEY='basin_os_integrated';
+  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const digits=v=>String(v||'').replace(/\D/g,'');
+  const isEmail=v=>/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(String(v||''));
+  const isLinkedIn=v=>/linkedin\.com\/in\//i.test(String(v||''));
+  const isPhone=v=>digits(v).length>=10;
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const now=()=>new Date().toISOString();
+
+  window.BASIN_LEAD_SOURCE_FILTER = window.BASIN_LEAD_SOURCE_FILTER || 'ready';
+
+  const CADENCE = {
+    day1: {
+      title:'Day 1 — Evidence-Based Email / LinkedIn Touch',
+      timing:'Use same day call only for high-confidence signals; otherwise make phone the Day 2 call after email/LinkedIn goes out.',
+      prior:'Review evidence trail, send or queue the Day 1 evidence-based email/LinkedIn touch, and confirm the phone source is appropriate.',
+      trigger:'Strong public signal, A-score lead, or clear business context.',
+      noResponse:'If no response, queue Day 2 research-based intro call.',
+      next:'Day 2 Research-Based Intro Call / Signal Reminder.',
+      compliance:'Do not imply the signal means they need the investment. No guarantees. No tax advice. Make the director call educational and optional.',
+      script:'Evidence-based first touch. Reference [Signal] and [Role]. Keep it short, educational, and optional. Use email or LinkedIn when available before phone.'
+    },
+    day2: {
+      title:'Day 2 — Research-Based Intro Call / Signal Reminder',
+      timing:'Best live windows: 10:30–11:45 AM and 3:30–5:00 PM local time.',
+      prior:'Evidence-based email or LinkedIn touch should normally happen before calling.',
+      trigger:'First normal phone attempt after Day 1 email/LinkedIn. Reference the signal clearly so the call does not feel random.',
+      noResponse:'Leave the matching voicemail when available, log outcome, and send the matching follow-up touch from this cadence.',
+      next:'Advance to the next scheduled channel step unless they answer, object, book, or request removal.',
+      compliance:'Do not imply the signal means they need the investment. No guarantees. No tax advice. Make the director call educational and optional.',
+      script:'Hi [Name], [Your Name] with Basin Ventures. I reached out because of [Signal], and I wanted to try you once more.\n\nThe reason I thought it might fit is that high-income professionals and business owners often want to understand tax-advantaged direct energy ownership, especially when income or liquidity events are in play. Your CPA would need to confirm fit.\n\nShould I send a brief overview or just get you directly to a 20-minute director call?'
+    },
+    day3: {
+      title:'Day 3 — LinkedIn Touch / Engagement Follow-Up',
+      timing:'Use after Day 1 evidence touch and Day 2 phone attempt.',
+      prior:'Review Day 1 and Day 2 outcomes before sending.',
+      trigger:'No answer or no clear response after first touch/call attempt.',
+      noResponse:'Move to Day 4 credibility-angle call.',
+      next:'Day 4 Credibility Angle.',
+      compliance:'Keep language educational and optional. No promises, guarantees, or tax advice.',
+      script:'Manual LinkedIn touch or short follow-up referencing the original signal. Keep it conversational and do not over-pitch.'
+    },
+    day4: {
+      title:'Day 4 — Credibility Angle',
+      timing:'Best live windows: 10:30–11:45 AM and 3:30–5:00 PM local time.',
+      prior:'Evidence-based email or LinkedIn touch should normally happen before calling.',
+      trigger:'Second call/research follow-up. Shift from signal to credibility and fit.',
+      noResponse:'Leave the matching voicemail when available, log outcome, and send the matching follow-up touch from this cadence.',
+      next:'Advance to the next scheduled channel step unless they answer, object, book, or request removal.',
+      compliance:'Do not imply the signal means they need the investment. No guarantees. No tax advice. Make the director call educational and optional.',
+      script:'Hi [Name], [Your Name] from Basin Ventures. I know we have not spoken before. Basin has managed over $1.25B since 2014, and we focus on direct energy opportunities for accredited investors.\n\nGiven [Signal], I thought it was worth making one clean introduction. If it is irrelevant, no problem. If it is worth understanding, I can schedule a short director call.\n\nDoes this deserve 20 minutes, or should I close the loop?'
+    },
+    day5: {
+      title:'Day 5 — Value Follow-Up / Overview Send',
+      timing:'Use after Day 4 if no answer or no clear decision.',
+      prior:'Review evidence, prior touches, and objection history.',
+      trigger:'No response after credibility angle.',
+      noResponse:'Move to Day 6 final research-based call.',
+      next:'Day 6 Final Research-Based Call.',
+      compliance:'Educational only. Do not provide tax advice; use “your CPA would need to confirm fit.”',
+      script:'Send a short value follow-up or overview. Focus on education, structure, and optional director conversation.'
+    },
+    day6: {
+      title:'Day 6 — Final Research-Based Call',
+      timing:'Best live windows: 10:30–11:45 AM and 3:30–5:00 PM local time.',
+      prior:'Evidence-based email or LinkedIn touch should normally happen before calling.',
+      trigger:'Use only as final research-based call or value follow-up before close-loop.',
+      noResponse:'Leave the matching voicemail when available, log outcome, and send the matching follow-up touch from this cadence.',
+      next:'Advance to the next scheduled channel step unless they answer, object, book, or request removal.',
+      compliance:'Do not imply the signal means they need the investment. No guarantees. No tax advice. Make the director call educational and optional.',
+      script:'Hi [Name], last attempt from [Your Name] at Basin Ventures. I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation.\n\nI do not want to chase you. Should I mark this as not a fit, or would you like one short overview call before I close it out?'
+    },
+    day7: {
+      title:'Day 7 — Light Touch / Objection-Aware Follow-Up',
+      timing:'Use after final research-based call attempt.',
+      prior:'Review likely objection and notes.',
+      trigger:'No clear answer after Day 6.',
+      noResponse:'Move to nurture/future decision.',
+      next:'Day 8 Nurture Decision.',
+      compliance:'Avoid pressure. No guarantees. No tax advice.',
+      script:'Short objection-aware follow-up. Common frame: “Your CPA would need to confirm fit; this is just to understand the structure.”'
+    },
+    day8: {
+      title:'Day 8 — Nurture Decision / Future Timing Check',
+      timing:'Use when active sequence is cooling.',
+      prior:'Review all prior attempts.',
+      trigger:'No response but lead still appears relevant.',
+      noResponse:'Move to final review / director-call push.',
+      next:'Day 9 Final Review.',
+      compliance:'Permission-based and optional.',
+      script:'Decide whether to continue, future-date, or close. Keep it permission based.'
+    },
+    day9: {
+      title:'Day 9 — Final Review / Director-Call Push',
+      timing:'Use only if fit remains strong.',
+      prior:'Review evidence, score, and all interactions.',
+      trigger:'Strong fit but no completed director call.',
+      noResponse:'Move to Day 10 close-loop / permission call.',
+      next:'Day 10 Longer-Term Permission Call.',
+      compliance:'Do not overstate urgency or outcomes.',
+      script:'One final practical attempt to determine whether a director call is worth 20 minutes.'
+    },
+    day10: {
+      title:'Day 10 — Longer-Term Permission Call',
+      timing:'Best live windows: 10:30–11:45 AM and 3:30–5:00 PM local time.',
+      prior:'Evidence-based email or LinkedIn touch should normally happen before calling.',
+      trigger:'Close-loop or permission-based future nurture.',
+      noResponse:'Leave the matching voicemail when available, log outcome, and send the matching follow-up touch from this cadence.',
+      next:'Move to Future, Callback, Not Interested, or Suppressed based on outcome.',
+      compliance:'Do not imply the signal means they need the investment. No guarantees. No tax advice. Make future updates permission-based.',
+      script:'Hi [Name], [Your Name] with Basin Ventures. I am closing the loop on my outreach.\n\nIf now is not the time, I can leave you alone. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead. What is better?'
+    }
+  };
+
+  function store(){
+    let s={}; try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){}
+    if(window.STORE && typeof window.STORE==='object') s=Object.assign({},s,window.STORE);
+    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
+    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
+    s.leads=Array.isArray(s.leads)?s.leads:[];
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
+    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
+    s.suppressed=Array.isArray(s.suppressed)?s.suppressed:[];
+    return s;
+  }
+  function save(s){
+    try{
+      localStorage.setItem(STORE_KEY,JSON.stringify(s));
+      window.STORE=Object.assign(window.STORE||{},s);
+      if(typeof window.save==='function') window.save();
+      if(typeof window.flushSave==='function') window.flushSave(true);
+    }catch(e){console.warn('[V6.7] save failed',e)}
+  }
+  function contacts(l){
+    const out=[];
+    const add=(type,value,status,confidence,source)=>{
+      value=clean(value); if(!value) return;
+      const k=(type+'|'+value).toLowerCase();
+      if(out.some(x=>(x.type+'|'+x.value).toLowerCase()===k)) return;
+      out.push({type,value,status:status||'',confidence:confidence||'',source:source||''});
+    };
+    (Array.isArray(l.contactMethods)?l.contactMethods:[]).forEach(c=>add(c.type||c.kind||'',c.value||c.url||c.href||'',c.status||'',c.confidence||'',c.source||''));
+    add('Email',l.email,'Verified','High','lead field');
+    add('Phone',l.phone,'Verified','High','lead field');
+    add('LinkedIn Profile',l.linkedin||l.linkedinUrl||l.linkedInUrl,l.linkedinVerified?'Verified':'Needs Manual Confirmation',l.linkedinVerified?'Manual Verified':'Needs Manual Confirmation','lead field');
+    add('LinkedIn Candidate URL',l.linkedinCandidateUrl||l.linkedInCandidateUrl,'Needs Manual Confirmation','Needs Manual Confirmation','public search/manual');
+    if(l.npi) add('NPI Profile','https://npiregistry.cms.hhs.gov/provider-view/'+l.npi,'Verified','High','NPI Registry');
+    return out;
+  }
+  function evidence(l){
+    const ev=Array.isArray(l.evidenceTrail)?l.evidenceTrail:[];
+    if(ev.length) return ev;
+    const out=[];
+    if(l.source||l.sourceUrl||l.url) out.push({source:l.source||'Source',url:l.sourceUrl||l.url||'',whatItProves:l.signal||l.summary||'Source evidence.',confidence:'Medium'});
+    return out;
+  }
+  function linkedStatus(l){
+    const c=contacts(l);
+    if(c.some(x=>/linkedin/i.test(x.type)&&isLinkedIn(x.value)&&(/verified|manual verified/i.test([x.status,x.confidence].join(' '))))) return 'verified';
+    if(c.some(x=>/linkedin/i.test(x.type)&&isLinkedIn(x.value))) return 'candidate';
+    return '';
+  }
+  function bestRoute(l){
+    const c=contacts(l);
+    if(c.some(x=>/email/i.test(x.type)&&isEmail(x.value))) return 'Email';
+    if(linkedStatus(l)==='verified') return 'LinkedIn';
+    if(c.some(x=>/phone/i.test(x.type)&&isPhone(x.value)&&reliablePhone(l,x))) return 'Phone';
+    return '';
+  }
+  function reliablePhone(l,c){
+    const blob=[l.source,l.sourceType,l.url,l.sourceUrl,l.summary,l.signal,l.company,l.title,c&&c.source,c&&c.confidence].join(' ').toLowerCase();
+    return /npi|npiregistry|provider-view|practice|clinic|company website|official|manual|verified|high/.test(blob);
+  }
+  function isRealishPerson(l){
+    const name=clean(l.name||'');
+    if(!name || name.length<3) return false;
+    if(/\b(llc|inc|company|group|clinic|hospital|center|services|solutions|news|article|rss|error)\b/i.test(name)) return false;
+    return /\s/.test(name);
+  }
+  function bucketStatus(l){
+    const li=linkedStatus(l);
+    if(l.status==='Suppressed'||l.bucket==='suppressed'||l.suppressed) return 'suppressed';
+    if(li==='candidate') return 'linkedin-verify';
+    if(!isRealishPerson(l)) return 'research';
+    if(!bestRoute(l)) {
+      const c=contacts(l), ev=evidence(l);
+      if(ev.length || c.length) return 'contact-needed';
+      return 'research';
+    }
+    if(!evidence(l).length) return 'research';
+    return 'ready';
+  }
+  function sourceOf(l){
+    const blob=[l.source,l.sourceType,l.queue,l.contactPriority,l.bestFirstAction,l.nextAction,l.url,l.sourceUrl,l.title,l.company,l.summary,l.signal,l.notes].join(' ').toLowerCase();
+    if(bucketStatus(l)==='ready') return 'ready';
+    if(bucketStatus(l)==='linkedin-verify') return 'linkedin-verify';
+    if(bucketStatus(l)==='contact-needed') return 'contact-needed';
+    if(bucketStatus(l)==='suppressed') return 'suppressed';
+    if(/npi|npiregistry|provider-view|orthopedic surgery|physician|surgeon|medical/.test(blob)) return 'npi';
+    if(/rss|google news|news\.google|article|public source/.test(blob)) return 'rss';
+    if(/manual/.test(blob)) return 'manual';
+    return 'research';
+  }
+  function score(l){return Number(l.score||0)}
+  function grade(l){const s=score(l); return l.grade||(s>=82?'A':s>=68?'B':s>=52?'C':'D')}
+  function currentDay(l){return Math.max(1,Math.min(10,Number(l.day||l.workflowDay||String(l.bucket||'day1').replace(/\D/g,'')||1)))}
+  function cadenceFor(l){return CADENCE['day'+currentDay(l)]||CADENCE.day1}
+  function nextActionFor(l){
+    const st=bucketStatus(l), r=bestRoute(l), c=cadenceFor(l);
+    if(st==='ready') return `${c.title}. Best contact route: ${r}. ${c.prior}`;
+    if(st==='linkedin-verify') return 'Open candidate LinkedIn URL manually, confirm or reject the match, then paste profile snapshot to enrich CRM. Once confirmed, move to Ready to Work.';
+    if(st==='contact-needed') return 'Find a reliable email, confirmed LinkedIn URL, or reliable phone tied to source evidence before moving to Ready to Work.';
+    if(st==='research') return 'Confirm real person, role/company, fit, and source evidence before outreach.';
+    if(st==='suppressed') return 'Do not work unless reactivated manually.';
+    return c.title;
+  }
+  function key(l){return clean([l.name,l.company,l.title,l.sourceUrl||l.url,l.id].join('|')).toLowerCase()}
+  function normalizeLead(l,i){
+    const st=bucketStatus(l), day=currentDay(l), route=bestRoute(l), sc=score(l)||60;
+    const bucket = st==='ready' ? ('day'+day) : st;
+    return Object.assign({},l,{
+      id:l.id||('lead_'+Date.now()+'_'+i+'_'+Math.random().toString(16).slice(2)),
+      bucket,
+      status: st==='ready' ? (l.status||'Ready to Work') : st==='linkedin-verify' ? 'LinkedIn Verify' : st==='contact-needed' ? 'Contact Route Needed' : st==='suppressed' ? 'Suppressed' : 'Research Needed',
+      day: st==='ready' ? day : 0,
+      workflowDay: st==='ready' ? day : 0,
+      queue: st==='ready' ? 'Ready to Work' : st==='linkedin-verify' ? 'LinkedIn Verify' : st==='contact-needed' ? 'Contact Route Needed' : st==='suppressed' ? 'Suppressed' : 'Research Needed',
+      contactPriority: route || (st==='linkedin-verify'?'LinkedIn Candidate':'Research'),
+      bestContactRoute: route || '',
+      bestFirstAction: nextActionFor(l),
+      nextAction: nextActionFor(l),
+      grade: grade(l),
+      score: sc,
+      cadenceTitle: st==='ready' ? cadenceFor(l).title : '',
+      cadence: st==='ready' ? cadenceFor(l) : null,
+      updatedAt:l.updatedAt||now()
+    });
+  }
+  function collect(){
+    const s=store(), raw=[];
+    [s.leadWorkflow,s.leads,s.radarLeads,s.leadFactory.leads,s.leadFactory.research].forEach(a=>(Array.isArray(a)?a:[]).forEach(x=>x&&raw.push(x)));
+    const map=new Map();
+    raw.map(normalizeLead).forEach(l=>{
+      const k=key(l); if(!k) return;
+      if(!map.has(k)||score(map.get(k))<score(l)) map.set(k,l);
+    });
+    return [...map.values()];
+  }
+  function sortLeads(list){
+    const order={ready:1,'linkedin-verify':2,'contact-needed':3,research:4,npi:5,rss:6,manual:7,suppressed:8};
+    return (list||[]).slice().sort((a,b)=>{
+      const f=window.BASIN_LEAD_SOURCE_FILTER;
+      if(f==='ready') {
+        const rg = (bestRoute(a)==='Email'?1:bestRoute(a)==='LinkedIn'?2:bestRoute(a)==='Phone'?3:4) - (bestRoute(b)==='Email'?1:bestRoute(b)==='LinkedIn'?2:bestRoute(b)==='Phone'?3:4);
+        if(rg) return rg;
+      }
+      if(f==='all') {
+        const og=(order[sourceOf(a)]||9)-(order[sourceOf(b)]||9);
+        if(og) return og;
+      }
+      const sg=score(b)-score(a); if(sg) return sg;
+      return clean(a.name).localeCompare(clean(b.name));
+    });
+  }
+  function filterMatch(l,f){
+    const s=sourceOf(l);
+    if(f==='all') return true;
+    if(f==='a') return grade(l)==='A';
+    if(f==='ready') return s==='ready';
+    if(f==='email') return s==='ready' && bestRoute(l)==='Email';
+    if(f==='linkedin') return s==='ready' && bestRoute(l)==='LinkedIn';
+    if(f==='phone') return s==='ready' && bestRoute(l)==='Phone';
+    return s===f;
+  }
+  function counts(list){
+    const c={all:list.length,ready:0,email:0,linkedin:0,phone:0,a:0,'linkedin-verify':0,'contact-needed':0,research:0,npi:0,rss:0,manual:0,suppressed:0};
+    list.forEach(l=>{
+      const s=sourceOf(l); c[s]=(c[s]||0)+1;
+      if(s==='ready') {
+        c.ready++;
+        if(bestRoute(l)==='Email') c.email++;
+        if(bestRoute(l)==='LinkedIn') c.linkedin++;
+        if(bestRoute(l)==='Phone') c.phone++;
+      }
+      if(grade(l)==='A') c.a++;
+    });
+    return c;
+  }
+  function syncStore(){
+    const s=store(), all=sortLeads(collect());
+    const ready=all.filter(l=>sourceOf(l)==='ready'), prep=all.filter(l=>sourceOf(l)!=='ready');
+    s.leads=ready;
+    s.leadWorkflow=ready.concat(prep);
+    s.radarLeads=all;
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=ready;
+    s.leadFactory.research=prep;
+    s.lastV67CadenceSync=now();
+    save(s);
+    return all;
+  }
+  function tabsHtml(){
+    const all=collect(), c=counts(all);
+    const tabs=[
+      ['ready','Ready to Work'],
+      ['email','Ready: Email'],
+      ['linkedin','Ready: LinkedIn'],
+      ['phone','Ready: Phone'],
+      ['a','A Grade'],
+      ['linkedin-verify','LinkedIn Verify'],
+      ['contact-needed','Contact Route Needed'],
+      ['research','Research Needed'],
+      ['npi','NPI / Physicians'],
+      ['rss','RSS / Public News'],
+      ['manual','Manual'],
+      ['suppressed','Suppressed'],
+      ['all','All Records']
+    ];
+    return '<div id="basin-v67-tabs" class="panel" style="margin-bottom:14px;border:1px solid rgba(216,148,36,.55)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Execution Queue / Source Filters</div>'
+      + '<div class="panel-sub">Ready to Work is the true associate queue. Prep buckets stay separate until research/verification is complete.</div></div></div>'
+      + '<div class="panel-bd"><div class="chips" style="gap:8px;display:flex;flex-wrap:wrap">'
+      + tabs.map(t=>'<button class="chip '+(window.BASIN_LEAD_SOURCE_FILTER===t[0]?'active':'')+'" onclick="BasinV67Cadence.set(\''+esc(t[0])+'\')">'+esc(t[1])+' <span class="badge" style="margin-left:6px">'+(c[t[0]]||0)+'</span></button>').join('')
+      + '</div><div class="mini-note" style="margin-top:10px"><strong>Rule:</strong> Phone is not a verification bucket. If the phone is reliable, the lead is Ready to Work with best route Phone. If it is not reliable, it stays Contact Route Needed or Research Needed.</div></div></div>';
+  }
+  function contactLine(l){
+    const c=contacts(l);
+    if(!c.length) return '<div class="rec-tags" style="margin-top:8px"><span class="tag red">No reliable contact route</span></div>';
+    return '<div class="rec-tags" style="margin-top:8px">'+c.slice(0,5).map(x=>{
+      let val=esc(x.value), label=esc(x.type);
+      if(/email/i.test(x.type)&&isEmail(x.value)) val='<a href="mailto:'+esc(x.value)+'" style="color:#8bd5ff">'+esc(x.value)+'</a>';
+      else if(/phone/i.test(x.type)&&isPhone(x.value)) val='<a href="tel:'+digits(x.value)+'" style="color:#8bd5ff">'+esc(x.value)+'</a>';
+      else if(/^https?:\/\//.test(x.value)) val='<a href="'+esc(x.value)+'" target="_blank" rel="noopener" style="color:#8bd5ff">Open</a>';
+      return '<span class="tag gray">'+label+': '+val+'</span>';
+    }).join('')+'</div>';
+  }
+  function cadenceBlock(l){
+    const c=cadenceFor(l);
+    if(sourceOf(l)!=='ready') return '';
+    return '<div class="mini-note" style="margin-top:8px"><strong>'+esc(c.title)+'</strong><br>'
+      + '<strong>Timing:</strong> '+esc(c.timing)+'<br>'
+      + '<strong>Prior touch:</strong> '+esc(c.prior)+'<br>'
+      + '<strong>Compliance:</strong> '+esc(c.compliance)+'</div>';
+  }
+  function scriptButton(l){
+    if(sourceOf(l)!=='ready') return '';
+    const id=esc(l.id||l.leadId||'');
+    return '<button class="btn btn-ghost btn-sm" onclick="BasinV67Cadence.copyScript(\''+id+'\')">Copy Day Script</button>';
+  }
+  function card(l){
+    const s=sourceOf(l), r=bestRoute(l), id=esc(l.leadId||l.id||''), g=grade(l);
+    const label={ready:'Ready to Work','linkedin-verify':'LinkedIn Verify','contact-needed':'Contact Route Needed',research:'Research Needed',npi:'NPI / Physicians',rss:'RSS / Public',manual:'Manual',suppressed:'Suppressed'}[s]||s;
+    const verify=s==='linkedin-verify'?'<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory&&BasinLeadFactory.openLead?BasinLeadFactory.openLead(\''+id+'\'):void(0)">Verify LinkedIn</button>':'';
+    const full=window.BasinLeadFactory?'<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory.openLead(\''+id+'\')">Open Full Lead Card</button>':'';
+    return '<div class="record" data-v67-source="'+esc(s)+'" data-v67-score="'+score(l)+'" style="grid-template-columns:46px 1fr auto">'
+      + '<div class="score '+esc(g)+'">'+esc(g)+'</div>'
+      + '<div><div class="rec-name">'+esc(l.name||'Unnamed Lead')+'</div>'
+      + '<div class="rec-meta">'+esc([l.title,l.company,'Score '+score(l),r?'Best Route: '+r:''].filter(Boolean).join(' · '))+'</div>'
+      + '<div class="rec-tags"><span class="tag gold">'+esc((l.bucket||'').toUpperCase())+'</span><span class="tag teal">'+esc(label)+'</span><span class="tag gray">'+esc(l.updatedAt||'')+'</span></div>'
+      + contactLine(l)
+      + '<div class="mini-note" style="margin-top:8px"><strong>Next:</strong> '+esc(l.nextAction||l.bestFirstAction||nextActionFor(l))+'</div>'
+      + cadenceBlock(l)+'</div>'
+      + '<div class="rec-actions" style="max-width:380px;flex-wrap:wrap">'+verify+full+scriptButton(l)
+      + (sourceOf(l)==='ready'?'<button class="btn btn-primary btn-sm" onclick="BasinV67Cadence.advance(\''+id+'\')">Complete / Next Day</button>':'')
+      + '<button class="btn btn-ghost btn-sm" onclick="BasinV67Cadence.setBucket(\''+id+'\',\'callback\')">Callback</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="BasinV67Cadence.setBucket(\''+id+'\',\'future\')">Future</button>'
+      + '<button class="btn btn-danger btn-sm" onclick="BasinV67Cadence.setBucket(\''+id+'\',\'suppressed\')">Suppress</button>'
+      + '</div></div>';
+  }
+  function render(){
+    const page=[...$$('.page')].find(p=>/Leads Workflow/i.test(p.textContent||'') && p.classList.contains('active')) || document;
+    $('#basin-v66-source-tabs')?.remove(); $('#basin-v66-filter-results')?.remove();
+    $('#basin-v67-tabs')?.remove(); $('#basin-v67-results')?.remove();
+    const anchor=$('.grid3,.stats-grid,.kpi-grid',page) || $('.info,.notice,.panel',page);
+    if(!anchor) return;
+    const all=syncStore();
+    anchor.insertAdjacentHTML('afterend',tabsHtml());
+    const visible=sortLeads(all.filter(l=>filterMatch(l,window.BASIN_LEAD_SOURCE_FILTER)));
+    const titleMap={ready:'Ready to Work',email:'Ready to Work — Email',linkedin:'Ready to Work — LinkedIn',phone:'Ready to Work — Phone',a:'A Grade',all:'All Records','linkedin-verify':'LinkedIn Verify','contact-needed':'Contact Route Needed',research:'Research Needed',npi:'NPI / Physicians',rss:'RSS / Public News',manual:'Manual',suppressed:'Suppressed'};
+    const html='<div id="basin-v67-results" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)">'
+      + '<div class="panel-hd"><div><div class="panel-title">'+esc(titleMap[window.BASIN_LEAD_SOURCE_FILTER]||'Filtered Leads')+'</div>'
+      + '<div class="panel-sub">'+visible.length+' records · sorted highest score first</div></div></div>'
+      + '<div class="panel-bd">'+(visible.length?visible.map(card).join(''):'<div class="empty"><div class="empty-title">No records in this queue.</div></div>')+'</div></div>';
+    $('#basin-v67-tabs').insertAdjacentHTML('afterend',html);
+    // Hide legacy day panels to avoid conflicting old wording.
+    $$('.panel',page).forEach(p=>{
+      if(p.id==='basin-v67-tabs'||p.id==='basin-v67-results') return;
+      if(/Day \d+|Callbacks|Long-Term Future|Not Interested/i.test(p.textContent||'')) p.style.display='none';
+    });
+  }
+  function set(filter){window.BASIN_LEAD_SOURCE_FILTER=filter||'ready'; render();}
+  function find(id){return collect().find(l=>l.id===id||l.leadId===id)}
+  function copyScript(id){
+    const l=find(id); if(!l) return;
+    const c=cadenceFor(l), signal=l.signal||l.summary||'[Signal]', role=l.title||'[Role]';
+    const text=c.script.replaceAll('[Name]',l.name||'[Name]').replaceAll('[Signal]',signal).replaceAll('[Role]',role);
+    navigator.clipboard?.writeText(text).then(()=>alert('Day script copied')).catch(()=>prompt('Copy script',text));
+  }
+  function advance(id){
+    const s=store();
+    const update=(l)=>{
+      if(l.id===id||l.leadId===id){
+        const d=Math.min(10,currentDay(l)+1);
+        l.day=d; l.workflowDay=d; l.bucket='day'+d; l.status='Ready to Work'; l.nextAction=(CADENCE['day'+d]||CADENCE.day10).title; l.updatedAt=now();
+      }
+      return l;
+    };
+    ['leadWorkflow','leads','radarLeads'].forEach(k=>{s[k]=(s[k]||[]).map(update)});
+    if(s.leadFactory){s.leadFactory.leads=(s.leadFactory.leads||[]).map(update);s.leadFactory.research=(s.leadFactory.research||[]).map(update)}
+    save(s); render();
+  }
+  function setBucket(id,bucket){
+    const s=store();
+    const update=(l)=>{ if(l.id===id||l.leadId===id){l.bucket=bucket;l.status=bucket==='suppressed'?'Suppressed':bucket;l.updatedAt=now();} return l; };
+    ['leadWorkflow','leads','radarLeads'].forEach(k=>{s[k]=(s[k]||[]).map(update)});
+    save(s); render();
+  }
+  function patchExisting(){
+    // Remove old wording if any old renderer still shows underneath before hidden.
+    $$('*').forEach(el=>{
+      if(el.childNodes.length===1 && el.childNodes[0].nodeType===3 && /Call First \/ Verify|Phone \/ Call Verify|Phone Verify/i.test(el.textContent||'')){
+        el.textContent=el.textContent.replace(/Call First \/ Verify/gi,'Ready to Work').replace(/Phone \/ Call Verify/gi,'Ready: Phone').replace(/Phone Verify/gi,'Contact Route Needed');
+      }
+    });
+  }
+  window.BasinV67Cadence={set,render,copyScript,advance,setBucket,cadence:CADENCE};
+
+  function boot(){
+    patchExisting();
+    render();
+    const mo=new MutationObserver(()=>{clearTimeout(window.__basinV67Timer);window.__basinV67Timer=setTimeout(()=>{patchExisting();render();},350)});
+    mo.observe(document.body,{childList:true,subtree:true});
+    setTimeout(render,800); setTimeout(render,2500); setTimeout(render,6000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();

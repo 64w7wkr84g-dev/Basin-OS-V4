@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Basin OS V6.5 Lead Factory Automation Runner
+ * Basin OS V6.7 Lead Factory Automation Runner
  *
  * Safe design:
  * - No LinkedIn/Sales Navigator scraping.
@@ -96,7 +96,7 @@ function queueFor(contacts){
   if(contacts.some(c=>/email/i.test(c.type)&&isEmail(c.value))) return {queue:'Email First',first:'Day 1: send reviewed email first, then log outcome/disposition.'};
   if(contacts.some(c=>/linkedin/i.test(c.type)&&/linkedin\.com\/in\//i.test(c.value)&&c.verified)) return {queue:'LinkedIn First',first:'Day 1: open verified LinkedIn manually and complete appropriate manual action.'};
   if(hasLinkedInCandidate(contacts)) return {queue:'LinkedIn Verify',first:'Day 1: open candidate LinkedIn URL manually, confirm/reject match, paste snapshot if useful.'};
-  if(contacts.some(c=>/phone/i.test(c.type)&&digits(c.value).length>=10)) return {queue:'Call First / Verify',first:'Day 1: call or verify by phone; ask for correct email/direct contact if needed.'};
+  if(contacts.some(c=>/phone/i.test(c.type)&&digits(c.value).length>=10)) return {queue:'Ready to Work',first:'Day 1: call or verify by phone; ask for correct email/direct contact if needed.'};
   return {queue:'Research Needed',first:'Research: find usable contact method before outreach.'};
 }
 function contactStrength(contacts){
@@ -300,13 +300,13 @@ async function aiEnrich(leads){
   associateReady=dedupe(ai.leads.filter(l=>l.associateReady&&hasContact(l.contactMethods))).slice(0,350);
   const generatedAt=now();
   const statBy=q=>associateReady.filter(l=>l.queue===q).length;
-  const radar={generatedAt,engine:'Basin OS V6.5 Automated Lead Factory + Manual LinkedIn Verification',automationMode:'GitHub Actions first; public sources; public search candidate URLs; Meta Llama first; Groq optional fallback',compliance:{linkedinScraping:false,autoMessaging:false,autoProfileReading:false,candidateUrlsOnly:true,manualConfirmationRequired:true,accreditationProof:'Public data creates accredited-likely proxy only; qualification must be verified compliantly.'},stats:{associateReady:associateReady.length,emailFirst:statBy('Email First'),linkedinFirst:statBy('LinkedIn First'),linkedinVerify:statBy('LinkedIn Verify'),callFirstVerify:statBy('Call First / Verify'),research:research.length,npiCollected:npi.leads.length,rssReady:rss.ready.length,publicSearches:searchCount,aiCalls:ai.calls,aiErrors:ai.errors.length},leads:associateReady,researchCandidates:research,errors:[...npi.rejected.slice(0,50),...ai.errors.slice(0,50)]};
+  const radar={generatedAt,engine:'Basin OS V6.7 Automated Lead Factory + Manual LinkedIn Verification',automationMode:'GitHub Actions first; public sources; public search candidate URLs; Meta Llama first; Groq optional fallback',compliance:{linkedinScraping:false,autoMessaging:false,autoProfileReading:false,candidateUrlsOnly:true,manualConfirmationRequired:true,accreditationProof:'Public data creates accredited-likely proxy only; qualification must be verified compliantly.'},stats:{associateReady:associateReady.length,emailFirst:statBy('Email First'),linkedinFirst:statBy('LinkedIn First'),linkedinVerify:statBy('LinkedIn Verify'),readyPhone:statBy('Ready to Work'),research:research.length,npiCollected:npi.leads.length,rssReady:rss.ready.length,publicSearches:searchCount,aiCalls:ai.calls,aiErrors:ai.errors.length},leads:associateReady,researchCandidates:research,errors:[...npi.rejected.slice(0,50),...ai.errors.slice(0,50)]};
   const researchJson={generatedAt,engine:radar.engine,stats:{total:research.length},candidates:research};
   fs.mkdirSync(out('data'),{recursive:true});
   fs.writeFileSync(out('radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('data/radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
   fs.writeFileSync(out('data/radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
-  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V6.5 created ${associateReady.length} associate-ready leads.`},null,2));
-  console.log(`V6.5 complete: ${associateReady.length} associate-ready, ${research.length} research, ${searchCount} public searches.`);
+  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V6.7 created ${associateReady.length} associate-ready leads.`},null,2));
+  console.log(`V6.7 complete: ${associateReady.length} associate-ready, ${research.length} research, ${searchCount} public searches.`);
 })().catch(e=>{ console.error(e); process.exitCode=1; });
