@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Basin OS V4.3.1 Radar Runner Repair
+ * Basin OS V4.3.4 Radar Runner — Routing + LinkedIn Verify Fallback
  *
  * Fixes:
  * - No silent fake success.
@@ -94,7 +94,7 @@ function hasContact(lead, type) {
     const value = clean(contact.value);
     if (!type) return Boolean(value);
     if (type === "email") return contactType === "email" || /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(value);
-    if (type === "linkedin") return contactType === "linkedin" || /linkedin\.com\/(in|pub)\//i.test(value);
+    if (type === "linkedin") return contactType === "linkedin" || contactType === "linkedin_search" || /linkedin\.com\/(in|pub|search\/results\/people)\//i.test(value);
     if (type === "phone") return contactType === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(value);
     return `${contactType} ${value}`.toLowerCase().includes(String(type).toLowerCase());
   });
@@ -157,6 +157,25 @@ function extractLinkedInUrl(text) {
   if (full) return full[0];
   const partial = value.match(/(?:www\.)?linkedin\.com\/(?:in|pub)\/[A-Za-z0-9%_.\-]+\/?/i);
   return partial ? `https://${partial[0].replace(/^https?:\/\//i, "")}` : "";
+}
+
+
+function buildLinkedInSearchUrl(lead) {
+  const parts = [lead.name, lead.company, lead.title, lead.location]
+    .map(clean)
+    .filter(Boolean);
+  const query = encodeURIComponent(parts.join(" "));
+  return `https://www.linkedin.com/search/results/people/?keywords=${query}`;
+}
+
+function addLinkedInSearchRoute(lead, reason = "Manual LinkedIn verification required.") {
+  if (!lead || !lead.name) return lead;
+  const searchUrl = buildLinkedInSearchUrl(lead);
+  addContact(lead, "linkedin_search", searchUrl, "Generated LinkedIn people-search route");
+  addEvidence(lead, "LinkedIn Search Route", searchUrl, reason);
+  lead.linkedinSearchUrl = searchUrl;
+  lead.hasLinkedInSearchRoute = true;
+  return lead;
 }
 
 function linkedinFromResult(result) {
@@ -440,6 +459,12 @@ async function processSearchResultIntoLead(result, sourceContext = {}) {
   if (phone) addContact(lead, "phone", phone, "Public search");
   addEvidence(lead, sourceContext.source || "Public Search", linkedinUrl || result.url, result.description || result.title || "Public source evidence.");
 
+  // Do not let named public leads disappear just because Brave/Groq did not return a direct profile.
+  // These go into LinkedIn Verify as manual search routes, not Ready for Associate.
+  if (!linkedinUrl && lead.name && lead.isPerson && ["rss", "cpa", "public", "linkedin"].includes(String(sourceType))) {
+    addLinkedInSearchRoute(lead, "Named public signal found. Manually verify LinkedIn/profile before any associate cadence.");
+  }
+
   return lead;
 }
 
@@ -574,7 +599,7 @@ function routeLead(lead) {
   if (skipped) ensureTag(lead, "Skipped");
 
   if (readyForAssociate) lead.bestFirstAction = "Ready for Associate: email + phone + evidence exist. Start Day 1 with email or LinkedIn touch, then call only after review.";
-  else if (linkedinVerify) lead.bestFirstAction = "LinkedIn Verify: open the profile manually, confirm identity, paste bio/contact context, then move to Ready for Associate.";
+  else if (linkedinVerify) lead.bestFirstAction = "LinkedIn Verify: open the LinkedIn/search route manually, confirm identity, paste bio/contact context, then move to Ready for Associate.";
   else if (cpaVerify) lead.bestFirstAction = "CPA Verify: review referral/tax-professional relevance before outreach.";
   else if (research) lead.bestFirstAction = "Research / Enrich: incomplete route. Needs enrichment before associate workflow.";
   else lead.bestFirstAction = "Skipped: no email + phone + LinkedIn/manual verification route.";
@@ -758,6 +783,8 @@ async function fetchNpiSeeds() {
           };
 
           if (phone) addContact(lead, "phone", phone, "NPI Registry");
+          // NPI/MPI is a seed source only. It becomes a LinkedIn Verify route, not a Ready lead.
+          addLinkedInSearchRoute(lead, "NPI/MPI seed record. Verify the actual LinkedIn/profile before any associate cadence.");
           out.push(lead);
         }
       } catch (error) {
@@ -859,7 +886,7 @@ async function main() {
 
   const output = {
     generatedAt: now(),
-    engine: "Basin OS V4.3.1 Runner Repair",
+    engine: "Basin OS V4.3.4 Routing + Playbook Fix",
     compliance: {
       linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave/public search results only.",
       outreach: "No auto-send. Manual review required before every outreach.",
@@ -932,7 +959,7 @@ main().catch(async (error) => {
   console.error(error);
   const fallback = {
     generatedAt: now(),
-    engine: "Basin OS V4.3.1 fatal fallback output",
+    engine: "Basin OS V4.3.4 fatal fallback output",
     fatalError: clean(error.stack || error.message || error),
     stats: {
       totalFound: 0,

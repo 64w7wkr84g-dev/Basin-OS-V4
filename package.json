@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-3-2-live-data-load-fix",
-  "version": "4.3.2",
+  "name": "basin-os-v4-3-4-routing-playbook-callcoach-fix",
+  "version": "4.3.4",
   "private": true,
-  "description": "Basin OS V4.3.2: live GitHub raw radar data loader fix plus V4.3.1 runner repair.",
+  "description": "Basin OS V4.3.4: lead routing fallback, LinkedIn Verify queue, Method B-only master playbook, expanded call coach rebuttals.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

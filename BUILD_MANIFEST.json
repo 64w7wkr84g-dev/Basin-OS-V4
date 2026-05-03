@@ -7,12 +7,12 @@
   {
     "path": ".github/workflows/radar.yml",
     "bytes": 5297,
-    "sha256": "9a31a921c26867d7c4b0eb21ae277c86d843f81d0824cb64e2e7087488adcb0c"
+    "sha256": "b8485f5a4ab6937556499075e78c49ce9308b47187c52174d0b311aa37f3f668"
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 7603,
-    "sha256": "6c09b606cef3e6f3cfb1437f9dcb676f0741578176fc72e6226fe7316819aea3"
+    "bytes": 7760,
+    "sha256": "3a0f84b571e8b2b137eef9d20352f9aa91ae87c14d4b5a70099fc03c366f9df8"
   },
   {
     "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
@@ -38,6 +38,11 @@
     "path": "README_V432_LIVE_DATA_LOAD_FIX.md",
     "bytes": 808,
     "sha256": "61ce3f6e674add2caaa51769278c1035223b7ccc70cf5dbd0e92b4c38fb09ae6"
+  },
+  {
+    "path": "README_V434_ROUTING_PLAYBOOK_CALLCOACH_FIX.md",
+    "bytes": 1907,
+    "sha256": "d8a95db79a726cd299dae24bcd8ef4b77f2eac9718fe8be426f3906d31edc47c"
   },
   {
     "path": "app/analytics/page.tsx",
@@ -141,13 +146,13 @@
   },
   {
     "path": "basin-radar-runner.js",
-    "bytes": 38956,
-    "sha256": "9e19ad32098411a4f015f1a437f70a574467757844f4e757fbe5d48d7aa9608d"
+    "bytes": 40453,
+    "sha256": "fccd686887d807626008b5e89f635c7327341668cace9ec1384d4e3e93dfdb5c"
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 63789,
-    "sha256": "8ed5e3b38738a1b3fa4b752c83e150f5965989ad302ea82b0649de6e60402ff2"
+    "bytes": 80693,
+    "sha256": "fca0e5a0b6722117127f06e5b8e45a9dc5bc66c08a568d5afa2c4bef343fbbbc"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -196,8 +201,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1104,
-    "sha256": "e570c6b3477d67ac295b9590d1e707fa3ad5be84281c54c88151ba1442e72c22"
+    "bytes": 1159,
+    "sha256": "860ef412038469c01812d9c47e8dcd7b1891b25c32961e8485f2885769a5fc04"
   },
   {
     "path": "postcss.config.mjs",
@@ -247,7 +252,7 @@
   {
     "path": "radar.yml",
     "bytes": 5297,
-    "sha256": "9a31a921c26867d7c4b0eb21ae277c86d843f81d0824cb64e2e7087488adcb0c"
+    "sha256": "b8485f5a4ab6937556499075e78c49ce9308b47187c52174d0b311aa37f3f668"
   },
   {
     "path": "tailwind.config.ts",

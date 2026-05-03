@@ -62,32 +62,9 @@ const sourceFilters = [
   ["C", "C Grade"]
 ] as const;
 
-const METHOD_A = {
-  title: "Method A — Warm Evidence-Based Outreach",
-  when: "Use when the lead has a source signal, public event, LinkedIn context, email route, or business trigger.",
-  email: `Subject: Basin Ventures resource for [Signal/Role]
-
-Hi [Name],
-
-I came across [Signal] and thought your background as [Role] may make this worth a quick educational review.
-
-Basin Ventures works with accredited investors on direct, tax-advantaged oil and gas ownership. This is not a recommendation, tax advice, or a guaranteed-return product. The first step would simply be a short director call so you can understand the structure and decide whether it is relevant.
-
-Would it be worth sending a brief overview, or should I close the loop?
-
-Best,
-James`,
-  phone: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
-
-Basin works with accredited investors on direct, tax-advantaged oil and gas ownership. I am not calling to force a decision. The only goal is a short director call so you can understand the structure and decide whether it is even worth reviewing.
-
-Would this week or next week be better?`,
-  linkedin: `Hi [Name] — I came across your background around [Signal/Role]. I work with Basin Ventures in Southlake. We share educational information on direct, tax-advantaged energy ownership for accredited investors. No pitch here; I wanted to see if a short overview would be relevant.`
-};
-
 const METHOD_B = {
-  title: "Method B — Direct Professional Intro",
-  when: "Use only when no warm public signal exists, but the lead is manually approved and has a compliant contact route.",
+  title: "Method B — Basin Educational Intro System",
+  when: "Use for all outreach. Choose the version by lead route: aged 90+ day reactivation, new inbound, or Basin OS generated lead.",
   email: `Subject: Quick educational intro from Basin Ventures
 
 Hi [Name],
@@ -107,6 +84,172 @@ Basin works with accredited investors who want to understand direct energy owner
 The only question is whether a short educational director call would be worth your time. Should I send a brief overview, or is this not relevant?`,
   linkedin: `Hi [Name] — I am with Basin Ventures in Southlake. We share educational material for accredited investors around direct energy ownership and tax-advantaged structures. Would a short overview be relevant, or should I close the loop?`
 };
+
+// Keep old references alive, but Master Playbook no longer renders Method A.
+const METHOD_A = METHOD_B;
+
+const METHOD_B_PLAYBOOK = [
+  {
+    segment: "Aged 90+ Days / Older Inbound Reactivation",
+    when: "Use for older Basin/HubSpot/reactivation leads that are 90+ days old or previously raised a hand but never connected.",
+    email1: `Subject: Closing the loop from Basin Ventures
+
+Hi [Name],
+
+I am reaching back out from Basin Ventures in Southlake. You had previously come through our system around direct energy ownership, and I wanted to close the loop the right way.
+
+A lot can change in 90 days. If tax planning, portfolio diversification, or direct oil and gas ownership is no longer relevant, no problem. If it is still worth understanding, the next step would only be a short educational director call.
+
+This is not tax advice, not a recommendation, and there are no guaranteed returns. Your CPA or advisor would need to confirm whether anything fits.
+
+Should I send a short overview, or should I mark this as no longer relevant?
+
+Best,
+James`,
+    email2: `Subject: Still worth reviewing?
+
+Hi [Name],
+
+Quick follow-up. I do not want to keep chasing you if this is no longer relevant.
+
+Basin Ventures works with accredited investors who want to understand direct, tax-advantaged energy ownership. The director call is strictly educational so you can decide whether it is even worth reviewing with your CPA.
+
+Is this still worth a short look, or should I close the file?
+
+Best,
+James`,
+    linkedin1: `Hi [Name] — James with Basin Ventures in Southlake. You had previously come through our system around direct energy ownership. I wanted to reconnect and see if a short educational overview is still relevant, or if I should close the loop.`,
+    linkedin2: `Hi [Name] — circling back once. If direct energy ownership and tax-advantaged structures are no longer relevant, no problem. If you want the short educational overview, I can point you in the right direction.`,
+    phone1: `Hi [Name], this is James with Basin Ventures in Southlake. I know I may be catching you out of the blue.
+
+You had previously come through our system around direct energy ownership, and I wanted to close the loop. A lot can change in 90 days, so I am not assuming anything.
+
+The only reason for the call is to see whether a short educational director call is still worth your time. This is not tax advice, and there are no guaranteed returns.
+
+Should I send a brief overview, or should I mark this as no longer relevant?`,
+    voicemail: `Hi [Name], this is James with Basin Ventures in Southlake. I was closing the loop from your prior inquiry around direct energy ownership. I am not calling to force anything. If it is still worth understanding, I can send a short overview or schedule a brief educational director call. My number is [Your Number].`,
+    sms: `[Name], James with Basin Ventures. I was closing the loop from your prior inquiry around direct energy ownership. Should I send a short educational overview or mark this no longer relevant?`
+  },
+  {
+    segment: "New Incoming Lead / Fresh Inquiry",
+    when: "Use when the lead recently came in, requested info, downloaded a guide, attended an event, or was introduced recently.",
+    email1: `Subject: Basin Ventures overview
+
+Hi [Name],
+
+Thanks for taking a look at Basin Ventures.
+
+The cleanest next step is usually a short educational director call. The goal is to explain how direct non-operated working interest ownership works, what the tax structure can look like, and what risks need to be considered.
+
+This is not tax advice and not a guaranteed-return product. If anything moves forward, your CPA or advisor should be part of the review.
+
+Would this week or next week be better for a short director call?
+
+Best,
+James`,
+    email2: `Subject: Best next step
+
+Hi [Name],
+
+The reason I am suggesting a director call instead of sending a pile of material is that the structure needs context: direct ownership, risk, tax treatment, timing, and whether it is even suitable.
+
+If it is not relevant, no problem. If it is worth understanding, we can keep it to a short educational conversation.
+
+Would you prefer a quick overview by email first, or should I get you directly to a director?
+
+Best,
+James`,
+    linkedin1: `Hi [Name] — James with Basin Ventures. Since you recently came through our system, I wanted to connect here as well. The next step is usually a short educational overview of direct energy ownership. Worth a quick look?`,
+    linkedin2: `Hi [Name] — quick follow-up. I can send a short overview first or help set up a brief director call so you can understand the structure and decide if it is relevant.`,
+    phone1: `Hi [Name], this is James with Basin Ventures in Southlake. I am following up because you recently came through our system.
+
+The purpose is simple: Basin works with accredited investors who want to understand direct energy ownership and the possible tax-advantaged structure. This is educational only, not tax advice, and there are no guaranteed returns.
+
+Would a short director call this week or next week make sense?`,
+    voicemail: `Hi [Name], James with Basin Ventures in Southlake. I am following up from your recent interest. The next step would only be a short educational director call about direct energy ownership. My number is [Your Number].`,
+    sms: `[Name], James with Basin Ventures. Following up from your recent interest. Would a short educational overview be useful, or should I close the loop?`
+  },
+  {
+    segment: "Basin OS Generated / Public Signal Lead",
+    when: "Use when Basin OS found the lead through RSS, public news, NPI/MPI, CPA directories, LinkedIn route, business event, award, practice growth, or other public signal.",
+    email1: `Subject: Relevant because of [Signal]
+
+Hi [Name],
+
+I came across [Signal] and, based on your background as [Role], thought a short educational intro may be relevant.
+
+Basin Ventures works with accredited investors on direct energy ownership. Some investors review these structures for tax planning and diversification, but nothing should be evaluated without a CPA or advisor.
+
+This is not tax advice, not a recommendation, and there are no guaranteed returns. The only goal would be a short director call so you can understand the structure and decide whether it is worth reviewing.
+
+Would a brief overview be useful, or should I close the loop?
+
+Best,
+James`,
+    email2: `Subject: Quick follow-up on [Signal]
+
+Hi [Name],
+
+I reached out because [Signal] made your profile look potentially relevant for a direct energy ownership conversation.
+
+I do not want to assume fit. The purpose would only be to understand the structure, risks, tax considerations, and whether it is even worth discussing with your CPA or advisor.
+
+Should I send a short overview, or is this not relevant?
+
+Best,
+James`,
+    linkedin1: `Hi [Name] — I came across [Signal] and thought your background as [Role] may make a short educational Basin Ventures overview relevant. No pressure and no assumptions of fit. Worth a quick look?`,
+    linkedin2: `Hi [Name] — circling back once. The conversation would only be educational: direct energy ownership, risk profile, tax structure, and whether it is worth reviewing with your CPA. Should I send a brief overview?`,
+    phone1: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
+
+Basin works with accredited investors on direct, tax-advantaged oil and gas ownership. I am not calling to force a decision. The only goal is a short director call so you can understand the structure and decide whether it is even worth reviewing.
+
+Would this week or next week be better?`,
+    voicemail: `Hi [Name], James with Basin Ventures in Southlake. I came across [Signal] and thought a short educational overview might be relevant given your background. No pressure. My number is [Your Number].`,
+    sms: `[Name], James with Basin Ventures. I came across [Signal] and thought a short educational overview might be relevant. Should I send details or close the loop?`
+  },
+  {
+    segment: "CPA / Tax Advisor Referral Route",
+    when: "Use for CPAs, tax advisors, accounting firm partners, and professional referral sources. This is not the same as investor outreach.",
+    email1: `Subject: Educational resource for clients reviewing direct energy ownership
+
+Hi [Name],
+
+I am with Basin Ventures in Southlake. We work with accredited investors who want to understand direct non-operated working interest ownership, including the risk profile and tax treatment that their CPA or advisor would need to evaluate.
+
+I am reaching out because your background in tax/advisory work may make this useful as an educational reference for the right client situation.
+
+This is not tax advice, and we never want a client moving forward without their advisor involved.
+
+Would it be useful to send a short CPA-facing overview?
+
+Best,
+James`,
+    email2: `Subject: CPA-facing overview
+
+Hi [Name],
+
+Quick follow-up. I am not asking you to endorse anything.
+
+The goal is simply to provide an educational overview of how Basin structures direct energy ownership opportunities, what questions advisors typically ask, and where risk/tax review belongs.
+
+Would you like the CPA-facing overview, or should I close the loop?
+
+Best,
+James`,
+    linkedin1: `Hi [Name] — James with Basin Ventures. We work with accredited investors reviewing direct energy ownership. Since you are in the tax/advisory world, I wanted to see if a CPA-facing educational overview would be useful.`,
+    linkedin2: `Hi [Name] — quick follow-up. Not asking for endorsement. I can send a short CPA-facing overview explaining structure, risk, and where advisor review fits.`,
+    phone1: `Hi [Name], this is James with Basin Ventures in Southlake. I know we have not spoken before.
+
+The reason I reached out is that Basin works with accredited investors reviewing direct energy ownership, and CPAs are often involved before anything moves forward.
+
+I am not asking you to endorse anything. I simply wanted to see whether a CPA-facing educational overview would be useful for the right client situation.
+
+Should I send that over, or is this not relevant?`,
+    voicemail: `Hi [Name], James with Basin Ventures. I wanted to see whether a CPA-facing educational overview on direct energy ownership would be useful. This is not a request for endorsement. My number is [Your Number].`,
+    sms: `[Name], James with Basin Ventures. Would a CPA-facing overview on direct energy ownership and advisor review be useful, or should I close the loop?`
+  }
+];
 
 const CADENCE = [
   {
@@ -168,7 +311,22 @@ const REBUTTALS = [
   ["Send me information", "Absolutely. I can send a short overview. To make sure I send the right version, is this more for tax planning, diversification, or general education?"],
   ["Talk to my CPA", "That is exactly what should happen. The director call is educational, and your CPA would need to confirm fit before anything moves forward."],
   ["Is this risky?", "All investments carry risk, and there are no guaranteed returns. The call is to understand the structure, risk profile, and whether it is even worth reviewing."],
-  ["What is the minimum?", "The typical minimum can vary by fund window. The director can explain structure, risk, and suitability. Nothing should move forward unless it makes sense after review."]
+  ["What is the minimum?", "The typical minimum can vary by fund window. The director can explain structure, risk, and suitability. Nothing should move forward unless it makes sense after review."],
+  ["I am too busy", "I understand. That is why the first step is short. Would it be easier if I sent a brief overview and then you can decide whether a director call is worth it?"],
+  ["Where did you get my information?", "I came across public professional/business information and wanted to make a clean educational introduction. If you prefer not to be contacted, I can mark that immediately."],
+  ["Is this a tax shelter?", "No. I would not frame it that way. The correct way to look at it is direct energy ownership with tax treatment that your CPA would need to review. The director can explain the structure and risks."],
+  ["Are returns guaranteed?", "No. There are no guaranteed returns. The purpose of the director call is to understand the structure, risks, economics, and whether it is even suitable to review further."],
+  ["I do not invest in oil and gas", "That may be the right answer. The only reason to take the call would be to understand how Basin structures direct ownership and then decide if it is irrelevant."],
+  ["I already have a financial advisor", "That is good. Your advisor should be involved before anything moves forward. The director call is simply educational so you know whether there is even something to discuss with them."],
+  ["I do not want another sales pitch", "Completely fair. I am not trying to force a decision. The ask is only whether a short educational overview is worth your time. If not, I will close the loop."],
+  ["How much can I write off?", "That depends on structure, timing, and your tax situation. I cannot give tax advice. The director can explain the general structure, and your CPA would need to confirm anything specific."],
+  ["I need guaranteed income", "Then this may not be a fit. Direct energy ownership carries risk and does not guarantee income. If you still want to understand the structure, we can keep it educational."],
+  ["I have had a bad oil and gas experience", "That is exactly why the first call should be educational. You can compare structure, risk controls, operator selection, and decide whether Basin is even worth reviewing."],
+  ["Call me next quarter", "No problem. I can set a follow-up for next quarter. Before I do, is there anything specific I should send so the next conversation is useful?"],
+  ["Remove me", "Understood. I will mark you as do-not-contact. You will not hear from me again on this."],
+  ["I am not accredited", "Understood. Then this likely is not appropriate. I can mark the file accordingly."],
+  ["How did you know this could fit me?", "I do not know that it fits. I only saw a public professional/business context that made an educational intro potentially relevant. Fit has to be confirmed later, especially with your CPA/advisor."],
+  ["Why Basin?", "Basin focuses on direct energy ownership and has a director-led education process. The point of the call is to understand structure, risks, and whether it deserves further review."]
 ];
 
 const DISPOSITIONS = [
@@ -468,7 +626,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.2 Live Data</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.4 Routing + Playbook</div>
         </aside>
 
         <main className="min-w-0">
@@ -736,13 +894,41 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
 
   function renderSequenceBuilder() {
     const lead = filteredLeads[0];
+    const sequenceScripts = METHOD_B_PLAYBOOK.flatMap((group) => [
+      [`${group.segment} — Email 1`, group.email1],
+      [`${group.segment} — Email 2`, group.email2],
+      [`${group.segment} — LinkedIn 1`, group.linkedin1],
+      [`${group.segment} — LinkedIn 2`, group.linkedin2],
+      [`${group.segment} — Phone`, group.phone1],
+      [`${group.segment} — Voicemail`, group.voicemail],
+      [`${group.segment} — SMS`, group.sms]
+    ]);
+
     return (
       <div className="space-y-5">
         <Card>
-          <CardHeader><div><CardTitle>7-Channel Sequence Builder</CardTitle><CardDescription>Phone, voicemail, email, LinkedIn, SMS, Loom, nurture. Manual send only.</CardDescription></div></CardHeader>
+          <CardHeader>
+            <div>
+              <CardTitle>7-Channel Sequence Builder</CardTitle>
+              <CardDescription>Method B only. Manual send only. Pick by route: aged 90+, new incoming, Basin OS generated, or CPA referral.</CardDescription>
+            </div>
+          </CardHeader>
           <CardContent className="grid gap-4 xl:grid-cols-2">
-            {["Day 1 Email", "Day 1 LinkedIn", "Day 2 Call", "Day 4 Credibility", "Day 6 Final Call", "Day 10 Permission", "Long-Term Nurture"].map((title, i) => (
-              <ScriptBlock key={title} title={title} body={interpolate(i < 2 ? METHOD_A.email : CADENCE[Math.min(i-2, CADENCE.length-1)].script, lead)} />
+            {sequenceScripts.map(([title, body]) => (
+              <ScriptBlock key={title} title={title} body={interpolate(String(body), lead)} />
+            ))}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <div>
+              <CardTitle>Day 1 through Day 10 Phone Cadence</CardTitle>
+              <CardDescription>Phone touches only after the proper email/LinkedIn/manual review step.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-4 xl:grid-cols-2">
+            {CADENCE.map((step) => (
+              <ScriptBlock key={step.day} title={`Day ${step.day} — ${step.title}`} body={interpolate(`Trigger:\n${step.trigger}\n\nPrior Touch:\n${step.prior}\n\nNext Step:\n${step.next}\n\nScript:\n${step.script}`, lead)} />
             ))}
           </CardContent>
         </Card>
@@ -757,12 +943,20 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
           <CardHeader>
             <div>
               <CardTitle>Call Coach</CardTitle>
-              <CardDescription>Use this while live on a call. Full scripts stay in Master Playbook and 7-Channel Sequence.</CardDescription>
+              <CardDescription>Live-call help only: openers, control phrases, compliance, objection pivots, and close paths. Full email/LinkedIn scripts are in Master Playbook.</CardDescription>
             </div>
           </CardHeader>
           <CardContent className="grid gap-4 xl:grid-cols-2">
-            <ScriptBlock title="Opening Discipline" body={`Do not over-explain.\n\n1. State who you are.\n2. Reference the signal.\n3. Ask for 30 seconds.\n4. Keep the goal educational.\n5. Move toward director call only if there is interest.`} />
-            <ScriptBlock title="Compliance Guardrails" body={`Never say or imply:\n- guaranteed return\n- SEC registered\n- tax advice\n- accredited unless confirmed\n- no risk\n\nAlways frame as educational and optional. CPA/advisor review is appropriate.`} />
+            <ScriptBlock title="Opening Discipline" body={`Do not over-explain.\n\n1. State who you are.\n2. Reference the reason for the call.\n3. Ask for 30 seconds.\n4. Keep the goal educational.\n5. Move toward a director call only if there is interest.\n\nBad: I wanted to tell you all about our fund.\nGood: I wanted to see if a short educational overview is worth your time.`} />
+            <ScriptBlock title="Compliance Guardrails" body={`Never say or imply:\n- guaranteed return\n- SEC registered\n- tax advice\n- accredited unless confirmed\n- no risk\n- you need this because of your income\n- this will solve your taxes\n\nAlways say:\n- educational only\n- your CPA/advisor should review\n- no guarantee\n- risk exists\n- suitability must be confirmed`} />
+            <ScriptBlock title="30-Second Control Path" body={`If they answer, control the first 30 seconds:\n\n"Hi [Name], James with Basin Ventures in Southlake. I know this is out of the blue. I reached out because [Signal/Reason]. I am not calling to force a decision. The only question is whether a short educational overview is worth your time. Do you have 30 seconds?"\n\nThen stop talking.`} />
+            <ScriptBlock title="Bridge to Director Call" body={`Use when they show even mild interest:\n\n"The cleanest next step is not for me to overload you. A director can explain the structure, risk profile, and where CPA review fits in about 20 minutes. Then you can decide whether it deserves a second look. Would this week or next week be better?"`} />
+            <ScriptBlock title="Do Not Chase Path" body={`Use when they sound guarded:\n\n"Fair. I do not want to chase you. Would it be better if I send a short overview and you decide if a director call is worth it, or should I close the loop?"`} />
+            <ScriptBlock title="CPA Safety Path" body={`Use whenever taxes come up:\n\n"Your CPA needs to confirm anything specific. I can explain the general structure and the questions CPAs usually ask, but I cannot give tax advice."`} />
+            <ScriptBlock title="Risk Safety Path" body={`Use whenever risk or returns come up:\n\n"There is risk, and there are no guaranteed returns. The reason for the director call is to understand the structure, risks, economics, and whether it is even suitable to review."`} />
+            <ScriptBlock title="Aged Lead Reframe" body={`"A lot can change in 90 days, so I am not assuming this is still relevant. I am simply closing the loop. Should I send a short educational overview, or mark this as no longer relevant?"`} />
+            <ScriptBlock title="Basin OS Public Signal Reframe" body={`"I do not know that this fits. I only saw a public professional/business context that made an educational intro potentially relevant. Fit would have to be confirmed later."`} />
+            <ScriptBlock title="CPA Referral Reframe" body={`"I am not asking you to endorse anything. The question is whether a CPA-facing educational overview would be useful for the right client situation."`} />
             {REBUTTALS.map(([objection, response]) => <ScriptBlock key={objection} title={`Objection: ${objection}`} body={response} />)}
           </CardContent>
         </Card>
@@ -821,14 +1015,38 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
   function renderPlaybook() {
     return (
       <div className="space-y-5">
-        <PlaybookSection title={METHOD_A.title} subtitle={METHOD_A.when} scripts={[["Email", METHOD_A.email], ["Phone", METHOD_A.phone], ["LinkedIn", METHOD_A.linkedin]]} />
-        <PlaybookSection title={METHOD_B.title} subtitle={METHOD_B.when} scripts={[["Email", METHOD_B.email], ["Phone", METHOD_B.phone], ["LinkedIn", METHOD_B.linkedin]]} />
+        <Card>
+          <CardHeader>
+            <div>
+              <CardTitle>Master Playbook — Method B Only</CardTitle>
+              <CardDescription>Option A removed. This is the full Method B library for aged 90+ leads, new incoming leads, Basin OS generated leads, and CPA/referral leads.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {METHOD_B_PLAYBOOK.map((group) => (
+              <div key={group.segment} className="rounded-3xl border border-white/10 bg-[#0c141d] p-4">
+                <div className="mb-2 text-lg font-black text-basin-text">{group.segment}</div>
+                <div className="mb-4 text-sm text-basin-muted">{group.when}</div>
+                <div className="grid gap-4 xl:grid-cols-2">
+                  <ScriptBlock title="Email 1" body={group.email1} />
+                  <ScriptBlock title="Email 2" body={group.email2} />
+                  <ScriptBlock title="LinkedIn 1" body={group.linkedin1} />
+                  <ScriptBlock title="LinkedIn 2" body={group.linkedin2} />
+                  <ScriptBlock title="Phone Script" body={group.phone1} />
+                  <ScriptBlock title="Voicemail" body={group.voicemail} />
+                  <ScriptBlock title="SMS / Text" body={group.sms} />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader><div><CardTitle>Day 1 through Day 10 Cadence</CardTitle><CardDescription>Phone cadence tied to required prior touches and compliance.</CardDescription></div></CardHeader>
-          <CardContent className="grid gap-4 xl:grid-cols-2">{CADENCE.map((step) => <ScriptBlock key={step.day} title={`Day ${step.day} — ${step.title}`} body={`Timing / Trigger:\\n${step.trigger}\\n\\nPrior Touch Required:\\n${step.prior}\\n\\nNext Step:\\n${step.next}\\n\\nScript:\\n${step.script}`} />)}</CardContent>
+          <CardContent className="grid gap-4 xl:grid-cols-2">{CADENCE.map((step) => <ScriptBlock key={step.day} title={`Day ${step.day} — ${step.title}`} body={`Timing / Trigger:\n${step.trigger}\n\nPrior Touch Required:\n${step.prior}\n\nNext Step:\n${step.next}\n\nScript:\n${step.script}`} />)}</CardContent>
         </Card>
         <Card>
-          <CardHeader><div><CardTitle>Rebuttals</CardTitle><CardDescription>Keep the conversation optional, educational, and compliant.</CardDescription></div></CardHeader>
+          <CardHeader><div><CardTitle>Rebuttals</CardTitle><CardDescription>Keep the conversation optional, educational, and compliant. Live-use version also appears in Call Coach.</CardDescription></div></CardHeader>
           <CardContent className="grid gap-4 xl:grid-cols-2">{REBUTTALS.map(([o, r]) => <ScriptBlock key={o} title={o} body={r} />)}</CardContent>
         </Card>
       </div>
