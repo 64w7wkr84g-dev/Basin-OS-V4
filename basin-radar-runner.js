@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Basin OS V4.3.4 Radar Runner — Routing + LinkedIn Verify Fallback
+ * Basin OS V4.3.5 Radar Runner — Enrichment Ladder
  *
  * Fixes:
  * - No silent fake success.
@@ -93,7 +93,7 @@ function hasContact(lead, type) {
     const contactType = clean(contact.type).toLowerCase();
     const value = clean(contact.value);
     if (!type) return Boolean(value);
-    if (type === "email") return contactType === "email" || /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(value);
+    if (type === "email") return contactType === "email" || (contactType !== "possible_email" && /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(value));
     if (type === "linkedin") return contactType === "linkedin" || contactType === "linkedin_search" || /linkedin\.com\/(in|pub|search\/results\/people)\//i.test(value);
     if (type === "phone") return contactType === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(value);
     return `${contactType} ${value}`.toLowerCase().includes(String(type).toLowerCase());
@@ -176,6 +176,110 @@ function addLinkedInSearchRoute(lead, reason = "Manual LinkedIn verification req
   lead.linkedinSearchUrl = searchUrl;
   lead.hasLinkedInSearchRoute = true;
   return lead;
+}
+
+
+function hasVerifiedEmail(lead) {
+  return (lead.contactMethods || []).some((contact) => {
+    const type = clean(contact.type).toLowerCase();
+    const value = clean(contact.value);
+    return type === "email" && /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(value);
+  });
+}
+
+function hasDirectLinkedInProfile(lead) {
+  return (lead.contactMethods || []).some((contact) => {
+    const type = clean(contact.type).toLowerCase();
+    const value = clean(contact.value);
+    return type === "linkedin" && /linkedin\.com\/(in|pub)\//i.test(value);
+  });
+}
+
+function hasLinkedInSearchOnly(lead) {
+  return (lead.contactMethods || []).some((contact) => {
+    const type = clean(contact.type).toLowerCase();
+    const value = clean(contact.value);
+    return type === "linkedin_search" || /linkedin\.com\/search\/results\/people/i.test(value);
+  }) && !hasDirectLinkedInProfile(lead);
+}
+
+function extractDomain(rawUrl) {
+  try {
+    const url = new URL(normalizeUrl(rawUrl));
+    const host = url.hostname.replace(/^www\./i, "").toLowerCase();
+    if (!host || /google|linkedin|facebook|twitter|x\.com|instagram|youtube|bloomberg|reuters|yahoo|bing|news/i.test(host)) return "";
+    return host;
+  } catch {
+    return "";
+  }
+}
+
+function addPossibleEmailFromDomain(lead, domain, source = "Email pattern guess") {
+  if (!domain || !lead.name || hasVerifiedEmail(lead)) return;
+  const parts = clean(lead.name).toLowerCase().replace(/[^a-z\s-]/g, "").split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return;
+  const first = parts[0];
+  const last = parts[parts.length - 1];
+  const guesses = [`${first}.${last}@${domain}`, `${first}@${domain}`, `${first[0]}${last}@${domain}`];
+  lead.possibleEmails ||= [];
+  for (const email of guesses) {
+    if (!lead.possibleEmails.includes(email)) lead.possibleEmails.push(email);
+    addContact(lead, "possible_email", email, source);
+  }
+}
+
+async function fetchPageText(url) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6500);
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: { "User-Agent": "Mozilla/5.0 BasinOS/4.3.5", "Accept": "text/html, text/plain;q=0.9,*/*;q=0.8" }
+    });
+    clearTimeout(timer);
+    if (!response.ok) return "";
+    const contentType = response.headers.get("content-type") || "";
+    if (!/text|html|json/i.test(contentType)) return "";
+    return clean((await response.text()).slice(0, 85000));
+  } catch {
+    return "";
+  }
+}
+
+async function enrichFromWebsiteContactPages(lead, baseUrl) {
+  const domain = extractDomain(baseUrl);
+  if (!domain) return lead;
+
+  addContact(lead, "company_website", `https://${domain}`, "Public website");
+  addEvidence(lead, "Company / practice website", `https://${domain}`, "Public company/practice domain found during enrichment.");
+  addPossibleEmailFromDomain(lead, domain, "Possible email from public domain pattern");
+
+  const paths = ["/", "/contact", "/about", "/team", "/our-team", "/providers", "/physicians", "/attorneys", "/leadership", "/people"];
+  let checked = 0;
+
+  for (const suffix of paths) {
+    if (checked >= 4 || (hasVerifiedEmail(lead) && hasContact(lead, "phone"))) break;
+    checked += 1;
+    const pageUrl = `https://${domain}${suffix}`;
+    const text = await fetchPageText(pageUrl);
+    if (!text) continue;
+
+    const email = extractEmail(text);
+    const phone = extractPhone(text);
+    if (email) addContact(lead, "email", email, `Public website ${suffix}`);
+    if (phone) addContact(lead, "phone", phone, `Public website ${suffix}`);
+    if (email || phone) addEvidence(lead, `Website ${suffix}`, pageUrl, "Public contact route found on company/practice site.");
+  }
+
+  return lead;
+}
+
+function setReadyChannel(lead, email, phone, directLinkedIn, isCPA) {
+  if (isCPA && email) return "CPA Referral";
+  if (email && phone) return "Phone + Email";
+  if (email) return "Email First";
+  if (directLinkedIn) return "LinkedIn First";
+  return "Manual Review";
 }
 
 function linkedinFromResult(result) {
@@ -556,11 +660,14 @@ function routeLead(lead) {
   const isPerson = isNamedPerson(lead);
   const isCPA = lead.isCPA === true;
   const score = Math.max(0, Math.min(100, Number(lead.score || 0)));
-  const email = hasContact(lead, "email");
+  const email = hasVerifiedEmail(lead);
   const phone = hasContact(lead, "phone");
-  const linkedIn = hasContact(lead, "linkedin");
+  const directLinkedIn = hasDirectLinkedInProfile(lead) || lead.linkedinVerified === true;
+  const linkedInSearchOnly = hasLinkedInSearchOnly(lead);
+  const linkedInAny = directLinkedIn || linkedInSearchOnly || hasContact(lead, "linkedin");
   const evidenceN = evidenceCount(lead);
-  const npiOnly = /npi|mpi/i.test(`${lead.sourceType || ""} ${lead.source || ""}`) && !linkedIn && !email && evidenceN <= 1;
+  const npiSeed = /npi|mpi/i.test(`${lead.sourceType || ""} ${lead.source || ""}`);
+  const npiOnly = npiSeed && !directLinkedIn && !email && evidenceN <= 2;
 
   lead.score = score;
   lead.grade = gradeFromScore(score);
@@ -570,14 +677,16 @@ function routeLead(lead) {
   ensureTag(lead, `${lead.grade} Grade`);
   addSourceTags(lead);
 
-  const readyForAssociate = Boolean(isPerson && email && phone && evidenceN >= 1 && score >= 58);
-  const linkedinVerify = Boolean(isPerson && !readyForAssociate && linkedIn);
+  const enoughContext = Boolean(isPerson && evidenceN >= 1 && score >= 58);
+  const readyForAssociate = Boolean(enoughContext && (email || directLinkedIn));
+  const linkedinVerify = Boolean(isPerson && !readyForAssociate && linkedInAny && !npiOnly && score >= 50);
   const cpaVerify = Boolean(isPerson && !readyForAssociate && !linkedinVerify && isCPA);
-  const research = Boolean(isPerson && !readyForAssociate && !linkedinVerify && !cpaVerify && !npiOnly && (email || phone || score >= 70));
+  const research = Boolean(isPerson && !readyForAssociate && !linkedinVerify && !cpaVerify && (email || phone || linkedInAny || score >= 58));
   const skipped = Boolean(!readyForAssociate && !linkedinVerify && !cpaVerify && !research);
 
   lead.associateReady = readyForAssociate;
   lead.readyForAssociate = readyForAssociate;
+  lead.readyChannel = readyForAssociate ? setReadyChannel(lead, email, phone, directLinkedIn, isCPA) : "";
   lead.linkedinVerify = linkedinVerify;
   lead.linkedinVerified = Boolean(lead.linkedinVerified && readyForAssociate);
   lead.cpaVerify = cpaVerify;
@@ -585,24 +694,48 @@ function routeLead(lead) {
   lead.skipped = skipped;
 
   lead.bucket = readyForAssociate ? "readyForAssociate" : linkedinVerify ? "linkedinVerify" : cpaVerify ? "cpaVerify" : research ? "research" : "skipped";
-  lead.status = readyForAssociate ? "Ready for Associate" : linkedinVerify ? "LinkedIn Verify" : cpaVerify ? "CPA Verify" : research ? "Research / Enrich" : "Skipped / No Warm Route";
+  lead.status = readyForAssociate
+    ? `Ready for Associate — ${lead.readyChannel}`
+    : linkedinVerify
+      ? (directLinkedIn ? "LinkedIn Verify — Profile Found" : "LinkedIn Verify — Search Route")
+      : cpaVerify
+        ? "CPA Verify"
+        : research
+          ? "Research / Enrich"
+          : "Skipped / No Warm Route";
+
   lead.queue = lead.status;
   lead.workflowDay = readyForAssociate ? (lead.workflowDay || 1) : 0;
   lead.type = isCPA ? "cpa" : "investor";
   lead.priorityRank = readyForAssociate ? 1 : linkedinVerify ? 2 : cpaVerify ? 3 : research ? 6 : 9;
 
   if (readyForAssociate) ensureTag(lead, "Ready for Associate");
+  if (lead.readyChannel) ensureTag(lead, `Ready — ${lead.readyChannel}`);
   if (linkedinVerify) ensureTag(lead, "LinkedIn Verify");
+  if (directLinkedIn) ensureTag(lead, "LinkedIn Profile Found");
+  if (linkedInSearchOnly) ensureTag(lead, "LinkedIn Search Route");
   if (lead.linkedinVerified) ensureTag(lead, "LinkedIn Verified");
   if (cpaVerify) ensureTag(lead, "CPA Verify");
   if (research) ensureTag(lead, "Research / Enrich");
   if (skipped) ensureTag(lead, "Skipped");
 
-  if (readyForAssociate) lead.bestFirstAction = "Ready for Associate: email + phone + evidence exist. Start Day 1 with email or LinkedIn touch, then call only after review.";
-  else if (linkedinVerify) lead.bestFirstAction = "LinkedIn Verify: open the LinkedIn/search route manually, confirm identity, paste bio/contact context, then move to Ready for Associate.";
-  else if (cpaVerify) lead.bestFirstAction = "CPA Verify: review referral/tax-professional relevance before outreach.";
-  else if (research) lead.bestFirstAction = "Research / Enrich: incomplete route. Needs enrichment before associate workflow.";
-  else lead.bestFirstAction = "Skipped: no email + phone + LinkedIn/manual verification route.";
+  if (readyForAssociate) {
+    lead.bestFirstAction = lead.readyChannel === "LinkedIn First"
+      ? "Ready for Associate: direct LinkedIn profile + evidence found. Start with a compliant LinkedIn touch and confirm profile details before outreach."
+      : lead.readyChannel === "CPA Referral"
+        ? "Ready for Associate: CPA/referral route with email. Send CPA-facing educational overview first."
+        : "Ready for Associate: verified contact route and evidence exist. Start Day 1 with the recommended first-touch channel.";
+  } else if (linkedinVerify) {
+    lead.bestFirstAction = directLinkedIn
+      ? "LinkedIn Verify: open the profile, confirm identity, paste bio/contact context, then move to Ready for Associate."
+      : "LinkedIn Verify: open the generated people-search route, find the correct profile, paste bio/contact context, then move to Ready for Associate.";
+  } else if (cpaVerify) {
+    lead.bestFirstAction = "CPA Verify: review referral/tax-professional relevance before outreach.";
+  } else if (research) {
+    lead.bestFirstAction = "Research / Enrich: run one-click enrichment or manually add email/direct LinkedIn profile before associate workflow.";
+  } else {
+    lead.bestFirstAction = "Skipped: no verified email, direct LinkedIn profile, or usable manual verification route.";
+  }
 
   lead.disposition = lead.disposition || "New / Not Worked";
   lead.requiredTasks = lead.requiredTasks || [];
@@ -801,28 +934,58 @@ async function fetchNpiSeeds() {
 
 async function enrichLeadWithBrave(lead) {
   if (!lead.name || runtime.publicSearches >= MAX_PUBLIC_SEARCHES) return lead;
-  if (hasContact(lead, "email") && hasContact(lead, "linkedin")) return lead;
+
+  const identity = [lead.name, lead.company || "", lead.title || "", lead.location || ""]
+    .map(clean)
+    .filter(Boolean)
+    .join(" ");
 
   const queries = [
     `"${lead.name}" "${lead.company || lead.title || ""}" email`,
-    `"${lead.name}" "${lead.company || lead.title || ""}" LinkedIn`
-  ];
+    `"${lead.name}" "${lead.company || lead.title || ""}" phone`,
+    `"${lead.name}" "${lead.company || lead.title || ""}" LinkedIn`,
+    `"${lead.name}" "${lead.title || ""}" "${lead.location || ""}" LinkedIn`,
+    `"${lead.name}" "${lead.company || ""}" contact`,
+    `"${lead.name}" "${lead.company || ""}" bio`,
+    `"${lead.name}" "${lead.company || ""}" practice`,
+    `"${lead.name}" "${lead.company || ""}" site:linkedin.com/in`
+  ].filter((q, i, arr) => q.replace(/\s+/g, " ").trim().length > 8 && arr.indexOf(q) === i);
 
-  for (const query of queries) {
+  const domains = new Set();
+
+  for (const query of queries.slice(0, 8)) {
     if (runtime.publicSearches >= MAX_PUBLIC_SEARCHES) break;
-    const response = await braveSearch(query, 5);
+    if (hasVerifiedEmail(lead) && (hasDirectLinkedInProfile(lead) || hasContact(lead, "phone"))) break;
+
+    const response = await braveSearch(query, 8);
 
     for (const result of response.results || []) {
       const text = `${result.title} ${result.url} ${result.description}`;
       const email = extractEmail(text);
       const phone = extractPhone(text);
       const linkedin = linkedinFromResult(result);
+      const domain = extractDomain(result.url);
 
       if (email) addContact(lead, "email", email, "Brave enrichment");
       if (phone) addContact(lead, "phone", phone, "Brave enrichment");
       if (linkedin) addContact(lead, "linkedin", linkedin, "Brave enrichment");
-      addEvidence(lead, result.title || "Brave enrichment", linkedin || result.url, result.description || "Public enrichment result.");
+      if (domain) {
+        domains.add(domain);
+        addContact(lead, "company_website", `https://${domain}`, "Brave enrichment");
+        addPossibleEmailFromDomain(lead, domain, "Possible email from public domain pattern");
+      }
+
+      addEvidence(lead, result.title || "Brave enrichment", linkedin || result.url, result.description || `Search result for ${identity}`);
     }
+  }
+
+  for (const domain of Array.from(domains).slice(0, 2)) {
+    if (hasVerifiedEmail(lead) && hasContact(lead, "phone")) break;
+    await enrichFromWebsiteContactPages(lead, `https://${domain}`);
+  }
+
+  if (!hasDirectLinkedInProfile(lead) && !hasLinkedInSearchOnly(lead) && lead.name) {
+    addLinkedInSearchRoute(lead, "Enrichment fallback: direct profile not found yet. Use this people-search route for manual verification.");
   }
 
   return lead;
@@ -886,7 +1049,7 @@ async function main() {
 
   const output = {
     generatedAt: now(),
-    engine: "Basin OS V4.3.4 Routing + Playbook Fix",
+    engine: "Basin OS V4.3.5 Enrichment Ladder",
     compliance: {
       linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave/public search results only.",
       outreach: "No auto-send. Manual review required before every outreach.",
@@ -915,6 +1078,9 @@ async function main() {
       emailFound: active.filter((l) => hasContact(l, "email")).length,
       linkedinCandidatesFound: active.filter((l) => hasContact(l, "linkedin")).length,
       phoneFound: active.filter((l) => hasContact(l, "phone")).length,
+      possibleEmailFound: active.filter((l) => (l.contactMethods || []).some((c) => c.type === "possible_email")).length,
+      directLinkedInFound: active.filter((l) => hasDirectLinkedInProfile(l)).length,
+      linkedinSearchRoutes: active.filter((l) => hasLinkedInSearchOnly(l)).length,
       publicSearches: runtime.publicSearches,
       groqCalls: runtime.groqCalls,
       groqFailures: runtime.groqFailures,
@@ -959,7 +1125,7 @@ main().catch(async (error) => {
   console.error(error);
   const fallback = {
     generatedAt: now(),
-    engine: "Basin OS V4.3.4 fatal fallback output",
+    engine: "Basin OS V4.3.5 fatal fallback output",
     fatalError: clean(error.stack || error.message || error),
     stats: {
       totalFound: 0,

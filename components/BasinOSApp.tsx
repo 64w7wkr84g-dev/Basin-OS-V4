@@ -379,9 +379,10 @@ function initialStore(): Store {
 
 function normalizeLead(lead: Lead): Lead {
   const bucket = lead.bucket;
-  const ready = Boolean(lead.associateReady || bucket === "ready");
+  const ready = Boolean(lead.readyForAssociate || lead.associateReady || bucket === "readyForAssociate" || bucket === "ready");
   const linkedin = Boolean(lead.linkedinVerify || bucket === "linkedinVerify");
   const cpa = Boolean(lead.cpaVerify || lead.isCPA || bucket === "cpaVerify");
+  const research = Boolean(lead.needsResearch || bucket === "research");
   return {
     ...lead,
     name: lead.name || "Unnamed Candidate",
@@ -389,11 +390,16 @@ function normalizeLead(lead: Lead): Lead {
     title: lead.title || "Professional",
     contactMethods: lead.contactMethods || [],
     evidenceTrail: lead.evidenceTrail || [],
+    tags: lead.tags || [],
+    disposition: lead.disposition || "New / Not Worked",
+    requiredTasks: lead.requiredTasks || [],
     associateReady: ready,
+    readyForAssociate: ready,
     linkedinVerify: !ready && linkedin,
     cpaVerify: !ready && !linkedin && cpa,
-    skipped: Boolean(!ready && !linkedin && !cpa),
-    bucket: ready ? "ready" : linkedin ? "linkedinVerify" : cpa ? "cpaVerify" : lead.bucket || "skipped",
+    needsResearch: !ready && !linkedin && !cpa && research,
+    skipped: Boolean(!ready && !linkedin && !cpa && !research && lead.skipped),
+    bucket: ready ? "readyForAssociate" : linkedin ? "linkedinVerify" : cpa ? "cpaVerify" : research ? "research" : lead.bucket || "skipped",
     workflowDay: lead.workflowDay || (ready ? 1 : 0)
   };
 }
@@ -626,7 +632,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.4 Routing + Playbook</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.5 Enrichment Ladder</div>
         </aside>
 
         <main className="min-w-0">
@@ -1181,10 +1187,32 @@ function LeadModal({
   const [nextFollowUp, setNextFollowUp] = React.useState(lead.nextFollowUp || "");
   const [completedTasks, setCompletedTasks] = React.useState<string[]>(lead.requiredTasks || []);
   const [loading, setLoading] = React.useState(false);
+  const [enriching, setEnriching] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const linkedinUrl = contacts(lead).find((c) => /linkedin/i.test(`${c.type} ${c.value}`))?.value || lead.sourceUrl || "#";
   const evidenceTrail = evidence(lead).map((e) => `${e.source}: ${e.whatItProves || ""} ${e.url || ""}`).join("\n");
+
+
+  async function runEnrichmentAgain() {
+    setEnriching(true);
+    setError("");
+    try {
+      const response = await fetch("/api/enrich", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ lead })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Enrichment failed.");
+      onUpdated(data.lead);
+      setError(data.errors?.length ? `Enrichment completed with warnings: ${data.errors.slice(0, 2).join(" | ")}` : "");
+    } catch (err: any) {
+      setError(err?.message || "Enrichment failed.");
+    } finally {
+      setEnriching(false);
+    }
+  }
 
   async function verifyAndDraft() {
     if (bio.trim().length < 20) {
@@ -1371,6 +1399,27 @@ Educational only. No guaranteed returns. No tax advice. Prospect should consult 
           </Card>
 
           <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>Enrichment Ladder</CardTitle>
+                <CardDescription>Run secondary search before manual work. Promotes to Ready when email or direct LinkedIn profile is found.</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid gap-2 md:grid-cols-2">
+                <Badge className="border-white/15 bg-white/5 text-basin-muted">Ready Channel: {lead.readyChannel || "Not ready"}</Badge>
+                <Badge className="border-white/15 bg-white/5 text-basin-muted">Possible Emails: {(lead.possibleEmails || []).length}</Badge>
+                <Badge className="border-white/15 bg-white/5 text-basin-muted">Contacts: {contacts(lead).length}</Badge>
+                <Badge className="border-white/15 bg-white/5 text-basin-muted">Evidence: {evidence(lead).length}</Badge>
+              </div>
+              <Button variant="primary" onClick={runEnrichmentAgain} disabled={enriching}>
+                <WandSparkles className="h-4 w-4" />{enriching ? "Enriching..." : "Run Enrichment Again"}
+              </Button>
+              <p className="text-xs text-basin-muted">Searches public sources for email, phone, direct LinkedIn profile, website/contact pages, and possible email patterns. Possible emails do not count as verified.</p>
+            </CardContent>
+          </Card>
+
+          <Card>
             <CardHeader><div><CardTitle>Manual LinkedIn Verification</CardTitle><CardDescription>Paste verified profile bio, then generate compliant sequence.</CardDescription></div></CardHeader>
             <CardContent className="space-y-3">
               <Textarea id="inputLinkedinBio" placeholder="Paste LinkedIn Bio Here" value={bio} onChange={(e) => setBio(e.target.value)} />
@@ -1414,6 +1463,7 @@ Educational only. No guaranteed returns. No tax advice. Prospect should consult 
 
               <div className="flex flex-wrap gap-3">
                 <Button variant="secondary" onClick={saveNote}>Save Note</Button>
+                <Button variant="primary" onClick={runEnrichmentAgain} disabled={enriching}>{enriching ? "Enriching..." : "Run Enrichment Again"}</Button>
                 <Button variant="teal" onClick={advanceDay}>Advance to Next Day</Button>
                 <Button variant="primary" onClick={buildHandoff}>Handoff Sheet</Button>
               </div>

@@ -29,12 +29,16 @@ export interface Lead {
   location?: string;
   type?: "investor" | "cpa";
   contactMethods?: ContactMethod[];
+  possibleEmails?: string[];
   evidenceTrail?: EvidenceItem[];
   accreditedLikelyReason?: string;
   associateReady?: boolean;
   readyForAssociate?: boolean;
+  readyChannel?: string;
   linkedinVerify?: boolean;
   linkedinVerified?: boolean;
+  linkedinSearchUrl?: string;
+  hasLinkedInSearchRoute?: boolean;
   cpaVerify?: boolean;
   needsResearch?: boolean;
   skipped?: boolean;
@@ -69,6 +73,9 @@ export interface RadarStats {
   emailFound: number;
   linkedinCandidatesFound: number;
   phoneFound: number;
+  possibleEmailFound?: number;
+  directLinkedInFound?: number;
+  linkedinSearchRoutes?: number;
   publicSearches: number;
   groqCalls: number;
   groqFailures?: number;

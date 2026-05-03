@@ -65,7 +65,7 @@ jobs:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: "llama-3.3-70b-versatile"
-          MAX_PUBLIC_SEARCHES: "500"
+          MAX_PUBLIC_SEARCHES: "650"
           MAX_GROQ_CALLS: "25"
           GROQ_SLEEP_MS: "1600"
           MAX_NPI: "60"

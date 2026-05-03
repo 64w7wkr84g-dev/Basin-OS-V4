@@ -36,7 +36,7 @@ export function leadStatus(lead: Lead) {
 
 export function contacts(lead: Lead) { return lead.contactMethods ?? []; }
 export function evidence(lead: Lead) { return lead.evidenceTrail ?? []; }
-export function hasEmail(lead: Lead) { return contacts(lead).some((c) => c.type === "email" || c.value.includes("@")); }
+export function hasEmail(lead: Lead) { return contacts(lead).some((c) => c.type === "email" || (c.type !== "possible_email" && c.value.includes("@"))); }
 export function hasLinkedIn(lead: Lead) { return contacts(lead).some((c) => /linkedin/i.test(`${c.type} ${c.value}`)); }
 export function hasPhone(lead: Lead) { return contacts(lead).some((c) => c.type === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(c.value)); }
 export function fmt(value?: number | null) { return new Intl.NumberFormat("en-US").format(Number(value ?? 0)); }

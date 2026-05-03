@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-3-4-routing-playbook-callcoach-fix",
-  "version": "4.3.4",
+  "name": "basin-os-v4-3-5-enrichment-ladder-ready-fix",
+  "version": "4.3.5",
   "private": true,
-  "description": "Basin OS V4.3.4: lead routing fallback, LinkedIn Verify queue, Method B-only master playbook, expanded call coach rebuttals.",
+  "description": "Basin OS V4.3.5: enrichment ladder, website/contact extraction, channel-based Ready for Associate, single-lead enrich API.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

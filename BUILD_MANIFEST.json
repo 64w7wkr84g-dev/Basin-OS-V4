@@ -7,12 +7,12 @@
   {
     "path": ".github/workflows/radar.yml",
     "bytes": 5297,
-    "sha256": "b8485f5a4ab6937556499075e78c49ce9308b47187c52174d0b311aa37f3f668"
+    "sha256": "1c52315c96b15d23393928861317ac2b28e331cfad27cb187753a80a564759d6"
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 7760,
-    "sha256": "3a0f84b571e8b2b137eef9d20352f9aa91ae87c14d4b5a70099fc03c366f9df8"
+    "bytes": 7930,
+    "sha256": "2065b84a217d3a615604a729b08d6b59a796f3e8ae27e0d06fe310f33a2e6136"
   },
   {
     "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
@@ -45,9 +45,19 @@
     "sha256": "d8a95db79a726cd299dae24bcd8ef4b77f2eac9718fe8be426f3906d31edc47c"
   },
   {
+    "path": "README_V435_ENRICHMENT_LADDER_READY_FIX.md",
+    "bytes": 1726,
+    "sha256": "6fbdcdb9c8ba7a8abc1351ba1561928e9fb3b26fd4007680e15eef05676991b7"
+  },
+  {
     "path": "app/analytics/page.tsx",
     "bytes": 285,
     "sha256": "c4732e9bd795c9abe458a35a2cf6f1c846f6b768c35ec1567f9b114bf88d99f0"
+  },
+  {
+    "path": "app/api/enrich/route.ts",
+    "bytes": 11253,
+    "sha256": "061c6d771ca7c36f0db4c28f102c16dce645cc9466a15284063e2d0b6ce4d8fb"
   },
   {
     "path": "app/api/groq/route.ts",
@@ -146,13 +156,13 @@
   },
   {
     "path": "basin-radar-runner.js",
-    "bytes": 40453,
-    "sha256": "fccd686887d807626008b5e89f635c7327341668cace9ec1384d4e3e93dfdb5c"
+    "bytes": 47550,
+    "sha256": "1c377a417191bbc76278ff3fbbdf7cd9b5a1cc28b745ce837898df9c75f8efe6"
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 80693,
-    "sha256": "fca0e5a0b6722117127f06e5b8e45a9dc5bc66c08a568d5afa2c4bef343fbbbc"
+    "bytes": 83454,
+    "sha256": "a19c0b741c829a7d9af793a369a0768187f3d67068b7adb388fb3c112007a751"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -191,8 +201,8 @@
   },
   {
     "path": "lib/utils.ts",
-    "bytes": 3447,
-    "sha256": "a1f173ab4fb596597ef933ed82e09d2df2f47e219ac481389bf813b9a955c8cf"
+    "bytes": 3480,
+    "sha256": "367c725b59cf2a950748bc07321355ad4c4cc6ab79d32209e5275b8e6a5f28d9"
   },
   {
     "path": "next.config.mjs",
@@ -201,8 +211,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1159,
-    "sha256": "860ef412038469c01812d9c47e8dcd7b1891b25c32961e8485f2885769a5fc04"
+    "bytes": 1154,
+    "sha256": "6da33d007c0025ffc4e559286dd691c8c85ab778c2406e05edf2578d89fdd71f"
   },
   {
     "path": "postcss.config.mjs",
@@ -252,7 +262,7 @@
   {
     "path": "radar.yml",
     "bytes": 5297,
-    "sha256": "b8485f5a4ab6937556499075e78c49ce9308b47187c52174d0b311aa37f3f668"
+    "sha256": "1c52315c96b15d23393928861317ac2b28e331cfad27cb187753a80a564759d6"
   },
   {
     "path": "tailwind.config.ts",
@@ -266,7 +276,7 @@
   },
   {
     "path": "types/index.ts",
-    "bytes": 2874,
-    "sha256": "843f07b4abd54594c99ecb09c705f03f5f92d7a103bd2d213689a7cbecb43224"
+    "bytes": 3090,
+    "sha256": "06902ec2346ae1f92804b134c375ecc22966b8a518de9d000a83bc3bf16689ec"
   }
 ]
