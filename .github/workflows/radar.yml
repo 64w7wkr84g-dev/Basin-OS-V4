@@ -39,12 +39,11 @@ jobs:
 
       - name: Validate JSON
         run: |
-          node -e "JSON.parse(require('fs').readFileSync('data/radar-leads.json','utf8')); console.log('data/radar-leads.json valid')"
+          node -e "JSON.parse(require('fs').readFileSync('public/data/radar-leads.json','utf8')); console.log('public/data/radar-leads.json valid')"
           node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('radar-leads.json valid')"
 
       - name: Commit radar data
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update Basin Radar leads
-          file_pattern: "data/*.json radar-leads.json radar-research-candidates.json radar-rejected.json"
-
+          file_pattern: "public/data/*.json radar-leads.json radar-research-candidates.json radar-rejected.json"
