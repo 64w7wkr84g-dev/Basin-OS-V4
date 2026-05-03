@@ -1,12 +1,12 @@
 {
-  "lastRunAt": "2026-05-03T07:28:30.146Z",
-  "startedAt": "2026-05-03T07:28:26.922Z",
+  "lastRunAt": "2026-05-03T07:38:55.808Z",
+  "startedAt": "2026-05-03T07:38:53.025Z",
   "status": "complete",
-  "usableLeads": 97,
-  "rejected": 15,
+  "usableLeads": 0,
+  "rejected": 108,
   "errors": 0,
   "githubModelsUsed": false,
   "githubModelsModel": "",
   "githubModelCalls": 0,
-  "message": "Radar completed with 97 usable named-human leads. GitHub Models calls: 0."
+  "message": "Human-only radar completed with 0 verified-contact leads. Rejected 108."
 }
