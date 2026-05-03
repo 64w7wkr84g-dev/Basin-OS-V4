@@ -1,4 +1,4 @@
-/* Basin OS V6.3 — Automated Lead Factory + Manual LinkedIn Verification CRM
+/* Basin OS V6.4 — Automated Lead Factory + Manual LinkedIn Verification CRM
    Safe LinkedIn handling:
    - does not open LinkedIn automatically
    - does not read LinkedIn pages
@@ -657,4 +657,238 @@
     mo.observe(document.body,{childList:true,subtree:true});
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* Basin OS V6.4 — Auto Bridge
+   Fixes the exact issue where radar records exist but Dashboard / Leads Workflow still show 0.
+   This automatically mirrors Lead Factory + Radar records into the legacy Basin OS buckets the existing UI reads.
+*/
+(function(){
+  'use strict';
+  const STORE_KEY='basin_os_integrated';
+  const now=()=>new Date().toISOString();
+  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const digits=v=>String(v||'').replace(/\D/g,'');
+  const isEmail=v=>/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(String(v||''));
+  const isPhone=v=>digits(v).length>=10;
+  const isLI=v=>/linkedin\.com\/in\//i.test(String(v||''));
+  const fmtPhone=v=>{const d=digits(v); if(d.length===10)return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`; if(d.length===11&&d[0]==='1')return `(${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`; return clean(v);};
+  const badFirst=new Set('former system expert leading regional national global essential financial transactional advertising digital general senior assistant associate practice business tax legal medical clinical public names email local county state city new old best top chief daily annual press'.split(' '));
+  const badLast=new Set('assistant transactional advertising strategies financial dermatology partners legal clinic medical health practice group capital ventures services associates advisors consulting solutions hospital center company firm llc inc news city owner partner physician attorney doctor cpa tax expert'.split(' '));
+
+  function personOk(name){
+    name=clean(name); const parts=name.split(/\s+/);
+    if(parts.length<2 || parts.length>3) return false;
+    const f=parts[0].replace(/[^a-zA-Z'-]/g,'').toLowerCase();
+    const l=parts[parts.length-1].replace(/[^a-zA-Z'-]/g,'').toLowerCase();
+    if(badFirst.has(f)||badLast.has(l)||/[0-9]/.test(name)) return false;
+    if(/\b(llc|inc|company|group|partners|practice|clinic|hospital|center|services|solutions|news|advertising)\b/i.test(name)) return false;
+    return true;
+  }
+  function store(){
+    let s={}; try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){}
+    s.investors=Array.isArray(s.investors)?s.investors:[];
+    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
+    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
+    s.rejectedRadarLeads=Array.isArray(s.rejectedRadarLeads)?s.rejectedRadarLeads:[];
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
+    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
+    return s;
+  }
+  function save(s){
+    try{
+      localStorage.setItem(STORE_KEY,JSON.stringify(s));
+      window.STORE=Object.assign(window.STORE||{},s);
+      if(typeof window.save==='function') window.save();
+      if(typeof window.flushSave==='function') window.flushSave(true);
+    }catch(e){console.warn('[Basin V6.4] save failed',e)}
+  }
+  function score(l){
+    let s=Number(l.score||0);
+    if(!s){
+      const b=[l.name,l.title,l.company,l.summary,l.signal,l.source].join(' ').toLowerCase();
+      s=44;
+      if(/physician|surgeon|medical|clinic|doctor|orthopedic|gastro|derm|urology|anesth|radiology/.test(b))s+=25;
+      if(/owner|founder|ceo|president|entrepreneur|executive|partner|principal/.test(b))s+=22;
+      if(/attorney|law firm|partner|estate/.test(b))s+=18;
+      if(/cpa|tax|accounting/.test(b))s+=18;
+      if(/acquired|sold|opened|launch|named partner|promoted|speaker|conference|podcast|interview/.test(b))s+=10;
+      if(/idc|deduction|depletion|year-end|high income|oil|gas|energy/.test(b))s+=10;
+    }
+    return Math.max(1,Math.min(98,Math.round(s)));
+  }
+  function grade(sc){return sc>=82?'A':sc>=68?'B':sc>=52?'C':'D'}
+  function contacts(l){
+    const out=[];
+    const add=(type,value,source,status)=>{
+      value=clean(value); if(!value)return;
+      if(/phone/i.test(type)) value=fmtPhone(value);
+      const key=(type+'|'+value).toLowerCase();
+      if(out.some(c=>(c.type+'|'+c.value).toLowerCase()===key))return;
+      out.push({id:'ct_'+Math.random().toString(16).slice(2),type,value,source:source||'',status:status||'',confidence:status||'Medium'});
+    };
+    (Array.isArray(l.contactMethods)?l.contactMethods:[]).forEach(c=>add(c.type||c.kind,c.value||c.url||c.href,c.source,c.status||c.confidence));
+    add('Email',l.email,'lead field','Verified');
+    add('Phone',l.phone,'lead field','Verified');
+    add('LinkedIn Profile',l.linkedin||l.linkedinUrl||l.linkedInUrl,'lead field','Verified');
+    add('LinkedIn Candidate URL',l.linkedinCandidateUrl||l.linkedInCandidateUrl,'public search','Needs Manual Confirmation');
+    if(l.npi) add('NPI Profile','https://npiregistry.cms.hhs.gov/provider-view/'+l.npi,'NPI','Verified');
+    return out;
+  }
+  function route(c){
+    if(c.some(x=>/email/i.test(x.type)&&isEmail(x.value))) return ['Email First','day1','Day 1: send reviewed email first, then log outcome/disposition.'];
+    if(c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value)&&!/candidate|needs/i.test(x.status||x.type))) return ['LinkedIn First','day1','Day 1: open verified LinkedIn manually and complete appropriate manual action.'];
+    if(c.some(x=>/linkedin/i.test(x.type)&&isLI(x.value))) return ['LinkedIn Verify','day1','Day 1: open candidate LinkedIn URL manually, confirm/reject match, paste profile snapshot if useful.'];
+    if(c.some(x=>/phone/i.test(x.type)&&isPhone(x.value))) return ['Call First / Verify','day1','Day 1: call or verify by phone; ask for correct email/direct contact if needed.'];
+    return ['Research Needed','research','Research: verify person and find a contact route.'];
+  }
+  function key(l){return clean([l.name,l.company,l.title,l.sourceUrl||l.url].join('|')).toLowerCase();}
+  function normalize(l,i){
+    const c=contacts(l), r=route(c), sc=score(l), g=l.grade||grade(sc);
+    const name=clean(l.name||l.fullName||l.signal||('Lead '+(i+1)));
+    const title=clean(l.title||l.role||l.specialty||l.company||'Prospect');
+    const company=clean(l.company||l.practice||l.organization||'');
+    return Object.assign({},l,{
+      id:l.id||('lead_'+Date.now()+'_'+i+'_'+Math.random().toString(16).slice(2)),
+      name,title,company,
+      role:l.role||title,
+      source:l.source||l.sourceType||'Radar',
+      url:l.url||l.sourceUrl||'',
+      sourceUrl:l.sourceUrl||l.url||'',
+      summary:l.summary||l.signal||'',
+      contactMethods:c,
+      queue:r[0],
+      contactPriority:r[0],
+      bestFirstAction:r[2],
+      bucket:r[1],
+      day:r[1]==='day1'?1:0,
+      workflowDay:r[1]==='day1'?1:0,
+      status:l.status||'New',
+      score:sc,
+      grade:g,
+      email:l.email || (c.find(x=>/email/i.test(x.type)&&isEmail(x.value))||{}).value || '',
+      phone:l.phone || (c.find(x=>/phone/i.test(x.type)&&isPhone(x.value))||{}).value || '',
+      linkedin:l.linkedin || (c.find(x=>/linkedin/i.test(x.type)&&isLI(x.value))||{}).value || '',
+      updatedAt:l.updatedAt||now(),
+      createdAt:l.createdAt||l.foundAt||now()
+    });
+  }
+  function workflowFromLead(l){
+    return {
+      id:'wf-'+(l.id||Date.now()),
+      key:key(l),
+      leadId:l.id,
+      name:l.name,
+      title:l.title,
+      company:l.company,
+      score:l.score,
+      grade:l.grade,
+      leadType:'basinos',
+      bucket:l.bucket||'day1',
+      day:l.day||l.workflowDay||1,
+      status:l.status||'Open',
+      queue:l.queue||l.contactPriority||'Call First / Verify',
+      nextAction:l.bestFirstAction||'Day 1: complete required first action and log outcome.',
+      createdAt:l.createdAt||now(),
+      updatedAt:now(),
+      url:l.url||l.sourceUrl||'',
+      notes:l.summary||''
+    };
+  }
+  function collect(s){
+    const arr=[];
+    const push=a=>(Array.isArray(a)?a:[]).forEach(x=>x&&arr.push(x));
+    push(s.leadFactory&&s.leadFactory.leads);
+    push(s.radarLeads);
+    push(s.leadWorkflow);
+    push(s.leads);
+    // Some local browser radar builds store draftable records only inside action/draft queues.
+    push(s.radarActionPlan&&s.radarActionPlan.leads);
+    push(s.radarActionPlan&&s.radarActionPlan.actions);
+    push(s.nurtureDrafts);
+    push(s.radarDrafts);
+    push(s.drafts);
+    return arr;
+  }
+  async function fetchJsonMaybe(path){
+    try{
+      const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});
+      const text=await r.text();
+      if(!r.ok || !text.trim()) return null;
+      return JSON.parse(text);
+    }catch(e){return null}
+  }
+  async function collectFromJson(){
+    const out=[];
+    for(const path of ['radar-leads.json','data/radar-leads.json']){
+      const j=await fetchJsonMaybe(path);
+      if(j && Array.isArray(j.leads)) out.push(...j.leads);
+      if(j && Array.isArray(j.researchCandidates)) out.push(...j.researchCandidates);
+    }
+    return out;
+  }
+  function applyBridge(rawList, source){
+    const s=store();
+    const all=[...collect(s), ...(rawList||[])].filter(Boolean);
+    const map=new Map();
+    all.map(normalize).forEach(l=>{
+      if(!clean(l.name))return;
+      // Keep almost everything in the Lead bucket with a preliminary grade. Research only lacks any route.
+      if(!personOk(l.name) && !l.phone && !l.email && !l.linkedin) return;
+      const k=key(l)||l.id;
+      if(!map.has(k) || (map.get(k).score||0)<(l.score||0)) map.set(k,l);
+    });
+    const leads=[...map.values()].sort((a,b)=>(b.score||0)-(a.score||0));
+    const ready=leads.filter(l=>l.bucket!=='research');
+    const research=leads.filter(l=>l.bucket==='research');
+
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=ready;
+    s.leadFactory.research=research;
+    s.leadFactory.lastAutoBridgeAt=now();
+    s.leadFactory.lastAutoBridgeSource=source||'browser/radar/json';
+    s.radarLeads=leads;
+    s.leads=ready;
+    s.leadWorkflow=ready.map(workflowFromLead);
+
+    // Do NOT auto-add to investor pipeline. Dashboard falls back to leadWorkflow if investors is empty.
+    save(s);
+
+    try{ if(typeof window.updateCounts==='function') window.updateCounts(); }catch(e){}
+    try{ if(typeof window.renderDash==='function') window.renderDash(); }catch(e){}
+    try{ if(typeof window.renderRadarSummary==='function') window.renderRadarSummary(); }catch(e){}
+    try{ if(typeof window.renderRadarResults==='function') window.renderRadarResults(); }catch(e){}
+    try{ if(typeof window.renderLeadsWorkflowPage==='function') window.renderLeadsWorkflowPage(); }catch(e){}
+    console.log('[Basin V6.4 Auto Bridge]', {total:leads.length, ready:ready.length, research:research.length, source});
+    return {total:leads.length,ready:ready.length,research:research.length};
+  }
+  async function autoBridge(){
+    const jsonLeads=await collectFromJson();
+    return applyBridge(jsonLeads, jsonLeads.length?'GitHub JSON + browser':'browser local radar');
+  }
+  window.BasinAutoBridgeLeads=autoBridge;
+
+  // Patch existing buttons/functions so the sync happens automatically after local radar or shared radar reload.
+  function patch(name){
+    const old=window[name];
+    if(typeof old==='function' && !old.__basin64){
+      const wrapped=function(){
+        const ret=old.apply(this,arguments);
+        Promise.resolve(ret).finally(()=>setTimeout(autoBridge,1200));
+        return ret;
+      };
+      wrapped.__basin64=true;
+      window[name]=wrapped;
+    }
+  }
+  function boot(){
+    patch('runLeadRadar');
+    patch('basinLoadSharedRadar');
+    patch('basinImportSharedRadarLeads');
+    autoBridge();
+    setTimeout(autoBridge,2500);
+    setTimeout(autoBridge,7000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
