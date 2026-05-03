@@ -1,9 +1,9 @@
 {
-  "generatedAt": null,
-  "engine": "Basin OS V4 starter \u2014 run GitHub Actions to populate",
+  "generatedAt": "2026-05-03T15:52:48.847Z",
+  "engine": "Basin OS V4 Radar Runner",
   "compliance": {
     "linkedin": "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
-    "outreach": "No auto-send. Manual review required before outreach.",
+    "outreach": "No auto-send. Manual review required before every outreach.",
     "qualification": "Accredited status is never assumed."
   },
   "routingRules": {
@@ -13,32 +13,3509 @@
     "skipped": "No email, no LinkedIn URL, no CPA/referral path."
   },
   "stats": {
-    "totalFound": 0,
-    "activeVisible": 0,
+    "totalFound": 78,
+    "activeVisible": 1,
     "readyToWork": 0,
     "linkedinVerify": 0,
-    "cpaVerify": 0,
-    "skipped": 0,
-    "npiCollected": 0,
-    "rssCollected": 0,
+    "cpaVerify": 1,
+    "skipped": 77,
+    "npiCollected": 77,
+    "rssCollected": 1,
     "linkedinDiscoveryCollected": 0,
     "cpaCollected": 0,
     "emailFound": 0,
     "linkedinCandidatesFound": 0,
     "phoneFound": 0,
-    "publicSearches": 0,
-    "groqCalls": 0,
-    "groqFailures": 0,
-    "braveFailures": 0,
-    "braveConfigured": false,
-    "groqConfigured": false,
+    "publicSearches": 91,
+    "groqCalls": 2,
+    "groqFailures": 146,
+    "braveFailures": 91,
+    "braveConfigured": true,
+    "groqConfigured": true,
     "errors": 0
   },
   "leads": [],
   "linkedinVerifyCandidates": [],
-  "cpaVerifyCandidates": [],
+  "cpaVerifyCandidates": [
+    {
+      "id": "cpa_chris-bradfordhttps-news-google-com-rss-articles-cbmivafbvv95cuxon2vtcmw4ci1rswnvaufuc0tubwvzcl9lyme",
+      "name": "Chris Bradford",
+      "company": "Legacy Capital Advisors",
+      "title": "Tax Advisor",
+      "location": "USA",
+      "sourceType": "cpa",
+      "source": "Google News RSS",
+      "sourceUrl": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+      "signal": "Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board - citybiz",
+      "summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;",
+      "fitReason": "Veteran tax advisor with experience, potential for high-value connections and referrals in the financial industry",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [],
+      "evidenceTrail": [
+        {
+          "source": "Google News RSS",
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+          "whatItProves": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;"
+        }
+      ],
+      "score": 90,
+      "grade": "A",
+      "type": "cpa",
+      "isPerson": true,
+      "isCPA": true,
+      "foundAt": "2026-05-03T15:52:34.914Z",
+      "rawSearchResult": {
+        "title": "Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board - citybiz",
+        "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+        "description": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;"
+      },
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": true,
+      "skipped": false,
+      "bucket": "cpaVerify",
+      "status": "CPA Verify",
+      "queue": "CPA Verify",
+      "workflowDay": 0,
+      "priorityRank": 3,
+      "bestFirstAction": "Review CPA/referral relevance and manually promote if useful."
+    }
+  ],
   "researchCandidates": [],
-  "skippedCandidates": [],
-  "allCandidates": [],
+  "skippedCandidates": [
+    {
+      "id": "npi_1104405307",
+      "name": "ABDILATIF ABDULHAKIM",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "LYNCHBURG, VA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1104405307",
+      "signal": "NPI provider record: ABDILATIF ABDULHAKIM",
+      "summary": "Name: ABDILATIF ABDULHAKIM\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: LYNCHBURG, VA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1104405307",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "434-200-1143",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1104405307",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:44.163Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1386804110",
+      "name": "ABDULLAH ABDULLAH",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "MEMPHIS, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1386804110",
+      "signal": "NPI provider record: ABDULLAH ABDULLAH",
+      "summary": "Name: ABDULLAH ABDULLAH\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: MEMPHIS, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1386804110",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "901-725-5846",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1386804110",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.537Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1912218199",
+      "name": "ALISON A'COURT",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "SAN DIEGO, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1912218199",
+      "signal": "NPI provider record: ALISON A'COURT",
+      "summary": "Name: ALISON A'COURT\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: SAN DIEGO, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1912218199",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "800-926-8273",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1912218199",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.152Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1801155767",
+      "name": "AMIR ABDUL-JABBAR",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "SEATTLE, WA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1801155767",
+      "signal": "NPI provider record: AMIR ABDUL-JABBAR",
+      "summary": "Name: AMIR ABDUL-JABBAR\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: SEATTLE, WA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1801155767",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "206-386-3880",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1801155767",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.279Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1730405101",
+      "name": "AMIR ABTAHI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "NASHVILLE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1730405101",
+      "signal": "NPI provider record: AMIR ABTAHI",
+      "summary": "Name: AMIR ABTAHI\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: NASHVILLE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1730405101",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "615-936-3000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1730405101",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.722Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1154383131",
+      "name": "AMIT AGARWALA",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GOLDEN, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1154383131",
+      "signal": "NPI provider record: AMIT AGARWALA",
+      "summary": "Name: AMIT AGARWALA\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: GOLDEN, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1154383131",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "303-233-1223",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1154383131",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.120Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1639898620",
+      "name": "ANDREW ADAMCZYK",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "PHOENIX, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1639898620",
+      "signal": "NPI provider record: ANDREW ADAMCZYK",
+      "summary": "Name: ANDREW ADAMCZYK\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: PHOENIX, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1639898620",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "602-521-3250",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1639898620",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.660Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1679954812",
+      "name": "ANSHUL AGARWALA",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GREENSBORO, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1679954812",
+      "signal": "NPI provider record: ANSHUL AGARWALA",
+      "summary": "Name: ANSHUL AGARWALA\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: GREENSBORO, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1679954812",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "336-275-0927",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1679954812",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.920Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1912970419",
+      "name": "ANTONIO ABADIA",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "SUNRISE, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1912970419",
+      "signal": "NPI provider record: ANTONIO ABADIA",
+      "summary": "Name: ANTONIO ABADIA\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: SUNRISE, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1912970419",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "954-838-2371",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1912970419",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.882Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1700010287",
+      "name": "ARMIN AALAMI HARANDI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "CULPEPER, VA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1700010287",
+      "signal": "NPI provider record: ARMIN AALAMI HARANDI",
+      "summary": "Name: ARMIN AALAMI HARANDI\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: CULPEPER, VA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1700010287",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "540-321-3120",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1700010287",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.231Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1407140395",
+      "name": "BENJAMIN AAKRE",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "AURORA, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1407140395",
+      "signal": "NPI provider record: BENJAMIN AAKRE",
+      "summary": "Name: BENJAMIN AAKRE\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: AURORA, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1407140395",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "720-848-0000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1407140395",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.785Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1619316742",
+      "name": "BENJAMIN ABRAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "AURORA, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1619316742",
+      "signal": "NPI provider record: BENJAMIN ABRAMS",
+      "summary": "Name: BENJAMIN ABRAMS\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: AURORA, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1619316742",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "720-484-0000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1619316742",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.923Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1104168814",
+      "name": "BILAL ABADI",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "PHOENIX, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1104168814",
+      "signal": "NPI provider record: BILAL ABADI",
+      "summary": "Name: BILAL ABADI\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: PHOENIX, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1104168814",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "602-262-8900",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1104168814",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.361Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1841291804",
+      "name": "BRANDON ABEYTA",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "ORANGE, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1841291804",
+      "signal": "NPI provider record: BRANDON ABEYTA",
+      "summary": "Name: BRANDON ABEYTA\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: ORANGE, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1841291804",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "714-456-8888",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1841291804",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.565Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1265877088",
+      "name": "BRIAN ABADIR",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "CLEARWATER, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1265877088",
+      "signal": "NPI provider record: BRIAN ABADIR",
+      "summary": "Name: BRIAN ABADIR\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: CLEARWATER, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1265877088",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "727-462-7308",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1265877088",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.916Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1215081534",
+      "name": "BRIAN ABELL",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "AUGUSTA, GA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1215081534",
+      "signal": "NPI provider record: BRIAN ABELL",
+      "summary": "Name: BRIAN ABELL\\nTitle: Orthopaedic Surgery D.O.\\nCompany: \\nLocation: AUGUSTA, GA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1215081534",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "706-722-3401",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1215081534",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.334Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1659798015",
+      "name": "BRIGGS AHEARN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "PINEVILLE, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1659798015",
+      "signal": "NPI provider record: BRIGGS AHEARN",
+      "summary": "Name: BRIGGS AHEARN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: PINEVILLE, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1659798015",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "704-323-3300",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1659798015",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.990Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1821359308",
+      "name": "CHIDI ACHILEFU",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "OKLAHOMA CITY, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1821359308",
+      "signal": "NPI provider record: CHIDI ACHILEFU",
+      "summary": "Name: CHIDI ACHILEFU\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: OKLAHOMA CITY, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1821359308",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "405-271-4351",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1821359308",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.447Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1174901508",
+      "name": "CHRISTINE ABBOUD",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "WALNUT CREEK, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1174901508",
+      "signal": "NPI provider record: CHRISTINE ABBOUD",
+      "summary": "Name: CHRISTINE ABBOUD\\nTitle: Anesthesiology D.O.\\nCompany: \\nLocation: WALNUT CREEK, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1174901508",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "925-939-3000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1174901508",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.468Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1427498294",
+      "name": "CHRISTOPHER ADAIR",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GREENSBORO, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1427498294",
+      "signal": "NPI provider record: CHRISTOPHER ADAIR",
+      "summary": "Name: CHRISTOPHER ADAIR\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: GREENSBORO, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1427498294",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "336-275-3325",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1427498294",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.682Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1902291214",
+      "name": "CLAYTON ADAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "NASHVILLE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1902291214",
+      "signal": "NPI provider record: CLAYTON ADAMS",
+      "summary": "Name: CLAYTON ADAMS\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: NASHVILLE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1902291214",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "615-322-3000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1902291214",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.745Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1467981647",
+      "name": "COLIN ACKERMAN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GERMANTOWN, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1467981647",
+      "signal": "NPI provider record: COLIN ACKERMAN",
+      "summary": "Name: COLIN ACKERMAN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: GERMANTOWN, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1467981647",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "901-759-3111",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1467981647",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.825Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1770622771",
+      "name": "DAMON ADAMANY",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "SUN CITY WEST, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1770622771",
+      "signal": "NPI provider record: DAMON ADAMANY",
+      "summary": "Name: DAMON ADAMANY\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: SUN CITY WEST, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1770622771",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "623-537-5600",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1770622771",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.590Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1790947398",
+      "name": "DAVID ABBASI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "DELRAY BEACH, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1790947398",
+      "signal": "NPI provider record: DAVID ABBASI",
+      "summary": "Name: DAVID ABBASI\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: DELRAY BEACH, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1790947398",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "561-465-8884",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1790947398",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.929Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1598086118",
+      "name": "DAVID ABTS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "AURORA, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1598086118",
+      "signal": "NPI provider record: DAVID ABTS",
+      "summary": "Name: DAVID ABTS\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: AURORA, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1598086118",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "303-724-6031",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1598086118",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.025Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1043211782",
+      "name": "DAVID ADAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "KNOXVILLE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1043211782",
+      "signal": "NPI provider record: DAVID ADAMS",
+      "summary": "Name: DAVID ADAMS\\nTitle: Anesthesiology M.D\\nCompany: \\nLocation: KNOXVILLE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1043211782",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "865-305-9220",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1043211782",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.778Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1477656874",
+      "name": "DON AARON",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "SAVANNAH, GA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1477656874",
+      "signal": "NPI provider record: DON AARON",
+      "summary": "Name: DON AARON\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: SAVANNAH, GA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1477656874",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "912-644-5300",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1477656874",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.265Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1508961582",
+      "name": "DOUGLAS ABELES",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "CASTRO VALLEY, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1508961582",
+      "signal": "NPI provider record: DOUGLAS ABELES",
+      "summary": "Name: DOUGLAS ABELES\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: CASTRO VALLEY, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1508961582",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "510-538-0430",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1508961582",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.381Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1760689707",
+      "name": "DOUGLAS ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "COLORADO SPRINGS, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1760689707",
+      "signal": "NPI provider record: DOUGLAS ADAMS",
+      "summary": "Name: DOUGLAS ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: COLORADO SPRINGS, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1760689707",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "719-632-7669",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1760689707",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.000Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1346469673",
+      "name": "EDWIN ABRAHAM",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "CHATTANOOGA, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1346469673",
+      "signal": "NPI provider record: EDWIN ABRAHAM",
+      "summary": "Name: EDWIN ABRAHAM\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: CHATTANOOGA, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1346469673",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "423-602-8400",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1346469673",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.641Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1437160322",
+      "name": "FERNANDO ABAD",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "MELBOURNE, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1437160322",
+      "signal": "NPI provider record: FERNANDO ABAD",
+      "summary": "Name: FERNANDO ABAD\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: MELBOURNE, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1437160322",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "321-723-4723",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1437160322",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:44.060Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1700074853",
+      "name": "GAURAV ABBI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "BURLINGAME, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1700074853",
+      "signal": "NPI provider record: GAURAV ABBI",
+      "summary": "Name: GAURAV ABBI\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: BURLINGAME, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1700074853",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "650-692-1475",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1700074853",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.178Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1114073798",
+      "name": "HENRI ACOSTA",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "GREENWOOD VILLAGE, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1114073798",
+      "signal": "NPI provider record: HENRI ACOSTA",
+      "summary": "Name: HENRI ACOSTA\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: GREENWOOD VILLAGE, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1114073798",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "303-438-3999",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1114073798",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.094Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1083237846",
+      "name": "JACKSON ADAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "SAN FRANCISCO, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1083237846",
+      "signal": "NPI provider record: JACKSON ADAMS",
+      "summary": "Name: JACKSON ADAMS\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: SAN FRANCISCO, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1083237846",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "415-476-9035",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1083237846",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.128Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1518256585",
+      "name": "JACOB ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "SCOTTSDALE, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1518256585",
+      "signal": "NPI provider record: JACOB ADAMS",
+      "summary": "Name: JACOB ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: SCOTTSDALE, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1518256585",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "480-697-4824",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1518256585",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.693Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1184204711",
+      "name": "JAMES ABERCROMBIE",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "COLORADO SPRINGS, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1184204711",
+      "signal": "NPI provider record: JAMES ABERCROMBIE",
+      "summary": "Name: JAMES ABERCROMBIE\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: COLORADO SPRINGS, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1184204711",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "719-365-6999",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1184204711",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.888Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1528388584",
+      "name": "JEFFREY ABILDGAARD",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GILBERT, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1528388584",
+      "signal": "NPI provider record: JEFFREY ABILDGAARD",
+      "summary": "Name: JEFFREY ABILDGAARD\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: GILBERT, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1528388584",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "480-964-2908",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1528388584",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.456Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1184677346",
+      "name": "JEFFREY ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "COLUMBIA, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1184677346",
+      "signal": "NPI provider record: JEFFREY ADAMS",
+      "summary": "Name: JEFFREY ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: COLUMBIA, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1184677346",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "931-381-2663",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1184677346",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.857Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1790973089",
+      "name": "JON ABBOTT",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "TUCSON, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1790973089",
+      "signal": "NPI provider record: JON ABBOTT",
+      "summary": "Name: JON ABBOTT\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: TUCSON, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1790973089",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "520-444-3474",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1790973089",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.385Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1194829556",
+      "name": "JONATHAN AARONS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "FORT LAUDERDALE, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1194829556",
+      "signal": "NPI provider record: JONATHAN AARONS",
+      "summary": "Name: JONATHAN AARONS\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: FORT LAUDERDALE, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1194829556",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "954-771-8877",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1194829556",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.780Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1649482084",
+      "name": "JOSHUA ABRAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "PHOENIX, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1649482084",
+      "signal": "NPI provider record: JOSHUA ABRAMS",
+      "summary": "Name: JOSHUA ABRAMS\\nTitle: Orthopaedic Surgery DO\\nCompany: \\nLocation: PHOENIX, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1649482084",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "602-944-2900",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1649482084",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.488Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1033195284",
+      "name": "JULIE ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "KALISPELL, MT",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1033195284",
+      "signal": "NPI provider record: JULIE ADAMS",
+      "summary": "Name: JULIE ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: KALISPELL, MT\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1033195284",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "406-752-6784",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1033195284",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.715Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1942240403",
+      "name": "KARIM ABDOLLAHI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "LAGUNA BEACH, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1942240403",
+      "signal": "NPI provider record: KARIM ABDOLLAHI",
+      "summary": "Name: KARIM ABDOLLAHI\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: LAGUNA BEACH, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1942240403",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "949-499-8226",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1942240403",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.211Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1831389865",
+      "name": "KASRA AHMADINIA",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "TULSA, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1831389865",
+      "signal": "NPI provider record: KASRA AHMADINIA",
+      "summary": "Name: KASRA AHMADINIA\\nTitle: Orthopaedic Surgery M.D\\nCompany: \\nLocation: TULSA, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1831389865",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "918-494-2665",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1831389865",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.633Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1295000560",
+      "name": "KEIVAN ABTAHI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "TULSA, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1295000560",
+      "signal": "NPI provider record: KEIVAN ABTAHI",
+      "summary": "Name: KEIVAN ABTAHI\\nTitle: Orthopaedic Surgery D.O.\\nCompany: \\nLocation: TULSA, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1295000560",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "918-494-6980",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1295000560",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.530Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1760916985",
+      "name": "KYLE ACHORS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "KNOXVILLE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1760916985",
+      "signal": "NPI provider record: KYLE ACHORS",
+      "summary": "Name: KYLE ACHORS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: KNOXVILLE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1760916985",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "865-558-4400",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1760916985",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.755Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1093962003",
+      "name": "LALLY ADAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "KNOXVILLE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1093962003",
+      "signal": "NPI provider record: LALLY ADAMS",
+      "summary": "Name: LALLY ADAMS\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: KNOXVILLE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1093962003",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "865-305-9220",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1093962003",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.847Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1992793681",
+      "name": "LANKIKE ABEYEWARDENE",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "OKLAHOMA CITY, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1992793681",
+      "signal": "NPI provider record: LANKIKE ABEYEWARDENE",
+      "summary": "Name: LANKIKE ABEYEWARDENE\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: OKLAHOMA CITY, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1992793681",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "405-775-9350",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1992793681",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.414Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1447235189",
+      "name": "MARTIN ABEL",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "JACKSONVILLE, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1447235189",
+      "signal": "NPI provider record: MARTIN ABEL",
+      "summary": "Name: MARTIN ABEL\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: JACKSONVILLE, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1447235189",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "904-953-2000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1447235189",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.496Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1760703490",
+      "name": "MERRITT ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "CHATTANOOGA, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1760703490",
+      "signal": "NPI provider record: MERRITT ADAMS",
+      "summary": "Name: MERRITT ADAMS\\nTitle: Orthopaedic Surgery M.D\\nCompany: \\nLocation: CHATTANOOGA, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1760703490",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "423-778-2540",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1760703490",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.961Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1649469628",
+      "name": "MICHAEL ABDULIAN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GLENDALE, CA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1649469628",
+      "signal": "NPI provider record: MICHAEL ABDULIAN",
+      "summary": "Name: MICHAEL ABDULIAN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: GLENDALE, CA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1649469628",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "818-547-0608",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1649469628",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.312Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1285693879",
+      "name": "MOHAMMAD ABBASIAN",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "PHOENIX, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1285693879",
+      "signal": "NPI provider record: MOHAMMAD ABBASIAN",
+      "summary": "Name: MOHAMMAD ABBASIAN\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: PHOENIX, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1285693879",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "602-350-0491",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1285693879",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.394Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1003437872",
+      "name": "MOHAMMED ABBAS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "TUCSON, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1003437872",
+      "signal": "NPI provider record: MOHAMMED ABBAS",
+      "summary": "Name: MOHAMMED ABBAS\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: TUCSON, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1003437872",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "520-626-9245",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1003437872",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.351Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1124029699",
+      "name": "PAUL ABBEY",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "HERMITAGE, TN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1124029699",
+      "signal": "NPI provider record: PAUL ABBEY",
+      "summary": "Name: PAUL ABBEY\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: HERMITAGE, TN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1124029699",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "615-885-2778",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1124029699",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.620Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1871599753",
+      "name": "PAUL ABBOTT",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "FRISCO, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1871599753",
+      "signal": "NPI provider record: PAUL ABBOTT",
+      "summary": "Name: PAUL ABBOTT\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: FRISCO, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1871599753",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "970-668-3633",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1871599753",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.866Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1205277449",
+      "name": "PETER ABROMAITIS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "WHEAT RIDGE, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1205277449",
+      "signal": "NPI provider record: PETER ABROMAITIS",
+      "summary": "Name: PETER ABROMAITIS\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: WHEAT RIDGE, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1205277449",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "303-422-9438",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1205277449",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.992Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1659669075",
+      "name": "RASHEED ABIOLA",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "LIVONIA, MI",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1659669075",
+      "signal": "NPI provider record: RASHEED ABIOLA",
+      "summary": "Name: RASHEED ABIOLA\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: LIVONIA, MI\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1659669075",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "734-542-0200",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1659669075",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.899Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1699847400",
+      "name": "RICHARD AADALEN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "MINNEAPOLIS, MN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
+      "signal": "NPI provider record: RICHARD AADALEN",
+      "summary": "Name: RICHARD AADALEN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: MINNEAPOLIS, MN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1699847400",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "612-596-6187",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.283Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1508839333",
+      "name": "RICHARD ABBOTT",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "GREENWOOD VILLAGE, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1508839333",
+      "signal": "NPI provider record: RICHARD ABBOTT",
+      "summary": "Name: RICHARD ABBOTT\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: GREENWOOD VILLAGE, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1508839333",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "303-438-3999",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1508839333",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.818Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1063472108",
+      "name": "RICHARD ABDO",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "CLEARWATER, FL",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1063472108",
+      "signal": "NPI provider record: RICHARD ABDO",
+      "summary": "Name: RICHARD ABDO\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: CLEARWATER, FL\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1063472108",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "727-446-5993",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1063472108",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.962Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1104091438",
+      "name": "RICHARD ACKERSON",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "FRUITA, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1104091438",
+      "signal": "NPI provider record: RICHARD ACKERSON",
+      "summary": "Name: RICHARD ACKERSON\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: FRUITA, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1104091438",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "970-858-2705",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1104091438",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.968Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1699767350",
+      "name": "RICHARD ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "STATESVILLE, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1699767350",
+      "signal": "NPI provider record: RICHARD ADAMS",
+      "summary": "Name: RICHARD ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: STATESVILLE, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1699767350",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "704-873-1851",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1699767350",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.785Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1689638793",
+      "name": "ROBERT ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GLENWOOD SPGS, CO",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1689638793",
+      "signal": "NPI provider record: ROBERT ADAMS",
+      "summary": "Name: ROBERT ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: GLENWOOD SPGS, CO\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1689638793",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "970-384-7140",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1689638793",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.070Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1982929717",
+      "name": "SAMUEL ABRAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "ASHEVILLE, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1982929717",
+      "signal": "NPI provider record: SAMUEL ABRAMS",
+      "summary": "Name: SAMUEL ABRAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: ASHEVILLE, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1982929717",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "828-274-4555",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1982929717",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.612Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1639358617",
+      "name": "SAMUEL ADAMS",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "DURHAM, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1639358617",
+      "signal": "NPI provider record: SAMUEL ADAMS",
+      "summary": "Name: SAMUEL ADAMS\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: DURHAM, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1639358617",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "919-684-8111",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1639358617",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.818Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1518257518",
+      "name": "SARAH ADAMS",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "OKLAHOMA CITY, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1518257518",
+      "signal": "NPI provider record: SARAH ADAMS",
+      "summary": "Name: SARAH ADAMS\\nTitle: Anesthesiology D.O.\\nCompany: \\nLocation: OKLAHOMA CITY, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1518257518",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "405-636-7000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1518257518",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:41.517Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1134386592",
+      "name": "SHARIF ABDUS-SALAAM",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "EL PASO, TX",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1134386592",
+      "signal": "NPI provider record: SHARIF ABDUS-SALAAM",
+      "summary": "Name: SHARIF ABDUS-SALAAM\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: EL PASO, TX\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1134386592",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "915-533-7465",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1134386592",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:39.653Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1306901426",
+      "name": "SHAWN ABBOTT",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "ATLANTA, GA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1306901426",
+      "signal": "NPI provider record: SHAWN ABBOTT",
+      "summary": "Name: SHAWN ABBOTT\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: ATLANTA, GA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1306901426",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "404-727-5658",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1306901426",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:44.093Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1457846412",
+      "name": "SHEHAN ABEYEWARDENE",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "OKLAHOMA CITY, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1457846412",
+      "signal": "NPI provider record: SHEHAN ABEYEWARDENE",
+      "summary": "Name: SHEHAN ABEYEWARDENE\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: OKLAHOMA CITY, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1457846412",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "405-692-3783",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1457846412",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.497Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1609079490",
+      "name": "SHELLEY ABDEL-SAYED",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "PHOENIX, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1609079490",
+      "signal": "NPI provider record: SHELLEY ABDEL-SAYED",
+      "summary": "Name: SHELLEY ABDEL-SAYED\\nTitle: Anesthesiology M.D.\\nCompany: \\nLocation: PHOENIX, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1609079490",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "480-344-5039",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1609079490",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:42.463Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1538394150",
+      "name": "SHIVON ABDULLAH",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "DAVENPORT, IA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1538394150",
+      "signal": "NPI provider record: SHIVON ABDULLAH",
+      "summary": "Name: SHIVON ABDULLAH\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: DAVENPORT, IA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1538394150",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "563-421-1000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1538394150",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.571Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1891778767",
+      "name": "STEPHEN ACKERLEY",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "MUSKOGEE, OK",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1891778767",
+      "signal": "NPI provider record: STEPHEN ACKERLEY",
+      "summary": "Name: STEPHEN ACKERLEY\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: MUSKOGEE, OK\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1891778767",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "918-577-3000",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1891778767",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:37.600Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1457763476",
+      "name": "SUNEETA ACHARYA",
+      "company": "",
+      "title": "Anesthesiology",
+      "location": "WINSTON SALEM, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1457763476",
+      "signal": "NPI provider record: SUNEETA ACHARYA",
+      "summary": "Name: SUNEETA ACHARYA\\nTitle: Anesthesiology MD\\nCompany: \\nLocation: WINSTON SALEM, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1457763476",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "336-716-2255",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1457763476",
+          "whatItProves": "Named provider in NPI Registry: Anesthesiology"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:43.674Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1912499385",
+      "name": "TEMITOPE ADEBAYO",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "LUMBERTON, NC",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1912499385",
+      "signal": "NPI provider record: TEMITOPE ADEBAYO",
+      "summary": "Name: TEMITOPE ADEBAYO\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: LUMBERTON, NC\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1912499385",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "423-331-0154",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1912499385",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.887Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1760826853",
+      "name": "THOMAS ACOTT",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "GILBERT, AZ",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1760826853",
+      "signal": "NPI provider record: THOMAS ACOTT",
+      "summary": "Name: THOMAS ACOTT\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: GILBERT, AZ\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1760826853",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "602-648-5444",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1760826853",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:38.558Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1902908536",
+      "name": "W. ABSI",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "SMYRNA, GA",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1902908536",
+      "signal": "NPI provider record: W. ABSI",
+      "summary": "Name: W. ABSI\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: SMYRNA, GA\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1902908536",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "404-768-1133",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1902908536",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.367Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    },
+    {
+      "id": "npi_1679005391",
+      "name": "ZACHARY ABERMAN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "PLAINVIEW, NY",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1679005391",
+      "signal": "NPI provider record: ZACHARY ABERMAN",
+      "summary": "Name: ZACHARY ABERMAN\\nTitle: Orthopaedic Surgery M.D.\\nCompany: \\nLocation: PLAINVIEW, NY\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1679005391",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "516-719-2546",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1679005391",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T15:52:40.579Z",
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email, no LinkedIn URL, and no CPA/referral route."
+    }
+  ],
+  "allCandidates": [
+    {
+      "id": "cpa_chris-bradfordhttps-news-google-com-rss-articles-cbmivafbvv95cuxon2vtcmw4ci1rswnvaufuc0tubwvzcl9lyme",
+      "name": "Chris Bradford",
+      "company": "Legacy Capital Advisors",
+      "title": "Tax Advisor",
+      "location": "USA",
+      "sourceType": "cpa",
+      "source": "Google News RSS",
+      "sourceUrl": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+      "signal": "Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board - citybiz",
+      "summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;",
+      "fitReason": "Veteran tax advisor with experience, potential for high-value connections and referrals in the financial industry",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [],
+      "evidenceTrail": [
+        {
+          "source": "Google News RSS",
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+          "whatItProves": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;"
+        }
+      ],
+      "score": 90,
+      "grade": "A",
+      "type": "cpa",
+      "isPerson": true,
+      "isCPA": true,
+      "foundAt": "2026-05-03T15:52:34.914Z",
+      "rawSearchResult": {
+        "title": "Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board - citybiz",
+        "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5",
+        "description": "&lt;a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxON2VTcmw4ci1rSWNVaUFUc0tUbWVzcl9LYmE2WEJzeXZHbV8wanZKWUVRVm5OMjVUZV91bm9yb3BsZm93NEZ0RHZkLTdpSmY4c3pvM3loTmdJaFZLNkxlQUdWd2RjMUFaMTZPQkMzUXExRmZKLXlJZkpQT1hON3FtdjVsVDQtVEIwaUhpTUZiVVBNckx4bVg4cF8yemhLSktnY1RacnpoZjM0ZHVjN2VYQ2VjVWg3R3ZsVWRiTw?oc=5\" target=\"_blank\"&gt;Legacy Capital Advisors Adds Veteran Tax Advisor Chris Bradford to Advisory Board&lt;/a&gt;&nbsp;&nbsp;&lt;font color=\"#6f6f6f\"&gt;citybiz&lt;/font&gt;"
+      },
+      "associateReady": false,
+      "linkedinVerify": false,
+      "cpaVerify": true,
+      "skipped": false,
+      "bucket": "cpaVerify",
+      "status": "CPA Verify",
+      "queue": "CPA Verify",
+      "workflowDay": 0,
+      "priorityRank": 3,
+      "bestFirstAction": "Review CPA/referral relevance and manually promote if useful."
+    }
+  ],
   "errors": []
 }
