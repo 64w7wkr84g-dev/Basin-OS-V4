@@ -66,8 +66,8 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: "llama-3.3-70b-versatile"
           MAX_PUBLIC_SEARCHES: "500"
-          MAX_GROQ_CALLS: "80"
-          GROQ_SLEEP_MS: "1200"
+          MAX_GROQ_CALLS: "25"
+          GROQ_SLEEP_MS: "1600"
           MAX_NPI: "60"
           MAX_RSS: "160"
           MAX_LINKEDIN_DISCOVERY: "160"
