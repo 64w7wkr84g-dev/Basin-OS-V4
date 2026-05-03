@@ -31,32 +31,31 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           if [ -z "$BRAVE_API_KEY" ]; then
-            echo "❌ BRAVE_API_KEY is missing from GitHub Actions secrets"
+            echo "BRAVE_API_KEY is missing from GitHub Actions secrets"
             exit 1
           fi
 
           if [ -z "$GROQ_API_KEY" ]; then
-            echo "❌ GROQ_API_KEY is missing from GitHub Actions secrets"
+            echo "GROQ_API_KEY is missing from GitHub Actions secrets"
             exit 1
           fi
 
-          echo "✅ Required GitHub Actions secrets are present"
+          echo "Required GitHub Actions secrets are present"
 
       - name: Verify required project files exist
         run: |
           if [ ! -f "basin-radar-runner.js" ]; then
-            echo "❌ basin-radar-runner.js is missing"
+            echo "basin-radar-runner.js is missing"
             exit 1
           fi
 
           if [ ! -f "package.json" ]; then
-            echo "❌ package.json is missing"
+            echo "package.json is missing"
             exit 1
           fi
 
           mkdir -p public/data
-
-          echo "✅ Required project files are present"
+          echo "Required project files are present"
 
       - name: Syntax check radar runner
         run: node --check basin-radar-runner.js
@@ -66,16 +65,12 @@ jobs:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: "llama-3.3-70b-versatile"
-
-          # Search/enrichment caps
           MAX_PUBLIC_SEARCHES: "500"
-          MAX_GROQ_CALLS: "140"
-
-          # Source balancing
-          # NPI/MPI is only a seed source, not the main engine.
-          MAX_NPI: "45"
+          MAX_GROQ_CALLS: "80"
+          GROQ_SLEEP_MS: "1200"
+          MAX_NPI: "60"
           MAX_RSS: "160"
-          MAX_LINKEDIN_DISCOVERY: "200"
+          MAX_LINKEDIN_DISCOVERY: "160"
           MAX_CPA_DISCOVERY: "100"
         run: |
           echo "Starting Basin Radar Runner..."
@@ -84,76 +79,47 @@ jobs:
       - name: Validate generated radar JSON
         run: |
           if [ ! -f "public/data/radar-leads.json" ]; then
-            echo "❌ public/data/radar-leads.json was not generated"
+            echo "public/data/radar-leads.json was not generated"
             exit 1
           fi
 
           if [ ! -f "radar-leads.json" ]; then
-            echo "❌ radar-leads.json was not generated"
+            echo "radar-leads.json was not generated"
             exit 1
           fi
 
-          node -e "JSON.parse(require('fs').readFileSync('public/data/radar-leads.json','utf8')); console.log('✅ public/data/radar-leads.json valid')"
-          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('✅ root radar-leads.json valid')"
+          node -e "JSON.parse(require('fs').readFileSync('public/data/radar-leads.json','utf8')); console.log('public/data/radar-leads.json valid')"
+          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('root radar-leads.json valid')"
 
       - name: Print radar diagnostics
         run: |
           node <<'NODE'
           const fs = require("fs");
-
           const j = JSON.parse(fs.readFileSync("public/data/radar-leads.json", "utf8"));
           const s = j.stats || {};
-
           console.log("========== BASIN RADAR DIAGNOSTICS ==========");
           console.log("generatedAt:", j.generatedAt || "missing");
           console.log("engine:", j.engine || "missing");
-          console.log("routingRules:", JSON.stringify(j.routingRules || {}, null, 2));
           console.log("stats:", JSON.stringify(s, null, 2));
-
-          const counts = {
+          console.log("bucketCounts:", JSON.stringify({
             readyForAssociate: (j.leads || []).length,
             linkedinVerify: (j.linkedinVerifyCandidates || []).length,
             cpaVerify: (j.cpaVerifyCandidates || []).length,
             research: (j.researchCandidates || []).length,
-            skipped: (j.skipped || j.rejected || []).length,
+            skipped: (j.skippedCandidates || []).length,
             allCandidates: (j.allCandidates || []).length
-          };
-
-          console.log("bucketCounts:", JSON.stringify(counts, null, 2));
-
-          const warnings = [];
-
-          if (!s.braveConfigured) warnings.push("BRAVE appears disconnected in runner output.");
-          if (!s.groqConfigured) warnings.push("GROQ appears disconnected in runner output.");
-          if ((s.publicSearches || 0) < 5) warnings.push(`publicSearches looks low: ${s.publicSearches || 0}`);
-          if ((s.groqCalls || 0) < 3) warnings.push(`groqCalls looks low: ${s.groqCalls || 0}`);
-
-          const nonNpi =
-            (s.rssCollected || 0) +
-            (s.linkedinDiscoveryCollected || 0) +
-            (s.cpaCollected || 0);
-
-          if (nonNpi <= 0) {
-            warnings.push("No RSS, LinkedIn discovery, or CPA candidates were collected. This means the runner is still leaning on NPI/MPI or those search functions are not returning data.");
-          }
-
-          if (warnings.length) {
-            console.log("========== WARNINGS ==========");
-            for (const warning of warnings) console.log("⚠️ " + warning);
-            console.log("The workflow will continue so the JSON can be committed and inspected in the CRM.");
-          } else {
-            console.log("✅ Radar diagnostics look healthy.");
-          }
-
+          }, null, 2));
+          console.log("firstBraveError:", s.firstBraveError || "");
+          console.log("firstGroqError:", s.firstGroqError || "");
+          console.log("firstRssError:", s.firstRssError || "");
+          console.log("firstNpiError:", s.firstNpiError || "");
           console.log("========== SAMPLE ACTIVE CANDIDATES ==========");
           const sample = [
             ...(j.leads || []),
             ...(j.linkedinVerifyCandidates || []),
             ...(j.cpaVerifyCandidates || []),
-            ...(j.researchCandidates || []),
-            ...(j.allCandidates || [])
-          ].slice(0, 10);
-
+            ...(j.researchCandidates || [])
+          ].slice(0, 12);
           for (const lead of sample) {
             console.log(JSON.stringify({
               name: lead.name,
@@ -166,9 +132,7 @@ jobs:
               tags: lead.tags,
               sourceType: lead.sourceType,
               source: lead.source,
-              hasEmail: (lead.contactMethods || []).some(c => c.type === "email"),
-              hasPhone: (lead.contactMethods || []).some(c => c.type === "phone"),
-              hasLinkedIn: (lead.contactMethods || []).some(c => /linkedin/i.test(`${c.type} ${c.value}`))
+              contactMethods: lead.contactMethods
             }, null, 2));
           }
           NODE
@@ -179,6 +143,7 @@ jobs:
           name: basin-radar-debug-json
           path: |
             public/data/radar-leads.json
+            public/data/radar-run-log.json
             radar-leads.json
             radar-research-candidates.json
             radar-rejected.json
