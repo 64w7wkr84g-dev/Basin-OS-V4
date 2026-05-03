@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Basin OS — Clean Bad Leads</title>
+<title>Basin OS — Clean and Reload Verified Leads</title>
 <style>
 body{margin:0;background:#070b10;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:24px}
-.card{max-width:780px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
-h1{margin-top:0}button{background:#d89424;color:#070b10;border:0;border-radius:12px;padding:14px 18px;font-weight:900;font-size:16px}
+.card{max-width:820px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
+button{background:#d89424;color:#070b10;border:0;border-radius:12px;padding:14px 18px;font-weight:900;font-size:16px;margin:6px 6px 6px 0}
 pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radius:12px;padding:14px;color:#b7c4d8;max-height:440px;overflow:auto}
 .warn{border:1px solid #7a3540;background:#2a1218;color:#ffd0d0;border-radius:12px;padding:12px;margin:14px 0}
 .good{border:1px solid #286f4a;background:#0d2519;color:#c6ffdc;border-radius:12px;padding:12px;margin:14px 0}
@@ -15,10 +15,11 @@ pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radi
 </head>
 <body>
 <div class="card">
-<h1>Basin OS Bad Lead Cleaner</h1>
-<p>This removes fake leads from this browser’s localStorage: company names, topics, article fragments, and anything without an actual contact method.</p>
-<div class="warn"><b>Rule:</b> keep only real first-and-last-name people with email, phone, or a direct LinkedIn profile URL. LinkedIn Search and Google Search do not count.</div>
-<button onclick="cleanNow()">Clean Bad Leads Now</button>
+<h1>Basin OS Verified Lead Cleaner</h1>
+<p>This clears old fake leads from this browser and reloads only current <code>radar-leads.json</code> verified leads.</p>
+<div class="warn"><b>Rule:</b> visible lead name must be a real person and must have phone, email, direct LinkedIn profile, or NPI profile/phone.</div>
+<button onclick="cleanOnly()">Clean Existing Bad Leads</button>
+<button onclick="reloadVerified()">Reload Verified GitHub Radar Leads</button>
 <div id="out"></div>
 </div>
 <script>
@@ -46,39 +47,58 @@ function hasActualContact(l){
     if(t.includes('email') && /@/.test(v))return true;
     if(t.includes('phone') && v.replace(/\D/g,'').length>=10)return true;
     if(/linkedin\.com\/in\//i.test(v))return true;
+    if(t.includes('npi') && v)return true;
     return false;
   });
 }
 function keepLead(l){return looksLikePersonName(l.name)&&hasActualContact(l)}
-function cleanNow(){
-  const keys=['basin_os_integrated','basin_os_v4'];
+function getStore(){
+  const key=localStorage.getItem('basin_os_integrated')?'basin_os_integrated':'basin_os_integrated';
+  let store={};
+  try{store=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){store={}}
+  store.radarLeads=Array.isArray(store.radarLeads)?store.radarLeads:[];
+  store.leadWorkflow=Array.isArray(store.leadWorkflow)?store.leadWorkflow:[];
+  store.investors=Array.isArray(store.investors)?store.investors:[];
+  store.radarRejected=Array.isArray(store.radarRejected)?store.radarRejected:[];
+  return {key,store};
+}
+function save(key,store){localStorage.setItem(key,JSON.stringify(store))}
+function cleanStore(store){
   let report=[];
-  for(const key of keys){
-    const raw=localStorage.getItem(key);
-    if(!raw){report.push(key+': not found');continue;}
-    let store;
-    try{store=JSON.parse(raw)}catch(e){report.push(key+': JSON parse failed');continue;}
-    store.radarRejected=Array.isArray(store.radarRejected)?store.radarRejected:[];
-    ['radarLeads','leadWorkflow','investors'].forEach(k=>{
-      if(!Array.isArray(store[k]))return;
-      const before=store[k].length;
-      const kept=[], removed=[];
-      store[k].forEach(l=>keepLead(l)?kept.push(l):removed.push(l));
-      removed.forEach(l=>store.radarRejected.push({
-        id:'local-clean-'+Date.now()+'-'+Math.random().toString(16).slice(2),
-        name:l.name||l.title||'Unknown',
-        company:l.company||'',
-        reason:'Local cleanup: not a verified human/contact lead',
-        skippedAt:new Date().toISOString(),
-        nextEligibleCheck:new Date(Date.now()+14*86400000).toISOString(),
-        original:l
-      }));
-      store[k]=kept;
-      report.push(key+' '+k+': '+before+' → '+kept.length+' kept, '+removed.length+' removed');
-    });
-    localStorage.setItem(key,JSON.stringify(store));
-  }
-  document.getElementById('out').innerHTML='<div class="good"><b>Cleanup complete.</b> Now go back to Basin OS and refresh.</div><pre>'+report.join('\n')+'</pre>';
+  ['radarLeads','leadWorkflow','investors'].forEach(k=>{
+    const before=store[k].length;
+    const kept=[], removed=[];
+    store[k].forEach(l=>keepLead(l)?kept.push(l):removed.push(l));
+    removed.forEach(l=>store.radarRejected.push({
+      id:'local-clean-'+Date.now()+'-'+Math.random().toString(16).slice(2),
+      name:l.name||l.title||'Unknown',
+      company:l.company||'',
+      reason:'Local cleanup: not a verified human/contact lead',
+      skippedAt:new Date().toISOString(),
+      nextEligibleCheck:new Date(Date.now()+14*86400000).toISOString(),
+      original:l
+    }));
+    store[k]=kept;
+    report.push(k+': '+before+' → '+kept.length+' kept, '+removed.length+' removed');
+  });
+  return report;
+}
+function cleanOnly(){
+  const {key,store}=getStore();
+  const report=cleanStore(store);
+  save(key,store);
+  document.getElementById('out').innerHTML='<div class="good"><b>Cleanup complete.</b> Go back to Basin OS and refresh.</div><pre>'+report.join('\n')+'</pre>';
+}
+async function reloadVerified(){
+  const {key,store}=getStore();
+  const cleanReport=cleanStore(store);
+  const res=await fetch('radar-leads.json?v='+Date.now());
+  const data=await res.json();
+  const leads=Array.isArray(data.leads)?data.leads.filter(keepLead):[];
+  store.radarLeads=leads;
+  store.leadWorkflow=leads.map(l=>Object.assign({},l,{bucket:'Day1',workflowDay:1,requiredTasks:{review:false,contact:false,outreach:false,disposition:false,note:false}}));
+  save(key,store);
+  document.getElementById('out').innerHTML='<div class="good"><b>Reload complete.</b> Loaded '+leads.length+' verified leads into this browser.</div><pre>'+cleanReport.join('\n')+'\nLoaded verified leads: '+leads.length+'</pre>';
 }
 </script>
 </body>
