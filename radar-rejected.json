@@ -1,4 +1,149 @@
 {
-  "generatedAt": null,
-  "errors": []
+  "generatedAt": "2026-05-03T11:39:40.471Z",
+  "errors": [
+    {
+      "name": "Mohamad bachir Abiad",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Samer Abou zeid",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Juliana Arenas hoyos",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Shantosh Adhikari sharma",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ossama Abou hassan",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Robert h. Hermann",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ricardo Abreu irizarry",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Zeynep Akdeniz dogan",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Hany Abd-el malek",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ahmed Abdel aal",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Thaer Al azzawi",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Javianna Castellanos ferrer",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Mohammad Bashashati saghezchi",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Yao jen Chang",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Juan Berner gomez",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ricardo Arceo olaiz",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Yasir Abdul ghaffar",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Nikolas St. cyr",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Monica De la paz",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Neil Doctor",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ijlal akbar Ali",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Raquel De sousa lobo ferreira querido",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Zeinab Abou yehia",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Mohannad Al akeel",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Alaa Bou ghannam",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Victor Anaya baez",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Basil Al khatib",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Ahmad Al turk",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Motasem Al maaieh",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Alex aziz Al khoury",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Juan Alberti flor",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "David Alvarez cespedes",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Sadegh Amini koves",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Mariana Abi karam",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Maura Abraham marin",
+      "reason": "NPI missing valid person"
+    },
+    {
+      "name": "Pablo Baltodano fallas",
+      "reason": "NPI missing valid person"
+    }
+  ]
 }
