@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Basin OS — Clean Bad Leads</title>
+<style>
+body{margin:0;background:#070b10;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:24px}
+.card{max-width:780px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
+h1{margin-top:0}button{background:#d89424;color:#070b10;border:0;border-radius:12px;padding:14px 18px;font-weight:900;font-size:16px}
+pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radius:12px;padding:14px;color:#b7c4d8;max-height:440px;overflow:auto}
+.warn{border:1px solid #7a3540;background:#2a1218;color:#ffd0d0;border-radius:12px;padding:12px;margin:14px 0}
+.good{border:1px solid #286f4a;background:#0d2519;color:#c6ffdc;border-radius:12px;padding:12px;margin:14px 0}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Basin OS Bad Lead Cleaner</h1>
+<p>This removes fake leads from this browser’s localStorage: company names, topics, article fragments, and anything without an actual contact method.</p>
+<div class="warn"><b>Rule:</b> keep only real first-and-last-name people with email, phone, or a direct LinkedIn profile URL. LinkedIn Search and Google Search do not count.</div>
+<button onclick="cleanNow()">Clean Bad Leads Now</button>
+<div id="out"></div>
+</div>
+<script>
+function looksLikePersonName(name){
+  name=String(name||'').trim();
+  const parts=name.split(/\s+/);
+  if(parts.length<2||parts.length>3)return false;
+  const first=parts[0].replace(/[^a-zA-Z'-]/g,'').toLowerCase();
+  const last=parts[parts.length-1].replace(/[^a-zA-Z'-]/g,'').toLowerCase();
+  const firstBlock=new Set(['former','system','expert','leading','regional','national','global','essential','financial','transactional','advertising','digital','general','senior','assistant','associate','practice','business','tax','legal','medical','clinical','licensed','professional','strategic','commercial','corporate','private','public','blackrock','westlake','bay','names','email','patent','local','county','state','city','united','north','south','east','west','new','old','best','top','chief','daily','weekly','monthly','annual','dear','press']);
+  const lastBlock=new Set(['assistant','transactional','advertising','strategies','financial','dermatology','partners','legal','clinic','medical','health','practice','group','capital','ventures','services','associates','advisors','consulting','solutions','network','hospital','center','company','firm','llc','inc','news','wire','times','journal','county','state','city','owner','partner','physician','attorney','doctor','cpa','tax','expert','new']);
+  if(firstBlock.has(first)||lastBlock.has(last))return false;
+  if(/[0-9]/.test(name))return false;
+  if(/\b(strategies|financial|partners|legal|capital|ventures|group|llc|inc|firm|clinic|practice|medical|health|associates|company|services|advisors|consulting|solutions|bank|hospital|center|university|news|county|city|state|advertising|transactional|assistant|dermatology)\b/i.test(name))return false;
+  return /^[A-Z][a-zA-Z'.-]{1,}(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'.-]{1,}$/.test(name);
+}
+function hasActualContact(l){
+  if(l.email && /@/.test(String(l.email)))return true;
+  if(l.phone && String(l.phone).replace(/\D/g,'').length>=10)return true;
+  if(l.linkedin && /linkedin\.com\/in\//i.test(String(l.linkedin)))return true;
+  const methods=Array.isArray(l.contactMethods)?l.contactMethods:[];
+  return methods.some(m=>{
+    const v=String(m.value||m.url||'');
+    const t=String(m.type||'').toLowerCase();
+    if(t.includes('email') && /@/.test(v))return true;
+    if(t.includes('phone') && v.replace(/\D/g,'').length>=10)return true;
+    if(/linkedin\.com\/in\//i.test(v))return true;
+    return false;
+  });
+}
+function keepLead(l){return looksLikePersonName(l.name)&&hasActualContact(l)}
+function cleanNow(){
+  const keys=['basin_os_integrated','basin_os_v4'];
+  let report=[];
+  for(const key of keys){
+    const raw=localStorage.getItem(key);
+    if(!raw){report.push(key+': not found');continue;}
+    let store;
+    try{store=JSON.parse(raw)}catch(e){report.push(key+': JSON parse failed');continue;}
+    store.radarRejected=Array.isArray(store.radarRejected)?store.radarRejected:[];
+    ['radarLeads','leadWorkflow','investors'].forEach(k=>{
+      if(!Array.isArray(store[k]))return;
+      const before=store[k].length;
+      const kept=[], removed=[];
+      store[k].forEach(l=>keepLead(l)?kept.push(l):removed.push(l));
+      removed.forEach(l=>store.radarRejected.push({
+        id:'local-clean-'+Date.now()+'-'+Math.random().toString(16).slice(2),
+        name:l.name||l.title||'Unknown',
+        company:l.company||'',
+        reason:'Local cleanup: not a verified human/contact lead',
+        skippedAt:new Date().toISOString(),
+        nextEligibleCheck:new Date(Date.now()+14*86400000).toISOString(),
+        original:l
+      }));
+      store[k]=kept;
+      report.push(key+' '+k+': '+before+' → '+kept.length+' kept, '+removed.length+' removed');
+    });
+    localStorage.setItem(key,JSON.stringify(store));
+  }
+  document.getElementById('out').innerHTML='<div class="good"><b>Cleanup complete.</b> Now go back to Basin OS and refresh.</div><pre>'+report.join('\n')+'</pre>';
+}
+</script>
+</body>
+</html>
