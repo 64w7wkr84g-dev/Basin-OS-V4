@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Basin OS V2 Radar Runner
+ * Basin OS V2.1 Warm Route Radar Runner
  *
  * Automated enrichment routing:
  * - NPI, RSS/public news, Brave public search, and LinkedIn URL discovery.
@@ -137,16 +137,17 @@ function scoreLead(lead) {
 
   if (hasContact(lead, 'email')) score += 18;
   if (hasContact(lead, 'linkedin')) score += 16;
-  if (hasContact(lead, 'phone')) score += 10;
+  if (hasContact(lead, 'phone')) score += 4;
   if (contactCount(lead) >= 2) score += 12;
   if (evidenceCount >= 2) score += 9;
   if (evidenceCount >= 3) score += 5;
   if (lead.sourceType === 'rss') score += 14;
   if (lead.sourceType === 'linkedin') score += 14;
   if (lead.sourceType === 'public') score += 6;
-  if (lead.sourceType === 'npi') score -= 2;
+  if (lead.sourceType === 'npi') score -= 6;
 
   if (!hasContact(lead) && lead.sourceType === 'npi') score -= 24;
+  if (hasContact(lead, 'phone') && !hasContact(lead, 'email') && !hasContact(lead, 'linkedin')) score -= 10;
   if (!isPersonName(lead.name)) score -= 40;
 
   score = Math.max(0, Math.min(100, Math.round(score)));
@@ -168,26 +169,21 @@ function routeLead(lead) {
   const hasEmail = hasContact(lead, 'email');
   const hasLinkedIn = hasContact(lead, 'linkedin');
   const hasPhone = hasContact(lead, 'phone');
-  const evidenceCount = (lead.evidenceTrail || []).length;
 
-  const trustedPhoneRoute = hasPhone && (
-    lead.sourceType === 'npi' ||
-    evidenceCount >= 2 ||
-    /registry|provider|practice|public search/i.test((lead.evidenceTrail || []).map(e => `${e.source} ${e.whatItProves}`).join(' '))
-  );
-
-  const ready = Boolean(namedPerson && (hasEmail || hasLinkedIn || trustedPhoneRoute) && lead.score >= 58);
+  // Basin Day 1 should start with an email or LinkedIn touch whenever possible.
+  // Therefore phone-only NPI records are NOT true associate-ready leads.
+  const warmRoute = hasEmail || hasLinkedIn;
+  const ready = Boolean(namedPerson && warmRoute && lead.score >= 58);
 
   lead.associateReady = ready;
-  lead.status = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : 'Research Needed');
-  lead.queue = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : (hasPhone ? 'Phone/Public Research' : 'Contact Route Needed'));
-  lead.bucket = ready ? 'ready' : (hasLinkedIn ? 'linkedin-verify' : 'research');
+  lead.status = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : (hasPhone ? 'Phone-Only / Warm Route Needed' : 'Research Needed'));
+  lead.queue = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : (hasPhone ? 'Phone-Only / Find Email or LinkedIn' : 'Contact Route Needed'));
+  lead.bucket = ready ? 'ready' : (hasLinkedIn ? 'linkedin-verify' : (hasPhone ? 'phone-research' : 'research'));
   lead.workflowDay = ready ? 1 : 0;
 
   if (ready && hasEmail) lead.bestFirstAction = 'Day 1: send evidence-based email first, then call if appropriate.';
   else if (ready && hasLinkedIn) lead.bestFirstAction = 'Day 1: manually open LinkedIn URL, confirm identity, then send reviewed LinkedIn touch.';
-  else if (ready && hasPhone) lead.bestFirstAction = 'Day 1: phone route is available from public/verified evidence. Review evidence first, then call and ask for correct email/direct contact.';
-  else if (hasLinkedIn) lead.bestFirstAction = 'LinkedIn Verify: open the profile URL manually, confirm identity, then move to Ready.';
+  else if (hasPhone) lead.bestFirstAction = 'Phone-only record. Do not treat as warm Day 1. Use Brave/public evidence to find email or LinkedIn; manually promote only if you choose to work a cold phone route.';
   else lead.bestFirstAction = 'Research needed: confirm email, direct LinkedIn URL, phone, or second public evidence source before associate cadence.';
 
   lead.priorityRank = sourceRank(lead);
@@ -271,11 +267,15 @@ async function enrichLead(lead, searchBudget) {
   const company = lead.company || '';
 
   const queries = [
-    `site:linkedin.com/in "${baseName}" "${role}" "${loc}"`,
-    `"${baseName}" "${role}" LinkedIn`,
-    `"${baseName}" "${company || role}" email phone`,
-    `"${baseName}" "${loc}" "${role}"`,
-    `"${baseName}" "${company || loc}" physician profile`
+    `site:linkedin.com/in "${baseName}"`,
+    `site:linkedin.com/in "${baseName}" "${role}"`,
+    `site:linkedin.com/in "${baseName}" "${loc}"`,
+    `"${baseName}" "${role}" "LinkedIn"`,
+    `"${baseName}" "${company || role}" email`,
+    `"${baseName}" "${company || role}" contact`,
+    `"${baseName}" "${loc}" "${role}" email`,
+    `"${baseName}" "${company || loc}" profile`,
+    `"${baseName}" "${company || loc}" practice`
   ];
 
   for (const q of queries) {
@@ -418,14 +418,16 @@ async function fetchRssSeeds(limit = MAX_RSS) {
 async function fetchLinkedInDiscovery(limit = MAX_LINKEDIN_DISCOVERY) {
   if (!BRAVE_API_KEY) return [];
   const queries = [
-    'site:linkedin.com/in physician founder medical practice Texas',
-    'site:linkedin.com/in orthopedic surgeon partner Texas',
-    'site:linkedin.com/in anesthesiologist medical director USA',
-    'site:linkedin.com/in dentist practice owner Texas',
-    'site:linkedin.com/in CPA tax partner business owner Texas',
-    'site:linkedin.com/in attorney law partner business owner Texas',
-    'site:linkedin.com/in CEO founder acquisition liquidity event Texas',
-    'site:linkedin.com/in oil gas investor CPA tax planning'
+    'site:linkedin.com/in "physician" "practice owner" Texas',
+    'site:linkedin.com/in "orthopedic surgeon" "Texas"',
+    'site:linkedin.com/in "anesthesiologist" "medical director"',
+    'site:linkedin.com/in "dentist" "practice owner"',
+    'site:linkedin.com/in "CPA" "tax partner" "Texas"',
+    'site:linkedin.com/in "attorney" "law partner" "Texas"',
+    'site:linkedin.com/in "CEO" "founder" "acquisition"',
+    'site:linkedin.com/in "oil and gas" "investor" "CPA"',
+    'site:linkedin.com/in "surgeon" "private practice"',
+    'site:linkedin.com/in "business owner" "liquidity event"'
   ];
 
   const out = [];
@@ -551,16 +553,16 @@ async function main() {
 
   const output = {
     generatedAt: now(),
-    engine: 'Basin OS V2 Radar Runner automated enrichment',
+    engine: 'Basin OS V2.1 Warm Route Radar Runner automated enrichment',
     compliance: {
       linkedin: 'Does not scrape LinkedIn pages. Stores possible profile URLs from Brave public search only; manual verification recommended.',
       outreach: 'No auto-send. Manual review required before email, LinkedIn, SMS, or phone outreach.',
       qualification: 'Accredited status is never assumed; professional role only supports screening priority.'
     },
     routingRules: {
-      ready: 'Named person + email OR LinkedIn URL OR trusted public phone route; score >= 58.',
+      ready: 'Named person + email OR LinkedIn URL; score >= 58. Phone-only records stay in phone research unless manually promoted.',
       linkedinPriority: 'LinkedIn/email/RSS enriched records rank above plain NPI seeds.',
-      npi: 'NPI phone can become Ready when it is tied to a named provider; still ranks below email/LinkedIn/RSS.'
+      npi: 'NPI phone confirms a person/contact route, but does not make a warm Day 1 lead without email or LinkedIn.'
     },
     stats: {
       totalFound: all.length,

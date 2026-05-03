@@ -1,43 +1,36 @@
-# Basin OS V2.0 — Complete Visual + Functional Rebuild
+# Basin OS V2.1 — Warm Route Priority Rebuild
 
-This is the full clean replacement package. It is designed for deleting the old broken repo files and uploading one complete, cohesive system.
-
-## What this rebuild includes
+This update fixes the problem shown in V2.0:
 
 ```text
-1. One clean index.html
-2. One app renderer: js/app.js
-3. One visual system: css/styles.css
-4. One GitHub Actions workflow: .github/workflows/radar.yml
-5. One radar runner: basin-radar-runner.js
-6. Valid starter JSON files
-7. Lead Radar, Workflow, LinkedIn Verify, Investor Pipeline, CPA Pipeline, Call Notes, Follow-Up Calendar, Director Handoffs, Analytics, API Center, and Settings
-8. Integrated call notes inside every full lead card
-9. Printable director handoff sheet from every full lead card
-10. Contact methods displayed directly on every lead card
-11. Source filters across Ready, Research, LinkedIn, Email, Phone, RSS/Public, NPI, A Grade, Investor, and CPA
-12. Automated runner enrichment through Brave public search
-13. LinkedIn URL discovery without LinkedIn scraping
-14. Ready/Research routing based on name, evidence, contact route, and score
+Ready 136
+LinkedIn 0
+Email 0
+Phone 252
 ```
 
-## Delete old files first
+That was wrong for the Basin cadence because Day 1 should start with email or LinkedIn whenever possible.
 
-Delete old files that are not part of this package:
+## V2.1 routing philosophy
 
 ```text
-start.html
-salesnav-npi-companion.html
-lead-factory-importer.html
-cleanup-bad-leads.html
-index-snippet-add-before-body.html
-README_V*.md patch files
-old js/basin-v*.js hotfix files
-old js/lead-factory-v6.js
-old duplicate CSS files
+Ready = named person + email OR LinkedIn URL
+Phone-only NPI = Phone Research / Warm Route Needed
+LinkedIn URL = LinkedIn Verify or Ready, depending on score
+Email = Email First / Ready
+RSS/Public = Research unless enriched with warm route
 ```
 
-You can also delete everything and then upload this ZIP, as long as you preserve the folder structure.
+## What changed
+
+```text
+1. Phone-only NPI no longer becomes true Day 1 Ready.
+2. Brave runs harder for LinkedIn URLs and public emails.
+3. Brave query budget increased from 450 to 900.
+4. LinkedIn discovery budget increased from 80 to 120.
+5. NPI phone-only leads remain visible but do not pollute the ready workflow.
+6. Ready leads now better match the actual 7-stage cadence.
+```
 
 ## Upload every file in this ZIP
 
@@ -59,17 +52,13 @@ radar-rejected.json
 README.md
 ```
 
-## Critical folder path
-
-The workflow must be exactly here:
+## Critical workflow file path
 
 ```text
 .github/workflows/radar.yml
 ```
 
-If it is not there, GitHub Actions will not show **Basin Radar Daily**.
-
-## Required secret
+## Required GitHub secret
 
 ```text
 BRAVE_API_KEY
@@ -83,14 +72,26 @@ GROQ_API_KEY
 
 ## After upload
 
-1. Open GitHub → Actions.
-2. Select **Basin Radar Daily**.
-3. Click **Run workflow**.
-4. Wait for green.
-5. Open:
-   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-command`
-6. Click **Load Shared GitHub Radar**.
+1. GitHub → Actions → Basin Radar Daily → Run workflow.
+2. Wait for green.
+3. Open:
+   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-1-warm-route`
+4. Click **Load Shared GitHub Radar**.
 
-## Compliance
+## Expected result
 
-The runner does not scrape LinkedIn pages. It only stores possible LinkedIn profile URLs returned by Brave public search. You manually open and verify profiles. No auto-send exists.
+Do not expect every lead to become Ready. That would be fake quality.
+
+Expected healthy result:
+
+```text
+Ready = warm-route leads with email or LinkedIn
+Research/Phone Queue = NPI phone-only records
+LinkedIn Verify = public LinkedIn URLs that need manual confirmation
+Email = public emails found by Brave
+```
+
+If LinkedIn and Email are still zero after this, the issue is either:
+1. Brave is not returning public LinkedIn/profile/email results for the queries.
+2. The Brave API key is not actually available to GitHub Actions.
+3. The Action is still running an old runner file.

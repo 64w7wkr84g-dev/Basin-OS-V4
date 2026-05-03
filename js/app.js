@@ -213,7 +213,9 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     const hasEmail = contacts.some(c => c.type === 'email' || /@/.test(c.value));
     const hasPhone = contacts.some(c => c.type === 'phone' || /\d{3}.*\d{3}.*\d{4}/.test(c.value));
     const hasWarmRoute = hasLinkedIn || hasEmail;
-    const isReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === 'ready' || raw.status === 'Ready to Work' || raw.queue === 'Ready to Work' || (hasWarmRoute && score >= 65));
+    const phoneOnly = hasPhone && !hasWarmRoute;
+    const rawReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === 'ready' || raw.status === 'Ready to Work' || raw.queue === 'Ready to Work');
+    const isReady = Boolean((rawReady && !phoneOnly) || (hasWarmRoute && score >= 58));
 
     const sourceType = detectSource(raw, contacts);
     const quality = computeQuality({ raw, score, hasLinkedIn, hasEmail, hasPhone, evidence, sourceType, isReady });
@@ -305,7 +307,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     if (!isReady) return 'Research needed: find or confirm email, direct LinkedIn URL, phone, or second public evidence source before associate cadence.';
     if (hasEmail) return 'Day 1: send evidence-based email first, then call if phone is available.';
     if (hasLinkedIn) return 'Day 1: manually open LinkedIn URL, confirm identity, then send reviewed LinkedIn connection/note.';
-    if (hasPhone) return 'Day 1: phone route is available from public/verified evidence. Call only after reviewing the evidence trail; ask for correct email/direct contact during the conversation.';
+    if (hasPhone) return 'Phone-only: not Day 1 ready for warm cadence. Use research links to find email or LinkedIn first; call only if you choose to work a cold phone route.';
     return 'Do not work yet. Confirm contact route first.';
   }
 
@@ -589,7 +591,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
         <div class="panel-head"><div><div class="panel-title">System Truth</div><div class="panel-sub">One data model. No iframe. No duplicate old pages. No patch loops.</div></div></div>
         <div class="panel-body">
           <div class="notice">
-            A record is not treated as associate-ready unless it has a real person, enough profile context, and at least one usable contact route or manual confirmation. NPI-only records remain in Research until enriched by public search, email, LinkedIn URL, or a second evidence source.
+            A record is not treated as associate-ready unless it has a real person and a warm contact route: email or LinkedIn URL. NPI phone-only records remain in Research/Phone queue until enriched or manually promoted.
           </div>
         </div>
       </div>
@@ -639,11 +641,11 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
 
     $('#page-workflow').innerHTML = `
       <div class="notice" style="margin-bottom:16px">
-        Required execution: every ready lead keeps grade, score, contact method tags, qualification status, evidence trail, notes, follow-up, and handoff history. Day 1 starts with email or LinkedIn when available; phone-only records become ready only when the phone is tied to a named person through NPI or another public/verified source. Email and LinkedIn still rank higher.
+        Required execution: every ready lead keeps grade, score, contact method tags, qualification status, evidence trail, notes, follow-up, and handoff history. Day 1 starts with email or LinkedIn when available; Ready means email or LinkedIn warm route exists. Phone-only NPI records stay in research/phone queue until a warm route is found or manually promoted.
       </div>
       <div class="grid grid-3" style="margin-bottom:16px">
-        ${kpi(ready.length, 'Ready Leads')}
-        ${kpi(research.length, 'Research / Prep')}
+        ${kpi(ready.length, 'Warm-Route Ready')}
+        ${kpi(research.length, 'Research / Phone Queue')}
         ${kpi(counts().linkedin, 'LinkedIn / Verify')}
       </div>
       <div class="panel" style="margin-bottom:16px">
@@ -813,7 +815,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
           <div class="panel-head"><div><div class="panel-title">Brave / GitHub Actions</div><div class="panel-sub">Production search does not run from the webpage.</div></div></div>
           <div class="panel-body">
             <div class="notice good">
-              Brave status is based on <strong>publicSearches</strong> inside <strong>data/radar-leads.json</strong>. Browser Brave tests were removed because CORS makes them unreliable and misleading.
+              Brave status is based on <strong>publicSearches</strong> inside <strong>data/radar-leads.json</strong>. V2.1 uses Brave to hunt for LinkedIn URLs, public emails, practice pages, and second evidence sources before routing leads.
             </div>
             <pre class="code">Required GitHub Secret:
 BRAVE_API_KEY
