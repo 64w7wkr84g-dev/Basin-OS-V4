@@ -1,4 +1,4 @@
-/* Basin OS V6 — Lead Factory / CRM Overlay
+/* Basin OS V6.1 — Lead Factory / CRM Overlay
    Append-only module. It does not scrape LinkedIn or automate outreach.
    It turns raw public/source records into CRM-style lead cards with:
    - visible clickable contact methods
@@ -243,6 +243,86 @@
     day10: ['Close-loop or breakup message', 'Final disposition', 'Document final reason', 'Select disposition', 'Add note']
   };
 
+
+  async function loadJsonSafe(path, fallback){
+    try{
+      const r = await fetch(path + '?v=' + Date.now(), { cache:'no-store' });
+      if(!r.ok) throw new Error(r.status + ' ' + r.statusText);
+      return await r.json();
+    }catch(e){
+      return Object.assign({_missing:true,_error:String(e.message||e)}, fallback || {});
+    }
+  }
+
+  function importLeadFactoryArrays(activeRaw, phoneRaw, researchRaw, sourceLabel){
+    const s = loadStore();
+
+    const ready = (activeRaw || []).map(x => normalizeLead(Object.assign({}, x, { bucket:'day1' }), 'day1'));
+    const phone = (phoneRaw || []).map(x => normalizeLead(Object.assign({}, x, { bucket:'phoneverify' }), 'phoneverify'));
+    const research = (researchRaw || []).map(x => normalizeLead(Object.assign({}, x, { bucket:'needsresearch', isResearchCandidate:true }), 'needsresearch'));
+
+    function dedupe(arr){
+      const seen = new Set();
+      const out = [];
+      arr.forEach(l => {
+        const key = fp(l);
+        if(!key || seen.has(key)) return;
+        seen.add(key);
+        out.push(l);
+      });
+      return out.sort((a,b)=>(b.score||0)-(a.score||0));
+    }
+
+    s.leadFactory.leads = dedupe(ready);
+    s.leadFactory.phoneVerify = dedupe(phone);
+    s.leadFactory.research = dedupe(research);
+    s.leadFactory.lastImportedAt = now();
+    s.leadFactory.lastImportSource = sourceLabel || 'radar JSON';
+
+    // Keep legacy counters/pages from showing empty when the actual work is in phone/research.
+    s.radarLeads = s.leadFactory.leads.concat(s.leadFactory.phoneVerify);
+    s.leadWorkflow = s.leadFactory.leads
+      .concat(s.leadFactory.phoneVerify)
+      .concat(s.leadFactory.research);
+
+    s.leadFactory.activity.unshift({
+      id: uid('act'),
+      text: `Imported Lead Factory data: ${s.leadFactory.leads.length} ready, ${s.leadFactory.phoneVerify.length} phone verify, ${s.leadFactory.research.length} research`,
+      createdAt: now()
+    });
+
+    saveStore(s);
+    return s.leadFactory;
+  }
+
+  async function importFromGitHubRadar(force){
+    const s0 = loadStore();
+    const currentTotal = (s0.leadFactory.leads||[]).length + (s0.leadFactory.phoneVerify||[]).length + (s0.leadFactory.research||[]).length;
+    if(!force && currentTotal > 0) return s0.leadFactory;
+
+    const activeData = await loadJsonSafe('radar-leads.json', { leads:[], phoneOnlyCandidates:[], researchCandidates:[], stats:{} });
+    const phoneData = await loadJsonSafe('radar-phone-only-candidates.json', { candidates:null, stats:{} });
+    const researchData = await loadJsonSafe('radar-research-candidates.json', { candidates:null, stats:{} });
+
+    const activeRaw = Array.isArray(activeData.leads) ? activeData.leads : [];
+    const phoneRaw = Array.isArray(phoneData.candidates) ? phoneData.candidates : (Array.isArray(activeData.phoneOnlyCandidates) ? activeData.phoneOnlyCandidates : []);
+    const researchRaw = Array.isArray(researchData.candidates) ? researchData.candidates : (Array.isArray(activeData.researchCandidates) ? activeData.researchCandidates : []);
+
+    const lf = importLeadFactoryArrays(activeRaw, phoneRaw, researchRaw, 'GitHub radar JSON');
+
+    // Visible debug so we can see exactly what was loaded.
+    console.log('[Basin Lead Factory] imported', {
+      ready: lf.leads.length,
+      phoneVerify: lf.phoneVerify.length,
+      research: lf.research.length,
+      activeStats: activeData.stats,
+      usedPhoneFallback: !Array.isArray(phoneData.candidates),
+      usedResearchFallback: !Array.isArray(researchData.candidates)
+    });
+
+    return lf;
+  }
+
   function rebuildLeadFactory(){
     const s = loadStore();
     const allRaw = []
@@ -353,7 +433,8 @@
           <p>Candidate → verified prospect → associate-ready lead. No LinkedIn scraping; manual links and public evidence only.</p>
         </div>
         <div class="lf-actions">
-          <button class="lf-btn" onclick="BasinLeadFactory.rebuild()">Rebuild from Current Data</button>
+          <button class="lf-btn primary" onclick="BasinLeadFactory.rebuild()">Load/Refresh GitHub Radar Leads</button>
+          <button class="lf-btn" onclick="BasinLeadFactory.rebuildLocal()">Rebuild from Browser Data</button>
           <button class="lf-btn primary" onclick="BasinLeadFactory.addManualLead()">+ Manual Lead</button>
           <button class="lf-btn danger" onclick="BasinLeadFactory.close()">Close</button>
         </div>
@@ -500,10 +581,11 @@
   }
 
   window.BasinLeadFactory = {
-    open(){ rebuildLeadFactory(); openOverlay(); },
+    async open(){ await importFromGitHubRadar(false); rebuildLeadFactory(); openOverlay(); },
     close: closeOverlay,
     closeDetail(){ const d=$('#lf-detail-overlay'); if(d) d.style.display='none'; },
-    rebuild(){ const lf=rebuildLeadFactory(); openOverlay(); toast(`Lead Factory rebuilt: ${(lf.leads||[]).length} ready, ${(lf.phoneVerify||[]).length} phone verify, ${(lf.research||[]).length} research`); },
+    async rebuild(){ await importFromGitHubRadar(true); const lf=rebuildLeadFactory(); openOverlay(); toast(`Lead Factory loaded: ${(lf.leads||[]).length} ready, ${(lf.phoneVerify||[]).length} phone verify, ${(lf.research||[]).length} research`); },
+    rebuildLocal(){ const lf=rebuildLeadFactory(); openOverlay(); toast(`Lead Factory rebuilt locally: ${(lf.leads||[]).length} ready, ${(lf.phoneVerify||[]).length} phone verify, ${(lf.research||[]).length} research`); },
     showQueue(key,btn){
       $$('.lf-tab').forEach(x=>x.classList.remove('active')); if(btn) btn.classList.add('active');
       const s=loadStore(), lf=s.leadFactory||rebuildLeadFactory();
@@ -596,10 +678,18 @@
     });
   }
 
-  function init(){
+  async function init(){
     addCss();
     addLaunchButton();
-    try { rebuildLeadFactory(); } catch(e) { console.warn('Lead Factory rebuild skipped', e); }
+    try {
+      // The prior version only rebuilt from browser localStorage.
+      // That is why you saw 0: the GitHub radar JSON had 250 phone-verify + 60 research records,
+      // but they were never imported into the browser store.
+      await importFromGitHubRadar(false);
+      rebuildLeadFactory();
+    } catch(e) {
+      console.warn('Lead Factory auto-import/rebuild skipped', e);
+    }
     enhanceExistingCards();
     const mo = new MutationObserver(()=>{ clearTimeout(window.__lfEnhanceTimer); window.__lfEnhanceTimer=setTimeout(enhanceExistingCards,250); });
     mo.observe(document.body,{childList:true,subtree:true});
