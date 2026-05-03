@@ -5,5 +5,5 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const radar = await getRadarData();
-  return <BasinOSApp radarData={radar} initialPage="settings" />;
+  return <BasinOSApp radarData={radar} initialPage="analytics" />;
 }

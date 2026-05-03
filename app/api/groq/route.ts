@@ -1,37 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { extractJsonObject, groqDraftSchema } from "@/lib/groq";
+import { extractJsonObject, groqAnalyzeSchema, groqDraftSchema } from "@/lib/groq";
 
 export const runtime = "nodejs";
 
 const requestSchema = z.object({
-  mode: z.enum(["draftSequence", "analyzeLead"]).default("draftSequence"),
-  linkedinBio: z.string().min(20).max(8000),
-  evidenceTrail: z.string().max(8000).default(""),
-  lead: z.object({
-    id: z.string(),
-    name: z.string().nullable(),
-    company: z.string().nullable().optional(),
-    title: z.string().nullable().optional(),
-    signal: z.string().optional(),
-    summary: z.string().optional(),
-    fitReason: z.string().optional(),
-    score: z.number().optional(),
-    grade: z.string().optional(),
-    isCPA: z.boolean().optional()
-  })
+  mode: z.enum(["draftSequence", "analyzeLead", "morningBrief", "directorHandoff"]).default("draftSequence"),
+  linkedinBio: z.string().max(9000).optional().default(""),
+  evidenceTrail: z.string().max(9000).optional().default(""),
+  lead: z.any().optional(),
+  context: z.string().max(12000).optional().default("")
 });
 
 const bucket = new Map<string, { count: number; resetAt: number }>();
 const WINDOW_MS = 60_000;
-const MAX_REQUESTS_PER_WINDOW = 18;
+const MAX_REQUESTS = 24;
 
 function getClientKey(request: NextRequest) {
-  return (
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "local"
-  );
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "local";
 }
 
 function checkRateLimit(key: string) {
@@ -41,86 +27,71 @@ function checkRateLimit(key: string) {
     bucket.set(key, { count: 1, resetAt: now + WINDOW_MS });
     return true;
   }
-  if (entry.count >= MAX_REQUESTS_PER_WINDOW) return false;
+  if (entry.count >= MAX_REQUESTS) return false;
   entry.count += 1;
   return true;
 }
 
-export async function POST(request: NextRequest) {
+async function callGroq(systemPrompt: string, userPrompt: string, maxTokens = 900) {
   const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error("Server GROQ_API_KEY is not configured.");
   const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-  if (!apiKey) {
-    return NextResponse.json({ error: "Server GROQ_API_KEY is not configured." }, { status: 500 });
-  }
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      max_tokens: maxTokens,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ]
+    })
+  });
 
-  const clientKey = getClientKey(request);
-  if (!checkRateLimit(clientKey)) {
-    return NextResponse.json({ error: "Rate limit exceeded. Wait one minute and try again." }, { status: 429 });
-  }
+  if (!response.ok) throw new Error(`Groq API failed: ${await response.text()}`);
+  const json = await response.json();
+  return json.choices?.[0]?.message?.content ?? "";
+}
 
-  let payload: z.infer<typeof requestSchema>;
-
+export async function POST(request: NextRequest) {
   try {
-    payload = requestSchema.parse(await request.json());
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Invalid request payload.", detail: error instanceof Error ? error.message : String(error) },
-      { status: 400 }
-    );
-  }
-
-  const systemPrompt =
-    `You are a compliance-strict Oil & Gas investment SDR. Using the pasted LinkedIn bio and this public signal, draft a Day 1 outreach email offering our Beginner's Guide to NOWI (do NOT guarantee returns or give tax advice), and a Day 3 soft phone script. Output as strict JSON: { "email": "...", "call": "..." }.`;
-
-  const userPrompt = `
-Lead:
-Name: ${payload.lead.name ?? "Unknown"}
-Title: ${payload.lead.title ?? "Unknown"}
-Company: ${payload.lead.company ?? "Unknown"}
-Signal: ${payload.lead.signal ?? payload.lead.summary ?? ""}
-AI fitReason: ${payload.lead.fitReason ?? ""}
-Score/Grade: ${payload.lead.score ?? "N/A"} / ${payload.lead.grade ?? "N/A"}
-CPA Flag: ${payload.lead.isCPA ? "true" : "false"}
-
-Evidence Trail:
-${payload.evidenceTrail}
-
-Pasted LinkedIn Bio:
-${payload.linkedinBio}
-`.trim();
-
-  try {
-    const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model,
-        temperature: 0.2,
-        max_tokens: 900,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ]
-      })
-    });
-
-    if (!groqResponse.ok) {
-      const text = await groqResponse.text();
-      return NextResponse.json({ error: "Groq API request failed.", detail: text }, { status: 502 });
+    if (!checkRateLimit(getClientKey(request))) {
+      return NextResponse.json({ error: "Rate limit exceeded. Wait one minute and try again." }, { status: 429 });
     }
 
-    const json = await groqResponse.json();
-    const content = json.choices?.[0]?.message?.content ?? "";
-    const parsed = groqDraftSchema.parse(extractJsonObject(content));
+    const payload = requestSchema.parse(await request.json());
 
-    return NextResponse.json(parsed);
+    if (payload.mode === "draftSequence") {
+      if (!payload.linkedinBio || payload.linkedinBio.length < 20) {
+        return NextResponse.json({ error: "Paste LinkedIn bio/about text before drafting." }, { status: 400 });
+      }
+
+      const systemPrompt = `You are a compliance-strict Oil & Gas investment SDR. Using the pasted LinkedIn bio and this public signal, draft a Day 1 outreach email offering our Beginner's Guide to NOWI (do NOT guarantee returns or give tax advice), and a Day 3 soft phone script. Output as strict JSON: { "email": "...", "call": "..." }.`;
+      const userPrompt = `Lead JSON:\n${JSON.stringify(payload.lead || {}, null, 2)}\n\nEvidence Trail:\n${payload.evidenceTrail}\n\nLinkedIn Bio:\n${payload.linkedinBio}`;
+      const content = await callGroq(systemPrompt, userPrompt, 1000);
+      return NextResponse.json(groqDraftSchema.parse(extractJsonObject(content)));
+    }
+
+    if (payload.mode === "analyzeLead" || payload.mode === "directorHandoff") {
+      const systemPrompt = `You are a compliance-strict Basin Ventures sales analyst. Return strict JSON only: { "summary": "...", "recommendedRoute": "...", "likelyObjection": "...", "directorBrief": "..." }. Do not guarantee returns, do not provide tax advice, and do not assume accredited status.`;
+      const userPrompt = `Lead JSON:\n${JSON.stringify(payload.lead || {}, null, 2)}\n\nContext:\n${payload.context}\n\nEvidence:\n${payload.evidenceTrail}`;
+      const content = await callGroq(systemPrompt, userPrompt, 900);
+      return NextResponse.json(groqAnalyzeSchema.parse(extractJsonObject(content)));
+    }
+
+    if (payload.mode === "morningBrief") {
+      const systemPrompt = `You are a compliance-strict sales operations assistant. Return plain text only. Give a concise morning brief with highest leverage actions, top verified leads, overdue follow-ups, and compliance reminders.`;
+      const content = await callGroq(systemPrompt, payload.context, 900);
+      return NextResponse.json({ brief: content });
+    }
+
+    return NextResponse.json({ error: "Unsupported mode." }, { status: 400 });
   } catch (error) {
     return NextResponse.json(
-      { error: "Unable to generate outreach draft.", detail: error instanceof Error ? error.message : String(error) },
+      { error: error instanceof Error ? error.message : "Unknown Groq proxy error." },
       { status: 500 }
     );
   }

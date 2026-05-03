@@ -5,14 +5,15 @@ export const groqDraftSchema = z.object({
   call: z.string().min(1)
 });
 
-export function extractJsonObject(text: string) {
-  const cleaned = text
-    .trim()
-    .replace(/^```json/i, "")
-    .replace(/^```/i, "")
-    .replace(/```$/i, "")
-    .trim();
+export const groqAnalyzeSchema = z.object({
+  summary: z.string().min(1),
+  recommendedRoute: z.string().min(1),
+  likelyObjection: z.string().min(1),
+  directorBrief: z.string().min(1)
+});
 
+export function extractJsonObject(text: string) {
+  const cleaned = text.trim().replace(/^```json/i, "").replace(/^```/i, "").replace(/```$/i, "").trim();
   try {
     return JSON.parse(cleaned);
   } catch {

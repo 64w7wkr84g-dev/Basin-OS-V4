@@ -1,19 +1,15 @@
 export type LeadGrade = "A" | "B" | "C" | "D";
-export type LeadBucket = "ready" | "linkedinVerify" | "cpaVerify" | "skipped" | "research";
-export type ContactType = "email" | "phone" | "linkedin" | "website" | "other";
+export type LeadBucket = "ready" | "linkedinVerify" | "cpaVerify" | "research" | "skipped";
+export type PageKey =
+  | "dashboard" | "lead-radar" | "leads" | "linkedin-builder" | "rss-monitor"
+  | "investor-profiler" | "cpa-profiler" | "sequence-builder" | "call-coach"
+  | "call-notes" | "director-handoffs" | "follow-up" | "analytics" | "playbook"
+  | "api-command-center" | "settings";
 
-export interface ContactMethod {
-  type: ContactType | string;
-  value: string;
-  source?: string;
-}
-
-export interface EvidenceItem {
-  source: string;
-  url?: string;
-  whatItProves?: string;
-  capturedAt?: string;
-}
+export interface ContactMethod { type: string; value: string; source?: string; }
+export interface EvidenceItem { source: string; url?: string; whatItProves?: string; capturedAt?: string; }
+export interface LeadNote { id: string; leadId: string; leadName: string; note: string; disposition?: string; at: string; nextFollowUp?: string; }
+export interface Handoff { id: string; leadId: string; leadName: string; body: string; at: string; }
 
 export interface Lead {
   id: string;
@@ -48,15 +44,6 @@ export interface Lead {
   linkedinBio?: string;
   notes?: LeadNote[];
   foundAt?: string;
-}
-
-export interface LeadNote {
-  id: string;
-  leadId: string;
-  leadName: string;
-  note: string;
-  disposition?: string;
-  at: string;
 }
 
 export interface RadarStats {
@@ -95,16 +82,4 @@ export interface RadarFile {
   skippedCandidates: Lead[];
   allCandidates: Lead[];
   errors: Array<{ source: string; reason: string; name?: string }>;
-}
-
-export interface GroqDraftResponse {
-  email: string;
-  call: string;
-}
-
-export interface GroqProxyRequest {
-  lead: Lead;
-  linkedinBio: string;
-  evidenceTrail: string;
-  mode: "draftSequence" | "analyzeLead";
 }

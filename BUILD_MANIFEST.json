@@ -1,8 +1,8 @@
 [
   {
     "path": ".env.example",
-    "bytes": 211,
-    "sha256": "62aa66139a1d4aa5a831265b421a9e008c78c89b80fb97ae7908b44548557cbb"
+    "bytes": 182,
+    "sha256": "9889ade983f61f9132289c6a8477258442d1a22e1df40189b983d9e40297f31c"
   },
   {
     "path": ".github/workflows/radar.yml",
@@ -11,133 +11,178 @@
   },
   {
     "path": "README.md",
-    "bytes": 1158,
-    "sha256": "a9c9ff8e4d7999489edda8dc1923842e321e5c5cfe0747ecd5e82a43ba5fb5ed"
+    "bytes": 1364,
+    "sha256": "24b5b53708c1dc041fc9f35222f4d29b64dd4618f08db6721604c0db52be877f"
+  },
+  {
+    "path": "app/analytics/page.tsx",
+    "bytes": 285,
+    "sha256": "c4732e9bd795c9abe458a35a2cf6f1c846f6b768c35ec1567f9b114bf88d99f0"
   },
   {
     "path": "app/api/groq/route.ts",
-    "bytes": 4106,
-    "sha256": "cc7ebf2105f86a4eb458dfc13a0a34c45f880c3c021f3d07726d5eeaf470653d"
+    "bytes": 4587,
+    "sha256": "fab6b8bf44c1b770af99706e29b77f56a280c9e1acc79eed6e2f83fd9497c813"
   },
   {
     "path": "app/api/health/route.ts",
-    "bytes": 272,
-    "sha256": "abadeae757cb6dbb72afb7edf346e5cea2dc5191e1b116fc34bda6ded512f0d5"
+    "bytes": 298,
+    "sha256": "2a8292ea5187f1fe33a0df6bf1dffdeae140b5a20b71c1611cfe919138bca65d"
+  },
+  {
+    "path": "app/api-command-center/page.tsx",
+    "bytes": 294,
+    "sha256": "bac69069348e04166d67a32dcdb9cfa1a14a6e46aff7be9411f27c17dbb31b66"
+  },
+  {
+    "path": "app/call-coach/page.tsx",
+    "bytes": 286,
+    "sha256": "e8edc8b42485a3c790c087efad3dc7fbd4053426c49d0a70662c138451c240a9"
+  },
+  {
+    "path": "app/call-notes/page.tsx",
+    "bytes": 286,
+    "sha256": "34f87c8dd8da94fa9da2817f73325cbc75d55f880fc68fc64512bbe5bd4b0d51"
+  },
+  {
+    "path": "app/cpa-profiler/page.tsx",
+    "bytes": 288,
+    "sha256": "84bbc0bebf33c28bff17effeb13daf4c499908c7547a216bbad5975ef3029bb8"
+  },
+  {
+    "path": "app/director-handoffs/page.tsx",
+    "bytes": 293,
+    "sha256": "dbeb57f86dc1d6e43814a687fe3c03fdbfb4fe7c819b4ea731a3a558c75ad19c"
+  },
+  {
+    "path": "app/follow-up/page.tsx",
+    "bytes": 285,
+    "sha256": "d7f9ee214c8cc15744fdcf32b977f5f2b745eddcc99b3903851b15a8ccb1e816"
   },
   {
     "path": "app/globals.css",
-    "bytes": 416,
-    "sha256": "553e2026d1afa379aa15f5e1a018876c5e4dbb55791c5c1701c82ee0667efd08"
+    "bytes": 1069,
+    "sha256": "67cb6fe73184454cedf7f84d2bd8fc5a0489c40830b2978349ae7139e2a1fb29"
+  },
+  {
+    "path": "app/investor-profiler/page.tsx",
+    "bytes": 293,
+    "sha256": "de62794571c58f990ac38db0315d716863bb2fe76d671a369a939796a62e21e8"
   },
   {
     "path": "app/layout.tsx",
-    "bytes": 910,
-    "sha256": "5d3991bdfa77327974d1aba151651562b9acfbf78d3a486be77de2bc22b0a7d1"
+    "bytes": 803,
+    "sha256": "28d1250e587f17a3a8c60fc5d8254b79c0d2d8e36e810306b94967c144df78b3"
+  },
+  {
+    "path": "app/lead-radar/page.tsx",
+    "bytes": 286,
+    "sha256": "c12b071c322ef646489ca0553cc615a5306b95b2dc5f4faa3043482b53f6ccc0"
   },
   {
     "path": "app/leads/page.tsx",
-    "bytes": 1119,
-    "sha256": "f23e8bf50f7e2c75acc84eb36a31a8192313fb9037d5b0bb37e572483331e6bd"
+    "bytes": 281,
+    "sha256": "fdcb0270047a39cf711a16f8b766d622940aac337f9d2c7a2247f3c11b2bbc53"
+  },
+  {
+    "path": "app/linkedin-builder/page.tsx",
+    "bytes": 292,
+    "sha256": "ab92651355c0973b97bcd04b7c01e70aa92d9155aa13b2b9a720864efa9db51f"
   },
   {
     "path": "app/page.tsx",
-    "bytes": 6736,
-    "sha256": "718320630201ea02ba7d5492535d4250559bbb71a46a26c0c6243fa1cc1caa62"
+    "bytes": 285,
+    "sha256": "b2f81502093fc799b415b893e3c808eedeba0603b652dc8e8efd1a09e7209592"
+  },
+  {
+    "path": "app/playbook/page.tsx",
+    "bytes": 284,
+    "sha256": "ba4af0bde4a2bfae9374f950aa538b7be4cca95838b2f3acb84132e5b3f97f88"
+  },
+  {
+    "path": "app/rss-monitor/page.tsx",
+    "bytes": 287,
+    "sha256": "fa6939799f0fb3a7a49534d03b49dc5a6903a9fcf7503afa14ba96afbea3d177"
+  },
+  {
+    "path": "app/sequence-builder/page.tsx",
+    "bytes": 292,
+    "sha256": "7416295f31e1835fbe13d787fc60e8d4545c2d3a95c683213a48261a6406049c"
   },
   {
     "path": "app/settings/page.tsx",
-    "bytes": 2126,
-    "sha256": "c82306adf48f057d8dbbbdaba64e99dc8f6e882cf357e82aa8590e148c4e40fc"
+    "bytes": 284,
+    "sha256": "d58c87f5418eb499ea4eefbcae3b1e77a91f093ca8e638cb9b91da4d029093e9"
   },
   {
     "path": "basin-radar-runner.js",
-    "bytes": 29042,
-    "sha256": "8a74b95c93b296b925853b04ba98bc806703003229ebe03743d30d7673cd6afb"
+    "bytes": 27792,
+    "sha256": "87d479e0287e2ebcf82a26bf598d261d0818f27410f6fa5dec2e605157d7b4a3"
   },
   {
-    "path": "components/AppShell.tsx",
-    "bytes": 4447,
-    "sha256": "bf9317ef3cae044b51c6b4cbf9face4820cb51233fa90c85dfe3b67e8a8f2170"
-  },
-  {
-    "path": "components/KpiCard.tsx",
-    "bytes": 561,
-    "sha256": "e7436decc8982a343a2031e175277f84e38e4f582480f5d2cd15a9d2ded7f36a"
-  },
-  {
-    "path": "components/LeadVerificationBoard.tsx",
-    "bytes": 7046,
-    "sha256": "b2523c9fa15e74917f1b11595ca269008a7231260160abe64d97d74e6adb6c49"
-  },
-  {
-    "path": "components/LeadVerificationModal.tsx",
-    "bytes": 6577,
-    "sha256": "8b281a96e7dce4e3fa77b06f9f656c8e9369227b386f34ab3260d56f51d243bd"
+    "path": "components/BasinOSApp.tsx",
+    "bytes": 54422,
+    "sha256": "e5f4a2673eece84cfbdc0ed80e4a06e7bab57e01c14e31f53c52ffc177dcd0c5"
   },
   {
     "path": "components/ThemeProvider.tsx",
-    "bytes": 355,
-    "sha256": "cc1c7fe3346e61f7d6e9827ee5ee24c340320619b02c907c0235d6f49e69b030"
-  },
-  {
-    "path": "components/ThemeToggle.tsx",
-    "bytes": 529,
-    "sha256": "77b7d945dc5b5f1d130b19846bfb3267cd74782b621f9e317cf0000fb5d37f4c"
+    "bytes": 333,
+    "sha256": "070072b25c1647ef1093de3513774f1fe1e06845640dda022dff5b2ea19420df"
   },
   {
     "path": "components/ui/badge.tsx",
-    "bytes": 369,
-    "sha256": "0d31f492ae727b92f13927392953530394940fa5f4276b5ce0b81872d576619d"
+    "bytes": 320,
+    "sha256": "093d9e0caba91e84c071051e5f62be7bd9915c5c8b0a2c19cdf0079187151be0"
   },
   {
     "path": "components/ui/button.tsx",
-    "bytes": 1106,
-    "sha256": "182c00de5585d950bb7254508454927e0f9a0dd233d4b126933e4e4454f925f8"
+    "bytes": 1046,
+    "sha256": "c75a0a30d28f85ba77d0005a6b82d8fc02a4adeb6620fb1d7807ed20da51fd10"
   },
   {
     "path": "components/ui/card.tsx",
-    "bytes": 1188,
-    "sha256": "3ff47faf164bc6d17cbb253b3efb4b9f931c283cb83e7073d6d0100cae07fc53"
+    "bytes": 1084,
+    "sha256": "17c4dccaa952a0c05a7f5ecc9c4de6de27d48622dc8994974749d20299f10d7d"
   },
   {
     "path": "components/ui/input.tsx",
-    "bytes": 904,
-    "sha256": "5a359f1252d9bdbc92ba0e976b08f1a516dad578005c45623366d0a59bf85234"
+    "bytes": 804,
+    "sha256": "5b6071ce70914b9dc8c92e2dc814b867406abc62f9538f3e401e4a281d2a9184"
   },
   {
     "path": "lib/data.ts",
-    "bytes": 2597,
-    "sha256": "d5906310859dd8a36209c332c46cfd28e6315744e4d6d789ad02b25d155754d9"
+    "bytes": 2174,
+    "sha256": "f216a42a06bc158ef8431f6dfeeebe324a53895d4e9b0f94e2ebc6ac1d5bac8e"
   },
   {
     "path": "lib/groq.ts",
-    "bytes": 590,
-    "sha256": "867aac116be80bfdf6d10fcea293c5ad4ee5183a0d13366d6ea61053be63e99f"
+    "bytes": 755,
+    "sha256": "e1cc6313063257479fb3a763a08e247dcc29b6d3cd4ee5a5508430be9148e8d6"
   },
   {
     "path": "lib/utils.ts",
-    "bytes": 1901,
-    "sha256": "ae4ab1a198bddd43b521da61b56992061adfc265612a928c538dc5d10205d777"
+    "bytes": 3147,
+    "sha256": "abdff543de3c660f21b00c626b13e601247d0a529a65c6bc49db03fdf43f8494"
   },
   {
     "path": "next.config.mjs",
-    "bytes": 240,
-    "sha256": "89c96718139308305ba27dfed7bcae858f21bdee7d11a2f582cd67dda34e98b3"
+    "bytes": 227,
+    "sha256": "8b0656c49d766c443d89a4e1aed9924af5810134f90351137d3f2042152e65ac"
   },
   {
     "path": "package.json",
-    "bytes": 1362,
-    "sha256": "aa5729ee6638354c4729acd4c18bcf947f399e5158b10cffb2b2192a120e0db4"
+    "bytes": 1153,
+    "sha256": "bc52d5029a3e5e0f66547cad0891cd29f00211f10782a990d0c8dfb080b526c6"
   },
   {
     "path": "postcss.config.mjs",
-    "bytes": 103,
-    "sha256": "2147573f4053310e348ad9d722882426c884376f42a354daea89bcd663b33b25"
+    "bytes": 90,
+    "sha256": "367fbca6f16a783112387d94ee7bb91ec72e3b36b6d61228f6247cda6ee46d47"
   },
   {
     "path": "public/data/radar-leads.json",
-    "bytes": 1346,
-    "sha256": "b4fe490b69b07464c72b24908cdf514b9dbb9173553833852f0b182e734c2a8c"
+    "bytes": 1348,
+    "sha256": "4cbd25b628ea0c86c1f4688517c1f287b2bc341e93bc15b6c3eee81fe5a2ec8a"
   },
   {
     "path": "public/data/radar-rejected.json",
@@ -151,8 +196,8 @@
   },
   {
     "path": "public/data/radar-run-log.json",
-    "bytes": 58,
-    "sha256": "bf2e189bce1eb07a9903ef428bbc3961622a6d96d1bfef5abfa2186801e58e79"
+    "bytes": 41,
+    "sha256": "1eb5677d6bf122691acea07bed2ce03f2fb6d3b425b67578623f173e8e40bd31"
   },
   {
     "path": "public/data/radar-state.json",
@@ -161,8 +206,8 @@
   },
   {
     "path": "radar-leads.json",
-    "bytes": 1346,
-    "sha256": "b4fe490b69b07464c72b24908cdf514b9dbb9173553833852f0b182e734c2a8c"
+    "bytes": 1348,
+    "sha256": "4cbd25b628ea0c86c1f4688517c1f287b2bc341e93bc15b6c3eee81fe5a2ec8a"
   },
   {
     "path": "radar-rejected.json",
@@ -181,8 +226,8 @@
   },
   {
     "path": "tailwind.config.ts",
-    "bytes": 942,
-    "sha256": "ea37ed05d57b7f69e3c986ee33c2c84a0a52eaf9cfaa0e24f3f4d879539ecf32"
+    "bytes": 995,
+    "sha256": "6d62571700f1b9b9888a5b47e4afba5f9fbef25d2ca86207bc4f5b856255b82c"
   },
   {
     "path": "tsconfig.json",
@@ -191,7 +236,7 @@
   },
   {
     "path": "types/index.ts",
-    "bytes": 2527,
-    "sha256": "308829f76f6fbf49da4275f208f551b43a75a7a5e7edcda984fa844a3c68076e"
+    "bytes": 2610,
+    "sha256": "9b66aecc1edf841754c946ab7728797f8fbdb0ae91c5a0f72ad0a40f62cf3a95"
   }
 ]

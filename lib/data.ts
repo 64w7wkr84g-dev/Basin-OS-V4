@@ -27,12 +27,8 @@ const fallbackStats: RadarStats = {
 
 const fallbackRadar: RadarFile = {
   generatedAt: null,
-  engine: "Basin OS V4 empty fallback",
-  compliance: {
-    linkedin: "No LinkedIn page scraping.",
-    outreach: "Manual review before outreach.",
-    qualification: "Accredited status is never assumed."
-  },
+  engine: "Basin OS V4.1 empty fallback",
+  compliance: {},
   routingRules: {},
   stats: fallbackStats,
   leads: [],
@@ -65,18 +61,14 @@ export async function getRadarData(): Promise<RadarFile> {
         skippedCandidates: parsed.skippedCandidates ?? [],
         allCandidates: parsed.allCandidates ?? []
       };
-    } catch {
-      // Try next location.
-    }
+    } catch {}
   }
-
   return fallbackRadar;
 }
 
-export async function getAllActiveLeads() {
+export async function getAllLeads() {
   const radar = await getRadarData();
   const map = new Map<string, Lead>();
-
   for (const lead of [
     ...(radar.leads ?? []),
     ...(radar.linkedinVerifyCandidates ?? []),
@@ -84,13 +76,7 @@ export async function getAllActiveLeads() {
     ...(radar.researchCandidates ?? []),
     ...(radar.allCandidates ?? [])
   ]) {
-    if (!lead?.id) continue;
-    map.set(lead.id, lead);
+    if (lead?.id) map.set(lead.id, lead);
   }
-
-  return Array.from(map.values()).sort((a, b) => {
-    const rank = (lead: Lead) =>
-      lead.associateReady ? 1 : lead.linkedinVerify ? 2 : lead.cpaVerify || lead.isCPA ? 3 : 9;
-    return rank(a) - rank(b) || (b.score ?? 0) - (a.score ?? 0);
-  });
+  return Array.from(map.values());
 }
