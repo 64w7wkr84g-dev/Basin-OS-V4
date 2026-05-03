@@ -1,5 +1,88 @@
 {
-  "generatedAt": null,
-  "stats": {},
-  "sample": []
+  "generatedAt": "2026-05-03T13:38:37.938Z",
+  "stats": {
+    "totalFound": 180,
+    "readyToWork": 0,
+    "linkedinVerify": 0,
+    "cpaVerify": 2,
+    "research": 0,
+    "skipped": 178,
+    "npiCollected": 160,
+    "rssCollected": 20,
+    "cpaCollected": 0,
+    "linkedinDiscoveryCollected": 0,
+    "linkedinCandidatesFound": 0,
+    "emailFound": 0,
+    "phoneFound": 0,
+    "publicSearches": 1200,
+    "braveConfigured": true,
+    "groqConfigured": true,
+    "errors": 0
+  },
+  "sampleReady": [],
+  "sampleLinkedInVerify": [],
+  "sampleCpaVerify": [
+    {
+      "name": "Imran Akhtar Joins",
+      "score": 78,
+      "status": "CPA Verify",
+      "contacts": []
+    },
+    {
+      "name": "Nita Ahuja",
+      "score": 78,
+      "status": "CPA Verify",
+      "contacts": []
+    }
+  ],
+  "sampleSkipped": [
+    {
+      "name": "Barbara Brazis Joins",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Brian Saulnier",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Cardinal Health",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Chris Rokkas Joins",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Clark Gamblin",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Cristine Espinosa Joins",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Fabrizio Michelassi",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    },
+    {
+      "name": "Hamza Murtaza",
+      "score": 78,
+      "status": "Skipped / No Warm Route",
+      "contacts": []
+    }
+  ]
 }
