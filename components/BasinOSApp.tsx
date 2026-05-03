@@ -23,6 +23,8 @@ type Store = {
 };
 
 const STORE_KEY = "basin_os_v4_1_store";
+const RAW_RADAR_URL = "https://raw.githubusercontent.com/64w7wkr84g-dev/Basin-OS-V4/main/public/data/radar-leads.json";
+const LOCAL_RADAR_URL = "/data/radar-leads.json";
 
 const pages: Array<{ key: PageKey; label: string; icon: React.ElementType; group: string }> = [
   { key: "dashboard", label: "Dashboard", icon: Gauge, group: "Overview" },
@@ -349,14 +351,48 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
   }
 
   async function reloadRadar() {
-    const response = await fetch(`/data/radar-leads.json?t=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) {
-      showToast(`Radar load failed: ${response.status}`);
+    const urls = [
+      `${RAW_RADAR_URL}?v=${Date.now()}`,
+      `${LOCAL_RADAR_URL}?v=${Date.now()}`
+    ];
+
+    let json: any = null;
+    let lastError = "";
+
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } });
+        if (!response.ok) {
+          lastError = `${url} returned ${response.status}`;
+          continue;
+        }
+        json = await response.json();
+        break;
+      } catch (error: any) {
+        lastError = `${url} failed: ${error?.message || String(error)}`;
+      }
+    }
+
+    if (!json) {
+      showToast(`Radar load failed: ${lastError || "No source loaded"}`);
       return;
     }
-    const json = await response.json();
+
     setRadar(json);
-    showToast(`Loaded ${json.stats?.activeVisible || 0} active radar leads.`);
+
+    const stats = json.stats || {};
+    showToast(
+      `Loaded ${stats.activeVisible || 0} active lead(s). Ready ${stats.readyForAssociate || 0} · LinkedIn ${stats.linkedinVerify || 0} · CPA ${stats.cpaVerify || 0} · Research ${stats.research || 0}`
+    );
+
+    if (stats.firstBraveError || stats.firstGroqError) {
+      console.warn("Basin Radar API diagnostics", {
+        firstBraveError: stats.firstBraveError,
+        firstGroqError: stats.firstGroqError,
+        firstRssError: stats.firstRssError,
+        firstNpiError: stats.firstNpiError
+      });
+    }
   }
 
   const filteredLeads = React.useMemo(() => {
@@ -432,7 +468,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3 Complete</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.2 Live Data</div>
         </aside>
 
         <main className="min-w-0">
