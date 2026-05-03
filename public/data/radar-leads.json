@@ -1,0 +1,44 @@
+{
+  "generatedAt": null,
+  "engine": "Basin OS V4 starter \u2014 run GitHub Actions to populate",
+  "compliance": {
+    "linkedin": "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
+    "outreach": "No auto-send. Manual review required before outreach.",
+    "qualification": "Accredited status is never assumed."
+  },
+  "routingRules": {
+    "ready": "Groq says real person + email + score >= 58.",
+    "linkedinVerify": "Groq says real person + LinkedIn URL but no email.",
+    "cpaVerify": "Groq says real person + CPA/tax/referral relevance.",
+    "skipped": "No email, no LinkedIn URL, no CPA/referral path."
+  },
+  "stats": {
+    "totalFound": 0,
+    "activeVisible": 0,
+    "readyToWork": 0,
+    "linkedinVerify": 0,
+    "cpaVerify": 0,
+    "skipped": 0,
+    "npiCollected": 0,
+    "rssCollected": 0,
+    "linkedinDiscoveryCollected": 0,
+    "cpaCollected": 0,
+    "emailFound": 0,
+    "linkedinCandidatesFound": 0,
+    "phoneFound": 0,
+    "publicSearches": 0,
+    "groqCalls": 0,
+    "groqFailures": 0,
+    "braveFailures": 0,
+    "braveConfigured": false,
+    "groqConfigured": false,
+    "errors": 0
+  },
+  "leads": [],
+  "linkedinVerifyCandidates": [],
+  "cpaVerifyCandidates": [],
+  "researchCandidates": [],
+  "skippedCandidates": [],
+  "allCandidates": [],
+  "errors": []
+}

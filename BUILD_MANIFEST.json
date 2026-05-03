@@ -1,0 +1,197 @@
+[
+  {
+    "path": ".env.example",
+    "bytes": 211,
+    "sha256": "62aa66139a1d4aa5a831265b421a9e008c78c89b80fb97ae7908b44548557cbb"
+  },
+  {
+    "path": ".github/workflows/radar.yml",
+    "bytes": 1443,
+    "sha256": "f6963412108831cbfdf3aada993ccb0d3d7ed4d80601363d4b1694251b2e64ae"
+  },
+  {
+    "path": "README.md",
+    "bytes": 1158,
+    "sha256": "a9c9ff8e4d7999489edda8dc1923842e321e5c5cfe0747ecd5e82a43ba5fb5ed"
+  },
+  {
+    "path": "app/api/groq/route.ts",
+    "bytes": 4106,
+    "sha256": "cc7ebf2105f86a4eb458dfc13a0a34c45f880c3c021f3d07726d5eeaf470653d"
+  },
+  {
+    "path": "app/api/health/route.ts",
+    "bytes": 272,
+    "sha256": "abadeae757cb6dbb72afb7edf346e5cea2dc5191e1b116fc34bda6ded512f0d5"
+  },
+  {
+    "path": "app/globals.css",
+    "bytes": 416,
+    "sha256": "553e2026d1afa379aa15f5e1a018876c5e4dbb55791c5c1701c82ee0667efd08"
+  },
+  {
+    "path": "app/layout.tsx",
+    "bytes": 910,
+    "sha256": "5d3991bdfa77327974d1aba151651562b9acfbf78d3a486be77de2bc22b0a7d1"
+  },
+  {
+    "path": "app/leads/page.tsx",
+    "bytes": 1119,
+    "sha256": "f23e8bf50f7e2c75acc84eb36a31a8192313fb9037d5b0bb37e572483331e6bd"
+  },
+  {
+    "path": "app/page.tsx",
+    "bytes": 6736,
+    "sha256": "718320630201ea02ba7d5492535d4250559bbb71a46a26c0c6243fa1cc1caa62"
+  },
+  {
+    "path": "app/settings/page.tsx",
+    "bytes": 2126,
+    "sha256": "c82306adf48f057d8dbbbdaba64e99dc8f6e882cf357e82aa8590e148c4e40fc"
+  },
+  {
+    "path": "basin-radar-runner.js",
+    "bytes": 29042,
+    "sha256": "8a74b95c93b296b925853b04ba98bc806703003229ebe03743d30d7673cd6afb"
+  },
+  {
+    "path": "components/AppShell.tsx",
+    "bytes": 4447,
+    "sha256": "bf9317ef3cae044b51c6b4cbf9face4820cb51233fa90c85dfe3b67e8a8f2170"
+  },
+  {
+    "path": "components/KpiCard.tsx",
+    "bytes": 561,
+    "sha256": "e7436decc8982a343a2031e175277f84e38e4f582480f5d2cd15a9d2ded7f36a"
+  },
+  {
+    "path": "components/LeadVerificationBoard.tsx",
+    "bytes": 7046,
+    "sha256": "b2523c9fa15e74917f1b11595ca269008a7231260160abe64d97d74e6adb6c49"
+  },
+  {
+    "path": "components/LeadVerificationModal.tsx",
+    "bytes": 6577,
+    "sha256": "8b281a96e7dce4e3fa77b06f9f656c8e9369227b386f34ab3260d56f51d243bd"
+  },
+  {
+    "path": "components/ThemeProvider.tsx",
+    "bytes": 355,
+    "sha256": "cc1c7fe3346e61f7d6e9827ee5ee24c340320619b02c907c0235d6f49e69b030"
+  },
+  {
+    "path": "components/ThemeToggle.tsx",
+    "bytes": 529,
+    "sha256": "77b7d945dc5b5f1d130b19846bfb3267cd74782b621f9e317cf0000fb5d37f4c"
+  },
+  {
+    "path": "components/ui/badge.tsx",
+    "bytes": 369,
+    "sha256": "0d31f492ae727b92f13927392953530394940fa5f4276b5ce0b81872d576619d"
+  },
+  {
+    "path": "components/ui/button.tsx",
+    "bytes": 1106,
+    "sha256": "182c00de5585d950bb7254508454927e0f9a0dd233d4b126933e4e4454f925f8"
+  },
+  {
+    "path": "components/ui/card.tsx",
+    "bytes": 1188,
+    "sha256": "3ff47faf164bc6d17cbb253b3efb4b9f931c283cb83e7073d6d0100cae07fc53"
+  },
+  {
+    "path": "components/ui/input.tsx",
+    "bytes": 904,
+    "sha256": "5a359f1252d9bdbc92ba0e976b08f1a516dad578005c45623366d0a59bf85234"
+  },
+  {
+    "path": "lib/data.ts",
+    "bytes": 2597,
+    "sha256": "d5906310859dd8a36209c332c46cfd28e6315744e4d6d789ad02b25d155754d9"
+  },
+  {
+    "path": "lib/groq.ts",
+    "bytes": 590,
+    "sha256": "867aac116be80bfdf6d10fcea293c5ad4ee5183a0d13366d6ea61053be63e99f"
+  },
+  {
+    "path": "lib/utils.ts",
+    "bytes": 1901,
+    "sha256": "ae4ab1a198bddd43b521da61b56992061adfc265612a928c538dc5d10205d777"
+  },
+  {
+    "path": "next.config.mjs",
+    "bytes": 240,
+    "sha256": "89c96718139308305ba27dfed7bcae858f21bdee7d11a2f582cd67dda34e98b3"
+  },
+  {
+    "path": "package.json",
+    "bytes": 1362,
+    "sha256": "aa5729ee6638354c4729acd4c18bcf947f399e5158b10cffb2b2192a120e0db4"
+  },
+  {
+    "path": "postcss.config.mjs",
+    "bytes": 103,
+    "sha256": "2147573f4053310e348ad9d722882426c884376f42a354daea89bcd663b33b25"
+  },
+  {
+    "path": "public/data/radar-leads.json",
+    "bytes": 1346,
+    "sha256": "b4fe490b69b07464c72b24908cdf514b9dbb9173553833852f0b182e734c2a8c"
+  },
+  {
+    "path": "public/data/radar-rejected.json",
+    "bytes": 58,
+    "sha256": "c196647b736868df0c08644dfc834d3ce439359305dbb73d170f398d14349aff"
+  },
+  {
+    "path": "public/data/radar-research-candidates.json",
+    "bytes": 46,
+    "sha256": "30b35d98d7280aa94d35eefd19b4d3f83445597d43d1cbe2b7dc6c0a3f6b08aa"
+  },
+  {
+    "path": "public/data/radar-run-log.json",
+    "bytes": 58,
+    "sha256": "bf2e189bce1eb07a9903ef428bbc3961622a6d96d1bfef5abfa2186801e58e79"
+  },
+  {
+    "path": "public/data/radar-state.json",
+    "bytes": 37,
+    "sha256": "ce9139db983ea8a55c7600d7629d262ef8d25037aaae9bd46cfed9e7b1b04c1c"
+  },
+  {
+    "path": "radar-leads.json",
+    "bytes": 1346,
+    "sha256": "b4fe490b69b07464c72b24908cdf514b9dbb9173553833852f0b182e734c2a8c"
+  },
+  {
+    "path": "radar-rejected.json",
+    "bytes": 58,
+    "sha256": "c196647b736868df0c08644dfc834d3ce439359305dbb73d170f398d14349aff"
+  },
+  {
+    "path": "radar-research-candidates.json",
+    "bytes": 46,
+    "sha256": "30b35d98d7280aa94d35eefd19b4d3f83445597d43d1cbe2b7dc6c0a3f6b08aa"
+  },
+  {
+    "path": "radar.yml",
+    "bytes": 1443,
+    "sha256": "f6963412108831cbfdf3aada993ccb0d3d7ed4d80601363d4b1694251b2e64ae"
+  },
+  {
+    "path": "tailwind.config.ts",
+    "bytes": 942,
+    "sha256": "ea37ed05d57b7f69e3c986ee33c2c84a0a52eaf9cfaa0e24f3f4d879539ecf32"
+  },
+  {
+    "path": "tsconfig.json",
+    "bytes": 667,
+    "sha256": "00bfcf949b1717aaa87ffd63675bcd269cb2634f4c007935fdbbc8d55d706ea9"
+  },
+  {
+    "path": "types/index.ts",
+    "bytes": 2527,
+    "sha256": "308829f76f6fbf49da4275f208f551b43a75a7a5e7edcda984fa844a3c68076e"
+  }
+]
