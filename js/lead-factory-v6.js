@@ -1,4 +1,4 @@
-/* Basin OS V6.9 — Automated Lead Factory + Manual LinkedIn Verification CRM
+/* Basin OS V7.1 — Automated Lead Factory + Manual LinkedIn Verification CRM
    Safe LinkedIn handling:
    - does not open LinkedIn automatically
    - does not read LinkedIn pages
@@ -659,7 +659,7 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* Basin OS V6.9 — Auto Bridge
+/* Basin OS V7.1 — Auto Bridge
    Fixes the exact issue where radar records exist but Dashboard / Leads Workflow still show 0.
    This automatically mirrors Lead Factory + Radar records into the legacy Basin OS buckets the existing UI reads.
 */
@@ -894,7 +894,7 @@
 })();
 
 
-/* Basin OS V6.9 — Leads Workflow Source Tabs + Priority Filters
+/* Basin OS V7.1 — Leads Workflow Source Tabs + Priority Filters
    Adds source/route tabs above Day 1 so LinkedIn Verify leads can be worked first.
 */
 (function(){
@@ -1157,7 +1157,7 @@
 })();
 
 
-/* Basin OS V6.9 — Clean Routing + Source Filter Overlay
+/* Basin OS V7.1 — Clean Routing + Source Filter Overlay
    Fixes:
    1. Source filters are injected into Leads Workflow even if the legacy renderer wins.
    2. Filters work across all workflow days, not just Day 1.
@@ -1427,7 +1427,7 @@
 })();
 
 
-/* Basin OS V6.9 — Ready to Work + Official Day 1-10 Cadence
+/* Basin OS V7.1 — Ready to Work + Official Day 1-10 Cadence
    Corrects workflow architecture:
    - "Ready to Work" is removed as a bucket.
    - Ready to Work becomes the execution bucket.
@@ -1759,7 +1759,7 @@
       ['suppressed','Suppressed'],
       ['all','All Records']
     ];
-    return '<div id="basin-v69-tabs" class="panel" style="margin-bottom:14px;border:1px solid rgba(216,148,36,.55)">'
+    return '<div id="basin-v71-tabs" class="panel" style="margin-bottom:14px;border:1px solid rgba(216,148,36,.55)">'
       + '<div class="panel-hd"><div><div class="panel-title">Execution Queue / Source Filters</div>'
       + '<div class="panel-sub">Ready to Work is the true associate queue. Prep buckets stay separate until research/verification is complete.</div></div></div>'
       + '<div class="panel-bd"><div class="chips" style="gap:8px;display:flex;flex-wrap:wrap">'
@@ -1795,7 +1795,7 @@
     const label={ready:'Ready to Work','linkedin-verify':'LinkedIn Verify','contact-needed':'Contact Route Needed',research:'Research Needed',npi:'NPI / Physicians',rss:'RSS / Public',manual:'Manual',suppressed:'Suppressed'}[s]||s;
     const verify=s==='linkedin-verify'?'<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory&&BasinLeadFactory.openLead?BasinLeadFactory.openLead(\''+id+'\'):void(0)">Verify LinkedIn</button>':'';
     const full=window.BasinLeadFactory?'<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory.openLead(\''+id+'\')">Open Full Lead Card</button>':'';
-    return '<div class="record" data-v69-source="'+esc(s)+'" data-v69-score="'+score(l)+'" style="grid-template-columns:46px 1fr auto">'
+    return '<div class="record" data-v71-source="'+esc(s)+'" data-v71-score="'+score(l)+'" style="grid-template-columns:46px 1fr auto">'
       + '<div class="score '+esc(g)+'">'+esc(g)+'</div>'
       + '<div><div class="rec-name">'+esc(l.name||'Unnamed Lead')+'</div>'
       + '<div class="rec-meta">'+esc([l.title,l.company,'Score '+score(l),r?'Best Route: '+r:''].filter(Boolean).join(' · '))+'</div>'
@@ -1813,21 +1813,21 @@
   function render(){
     const page=[...$$('.page')].find(p=>/Leads Workflow/i.test(p.textContent||'') && p.classList.contains('active')) || document;
     $('#basin-v66-source-tabs')?.remove(); $('#basin-v66-filter-results')?.remove();
-    $('#basin-v69-tabs')?.remove(); $('#basin-v69-results')?.remove();
+    $('#basin-v71-tabs')?.remove(); $('#basin-v71-results')?.remove();
     const anchor=$('.grid3,.stats-grid,.kpi-grid',page) || $('.info,.notice,.panel',page);
     if(!anchor) return;
     const all=syncStore();
     anchor.insertAdjacentHTML('afterend',tabsHtml());
     const visible=sortLeads(all.filter(l=>filterMatch(l,window.BASIN_LEAD_SOURCE_FILTER)));
     const titleMap={ready:'Ready to Work',email:'Ready to Work — Email',linkedin:'Ready to Work — LinkedIn',phone:'Ready to Work — Phone',a:'A Grade',all:'All Records','linkedin-verify':'LinkedIn Verify','contact-needed':'Contact Route Needed',research:'Research Needed',npi:'NPI / Physicians',rss:'RSS / Public News',manual:'Manual',suppressed:'Suppressed'};
-    const html='<div id="basin-v69-results" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)">'
+    const html='<div id="basin-v71-results" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)">'
       + '<div class="panel-hd"><div><div class="panel-title">'+esc(titleMap[window.BASIN_LEAD_SOURCE_FILTER]||'Filtered Leads')+'</div>'
       + '<div class="panel-sub">'+visible.length+' records · sorted highest score first</div></div></div>'
       + '<div class="panel-bd">'+(visible.length?visible.map(card).join(''):'<div class="empty"><div class="empty-title">No records in this queue.</div></div>')+'</div></div>';
-    $('#basin-v69-tabs').insertAdjacentHTML('afterend',html);
+    $('#basin-v71-tabs').insertAdjacentHTML('afterend',html);
     // Hide legacy day panels to avoid conflicting old wording.
     $$('.panel',page).forEach(p=>{
-      if(p.id==='basin-v69-tabs'||p.id==='basin-v69-results') return;
+      if(p.id==='basin-v71-tabs'||p.id==='basin-v71-results') return;
       if(/Day \d+|Callbacks|Long-Term Future|Not Interested/i.test(p.textContent||'')) p.style.display='none';
     });
   }
@@ -1879,7 +1879,7 @@
 })();
 
 
-/* Basin OS V6.9 — Cross-Referenced Lead Display */
+/* Basin OS V7.1 — Cross-Referenced Lead Display */
 (function(){
   'use strict';
   const STORE_KEY='basin_os_integrated';
@@ -1946,22 +1946,22 @@
   }
   function addSummaryPanel(){
     const page=[...$$('.page')].find(p=>/Leads Workflow/i.test(p.textContent||'') && p.classList.contains('active')) || document;
-    $('#v69-crossref-summary')?.remove();
+    $('#v71-crossref-summary')?.remove();
     const anchor=$('#basin-v67-tabs',page)||$('#basin-v66-source-tabs',page)||$('.grid3,.stats-grid,.kpi-grid',page);
     if(!anchor) return;
     const c=counts();
-    const html='<div id="v69-crossref-summary" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)"><div class="panel-hd"><div><div class="panel-title">Cross-Reference Quality</div><div class="panel-sub">NPI is now an identity seed. Stronger leads have second-source evidence, LinkedIn candidate/verified URL, email, or reliable phone.</div></div></div><div class="panel-bd"><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip">Ready '+c.ready+'</span><span class="chip">High Confidence '+c.high+'</span><span class="chip">Cross-Referenced '+c.cross+'</span><span class="chip">Phone Route Only '+c.phoneonly+'</span><span class="chip">LinkedIn Verify '+c.linkedin+'</span><span class="chip">Contact Needed '+c.contact+'</span><span class="chip">Research/Backlog '+c.research+'</span><span class="chip">NPI Seed '+c.npi+'</span><span class="chip">RSS/Public '+c.rss+'</span></div></div></div>';
+    const html='<div id="v71-crossref-summary" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.35)"><div class="panel-hd"><div><div class="panel-title">Cross-Reference Quality</div><div class="panel-sub">NPI is now an identity seed. Stronger leads have second-source evidence, LinkedIn candidate/verified URL, email, or reliable phone.</div></div></div><div class="panel-bd"><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip">Ready '+c.ready+'</span><span class="chip">High Confidence '+c.high+'</span><span class="chip">Cross-Referenced '+c.cross+'</span><span class="chip">Phone Route Only '+c.phoneonly+'</span><span class="chip">LinkedIn Verify '+c.linkedin+'</span><span class="chip">Contact Needed '+c.contact+'</span><span class="chip">Research/Backlog '+c.research+'</span><span class="chip">NPI Seed '+c.npi+'</span><span class="chip">RSS/Public '+c.rss+'</span></div></div></div>';
     anchor.insertAdjacentHTML('afterend',html);
   }
   function injectLabels(){
     $$('.record').forEach(card=>{
-      if(card.querySelector('.v69-confidence')) return;
+      if(card.querySelector('.v71-confidence')) return;
       const name=clean((card.querySelector('.rec-name')||{}).textContent||'');
       if(!name) return;
       const l=allLeads().find(x=>clean(x.name)===name);
       if(!l) return;
       const target=card.querySelector('.rec-tags') || card.querySelector('.rec-meta');
-      if(target) target.insertAdjacentHTML('afterend','<div class="mini-note v69-confidence" style="margin-top:7px"><strong>Source Confidence:</strong> '+esc(confidence(l))+'</div>');
+      if(target) target.insertAdjacentHTML('afterend','<div class="mini-note v71-confidence" style="margin-top:7px"><strong>Source Confidence:</strong> '+esc(confidence(l))+'</div>');
     });
   }
   function run(){
@@ -1969,5 +1969,774 @@
     injectLabels();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{setTimeout(run,400);setTimeout(run,1800);setTimeout(run,5000)}); else {setTimeout(run,400);setTimeout(run,1800);setTimeout(run,5000)}
-  new MutationObserver(()=>{clearTimeout(window.__v69Timer); window.__v69Timer=setTimeout(run,350)}).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(()=>{clearTimeout(window.__v71Timer); window.__v71Timer=setTimeout(run,350)}).observe(document.body,{childList:true,subtree:true});
+})();
+
+
+
+/* Basin OS V7.1 — Count Reconciliation + API Status Fix
+   Fixes mismatched Lead Radar / Leads Workflow counts and API Command Center confusion.
+   Truth source:
+   - Raw found = latest GitHub radar JSON stats/leads/research totals
+   - Usable/Ready = associate-ready records that landed in the working lead bucket
+   - Filtered/Not usable = raw found minus usable, plus explicit rejected/suppressed when present
+   - Brave is GitHub-runner-only. Browser cannot read GitHub Secrets. We show latest runner status instead.
+*/
+(function(){
+  'use strict';
+
+  const STORE_KEY='basin_os_integrated';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+
+  function getStore(){
+    let s={};
+    try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){}
+    if(window.STORE && typeof window.STORE==='object') s=Object.assign({},s,window.STORE);
+    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
+    s.leads=Array.isArray(s.leads)?s.leads:[];
+    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
+    s.rejectedRadarLeads=Array.isArray(s.rejectedRadarLeads)?s.rejectedRadarLeads:[];
+    s.suppressed=Array.isArray(s.suppressed)?s.suppressed:[];
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
+    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
+    return s;
+  }
+  function saveStore(s){
+    try{
+      localStorage.setItem(STORE_KEY,JSON.stringify(s));
+      window.STORE=Object.assign(window.STORE||{},s);
+      if(typeof window.save==='function') window.save();
+      if(typeof window.flushSave==='function') window.flushSave(true);
+    }catch(e){}
+  }
+  function key(l,i){
+    return clean([l.name,l.company,l.title,l.sourceUrl||l.url,(l.contactMethods||[]).map(c=>c.value||c.url||'').join('|'),l.id||i].join('|')).toLowerCase();
+  }
+  function dedupe(arr){
+    const m=new Map();
+    (arr||[]).filter(Boolean).forEach((l,i)=>{
+      const k=key(l,i);
+      if(!k) return;
+      if(!m.has(k) || Number(m.get(k).score||0)<Number(l.score||0)) m.set(k,l);
+    });
+    return [...m.values()];
+  }
+  function isReady(l){
+    const blob=[l.queue,l.status,l.bucket,l.stage,l.sourceConfidence,l.bestContactRoute].join(' ').toLowerCase();
+    if(/suppressed|not usable|research needed|contact route needed|linkedin verify|npi candidate backlog|backlog/.test(blob)) return false;
+    return /ready to work|day\d|phone route only|reliable phone|high|medium/.test(blob) && ((l.contactMethods||[]).length || l.email || l.phone || l.linkedin);
+  }
+  function isResearch(l){
+    const blob=[l.queue,l.status,l.bucket,l.stage,l.sourceConfidence].join(' ').toLowerCase();
+    return /research|contact route needed|linkedin verify|backlog|single source|manual linkedin/.test(blob);
+  }
+
+  async function fetchJson(path){
+    try{
+      const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});
+      if(!r.ok) return null;
+      const t=await r.text();
+      if(!t.trim()) return null;
+      return JSON.parse(t);
+    }catch(e){return null}
+  }
+  async function latestRadarJson(){
+    return (await fetchJson('data/radar-leads.json')) || (await fetchJson('radar-leads.json')) || null;
+  }
+
+  function computeLocalCounts(radarJson){
+    const s=getStore();
+    const jsonLeads=Array.isArray(radarJson?.leads)?radarJson.leads:[];
+    const jsonResearch=Array.isArray(radarJson?.researchCandidates)?radarJson.researchCandidates:[];
+    const ready = dedupe([
+      ...jsonLeads,
+      ...s.leads,
+      ...s.leadFactory.leads,
+      ...s.leadWorkflow.filter(isReady)
+    ]).filter(isReady);
+
+    const research = dedupe([
+      ...jsonResearch,
+      ...s.leadFactory.research,
+      ...s.leadWorkflow.filter(isResearch),
+      ...s.radarLeads.filter(isResearch)
+    ]);
+
+    const stats=radarJson?.stats||{};
+    const jsonReady = Number(stats.readyToWork || stats.associateReady || (Array.isArray(radarJson?.leads)?radarJson.leads.length:0) || 0);
+    const npiCollected = Number(stats.npiCollected || 0);
+    const rssCollected = Number(stats.rssCollected || stats.rssReady || 0);
+    const rawFromStats = Number(stats.totalFound || stats.rawFound || 0);
+    const found = Math.max(
+      rawFromStats,
+      npiCollected + rssCollected,
+      jsonReady + Number(stats.linkedinVerify||0) + Number(stats.contactNeeded||0) + Number(stats.research||0) + Number(stats.npiBacklog||0),
+      ready.length + research.length,
+      s.radarLeads.length
+    );
+    const usable = Math.max(jsonReady, ready.length);
+    const filteredStat = Number(stats.filteredNotUsable || stats.filtered || stats.notUsable || 0);
+    const filtered = Math.max(0, Math.max(filteredStat, found - usable, s.rejectedRadarLeads.length, s.suppressed.length));
+
+    const sourceCounts = {
+      all: found || usable + research.length,
+      ready: usable,
+      high: Number(stats.highConfidenceReady || ready.filter(l=>/^High/i.test(l.sourceConfidence||'')).length),
+      cross: Number(stats.crossReferencedReady || ready.filter(l=>l.crossReferenced).length),
+      phoneonly: Number(stats.phoneRouteOnlyReady || ready.filter(l=>/Phone Route Only/i.test(l.sourceConfidence||'')).length),
+      linkedinVerify: Number(stats.linkedinVerify || research.filter(l=>/linkedin verify|manual linkedin|candidate linkedin/i.test([l.queue,l.status,l.bucket,l.sourceConfidence].join(' '))).length),
+      contactNeeded: Number(stats.contactNeeded || research.filter(l=>/contact route needed|contact-needed/i.test([l.queue,l.status,l.bucket,l.sourceConfidence].join(' '))).length),
+      research: Number(stats.research || research.length),
+      npi: Number(stats.npiCollected || ready.concat(research).filter(l=>/npi|npiregistry|provider-view/i.test([l.source,l.sourceType,l.sourceUrl,l.url,l.sourceConfidence].join(' '))).length),
+      rss: Number(stats.rssCollected || stats.rssReady || ready.concat(research).filter(l=>/rss|google news|news\.google|article/i.test([l.source,l.sourceType,l.sourceUrl,l.url].join(' '))).length),
+      publicSearches: Number(stats.publicSearches || 0),
+      aiCalls: Number(stats.aiCalls || 0),
+      generatedAt: radarJson?.generatedAt || s.lastRadarLoadedAt || ''
+    };
+
+    return {found,usable,active:usable,filtered,ready,research,sourceCounts,radarJson};
+  }
+
+  function setText(el,val){
+    if(!el) return;
+    el.textContent = String(val);
+  }
+  function numericCardsInPage(){
+    const page=$('.page.active')||document;
+    const cards=$$('.stat,.kpi,.metric,.stat-card',page).filter(c=>/\d/.test(c.textContent||'') || /TOTAL|USABLE|ACTIVE|FILTERED|SUPPRESSED|CONTACT|LEADS|FOUND/i.test(c.textContent||''));
+    return cards;
+  }
+  function updateCardByLabel(labelRegex,value){
+    const page=$('.page.active')||document;
+    const candidates=$$('.stat,.kpi,.metric,.stat-card,.grid3 > div,.stats-grid > div,.kpi-grid > div',page);
+    candidates.forEach(card=>{
+      const txt=card.textContent||'';
+      if(labelRegex.test(txt)){
+        const n=card.querySelector('.stat-val,.kpi-val,.metric-val,.num,.value') || [...card.querySelectorAll('*')].find(x=>/^\d+$/.test(clean(x.textContent))) || card.firstElementChild;
+        if(n) setText(n,value);
+      }
+    });
+  }
+  function reconcileVisibleCounts(c){
+    // Dashboard / Lead Radar / Leads Workflow cards
+    updateCardByLabel(/total\s*found|total\s*leads|all\s*sources/i, c.found);
+    updateCardByLabel(/usable\s*leads|ready\s*to\s*work/i, c.usable);
+    updateCardByLabel(/active\s*lead\s*work|active\s*cadence/i, c.active);
+    updateCardByLabel(/filtered\s*\/\s*not\s*usable|filtered|not\s*usable/i, c.filtered);
+    updateCardByLabel(/has\s*contact/i, c.ready.filter(l=>(l.contactMethods||[]).length || l.email || l.phone || l.linkedin).length);
+    updateCardByLabel(/a\s*leads|a-score|a\s*grade/i, c.ready.filter(l=>String(l.grade||'').toUpperCase()==='A').length);
+
+    // Sidebar badges
+    $$('a,button,.nav-item,.side-link,.menu-item').forEach(el=>{
+      const txt=el.textContent||'';
+      const badge=el.querySelector('.badge,.pill,.count,[class*="badge"],[class*="count"]');
+      if(/Lead Radar/i.test(txt) && badge) badge.textContent = c.found || c.usable;
+      if(/\bLeads\b/i.test(txt) && !/Radar/i.test(txt) && badge) badge.textContent = c.usable;
+    });
+
+    // Shared text line, if present
+    $$('*').forEach(el=>{
+      if(el.childNodes.length===1 && /Shared GitHub Radar:/i.test(el.textContent||'')){
+        el.textContent = `Shared GitHub Radar: ${c.found} found · ${c.usable} usable/loaded · ${c.filtered} filtered/not actionable · ${c.sourceCounts.publicSearches} public searches · latest ${c.sourceCounts.generatedAt || 'local'}`;
+      }
+    });
+  }
+
+  function sourceTabPanel(c){
+    return '<div id="v71-count-truth-panel" class="panel" style="margin-bottom:14px;border:1px solid rgba(77,209,185,.45)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Lead Count Reconciliation</div>'
+      + '<div class="panel-sub">One source of truth: GitHub radar JSON + local working leads. These numbers should match Lead Radar, Leads Workflow, and Dashboard.</div></div></div>'
+      + '<div class="panel-bd"><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">'
+      + `<span class="chip">Raw Found ${c.found}</span>`
+      + `<span class="chip">Ready / Usable ${c.usable}</span>`
+      + `<span class="chip">Filtered / Prep ${c.filtered}</span>`
+      + `<span class="chip">LinkedIn Verify ${c.sourceCounts.linkedinVerify}</span>`
+      + `<span class="chip">Contact Needed ${c.sourceCounts.contactNeeded}</span>`
+      + `<span class="chip">Research / Backlog ${c.sourceCounts.research}</span>`
+      + `<span class="chip">NPI Seeds ${c.sourceCounts.npi}</span>`
+      + `<span class="chip">RSS/Public ${c.sourceCounts.rss}</span>`
+      + `<span class="chip">Brave/Public Searches ${c.sourceCounts.publicSearches}</span>`
+      + '</div></div></div>';
+  }
+
+  function injectTruthPanel(c){
+    const page=$('.page.active')||document;
+    $('#v71-count-truth-panel')?.remove();
+    if(!/Lead Radar|Leads Workflow|Lead Generation Dashboard/i.test(page.textContent||'')) return;
+    const anchor=$('#v68-crossref-summary',page)||$('#basin-v67-tabs',page)||$('#basin-v66-source-tabs',page)||$('.grid3,.stats-grid,.kpi-grid',page);
+    if(anchor) anchor.insertAdjacentHTML('afterend',sourceTabPanel(c));
+  }
+
+  function groqKeyPresent(){
+    const s=getStore();
+    const api=s.api||s.BV_API||{};
+    return !!(localStorage.getItem('GROQ_API_KEY') || localStorage.getItem('BASIN_GROQ_API_KEY') || api.groqKey || api.groqApiKey || (window.BV_API && window.BV_API.groqKey));
+  }
+  function setGroqLive(){
+    try{
+      if(groqKeyPresent()){
+        window.BV_API=window.BV_API||{};
+        window.BV_API.groqLive=true;
+        window.BV_API.groqConnected=true;
+        const s=getStore(); s.api=s.api||{}; s.api.groqLive=true; saveStore(s);
+      }
+    }catch(e){}
+  }
+  async function apiStatusHtml(c){
+    const braveActive = c.sourceCounts.publicSearches > 0;
+    const groqActive = !!(window.BV_API && (window.BV_API.groqLive || window.BV_API.groqConnected)) || groqKeyPresent();
+    return '<div id="v71-api-status-panel" class="panel" style="margin-bottom:14px;border:1px solid rgba(216,148,36,.45)">'
+      + '<div class="panel-hd"><div><div class="panel-title">API Status — Browser vs GitHub Runner</div>'
+      + '<div class="panel-sub">Brave runs only inside GitHub Actions from your repository secret. The browser cannot read or display GitHub Secrets.</div></div></div>'
+      + '<div class="panel-bd"><div class="grid3">'
+      + `<div class="stat"><div class="stat-val">${braveActive?'ON':'SECRET?'}</div><div class="stat-lbl">BRAVE RUNNER</div><div class="mini-note">Latest run public searches: ${c.sourceCounts.publicSearches}. If 0, check BRAVE_API_KEY secret and rerun Actions.</div></div>`
+      + `<div class="stat"><div class="stat-val">${groqActive?'ON':'OFF'}</div><div class="stat-lbl">GROQ BROWSER</div><div class="mini-note">${groqActive?'Saved browser key detected / auto-connected.':'No saved browser Groq key detected.'}</div></div>`
+      + `<div class="stat"><div class="stat-val">${c.sourceCounts.aiCalls}</div><div class="stat-lbl">AI CALLS LAST RUN</div><div class="mini-note">GitHub Models / Meta Llama first, Groq optional fallback.</div></div>`
+      + '</div><div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">'
+      + '<button class="btn btn-primary" onclick="BasinV70ApiStatus.saveGroq()">Save / Reconnect Groq</button>'
+      + '<button class="btn btn-ghost" onclick="BasinV70ApiStatus.explainBrave()">Why Brave is not in browser</button>'
+      + '</div></div></div>';
+  }
+  async function injectApiStatus(c){
+    const page=$('.page.active')||document;
+    if(!/API Command Center/i.test(page.textContent||'')) return;
+    $('#v71-api-status-panel')?.remove();
+    const anchor=$('.panel',page)||$('.grid3,.stats-grid,.kpi-grid',page);
+    if(anchor) anchor.insertAdjacentHTML('beforebegin', await apiStatusHtml(c));
+
+    // Remove/hide stale Tavily references and stale "blocked by CORS" notes from old UI text.
+    $$('*',page).forEach(el=>{
+      const txt=el.textContent||'';
+      if(/TAVILY API KEY|Connect Tavily|Tavily/i.test(txt)){
+        const row=el.closest('label,.field,.form-row,.setting-row,.api-row,.panel') || el;
+        if(!/Groq|Brave|API Status/i.test(row.textContent||'')) row.style.display='none';
+      }
+    });
+  }
+
+  window.BasinV70ApiStatus = {
+    saveGroq(){
+      const existing = localStorage.getItem('GROQ_API_KEY') || localStorage.getItem('BASIN_GROQ_API_KEY') || '';
+      const key = prompt('Paste Groq API key to save in this browser only:', existing);
+      if(key === null) return;
+      const cleaned=clean(key,300);
+      if(cleaned){
+        localStorage.setItem('GROQ_API_KEY',cleaned);
+        localStorage.setItem('BASIN_GROQ_API_KEY',cleaned);
+        setGroqLive();
+        alert('Groq key saved in this browser and marked ON.');
+      } else {
+        localStorage.removeItem('GROQ_API_KEY');
+        localStorage.removeItem('BASIN_GROQ_API_KEY');
+        alert('Groq browser key cleared.');
+      }
+      setTimeout(run,200);
+    },
+    explainBrave(){
+      alert('Brave API runs only in GitHub Actions using the BRAVE_API_KEY repository secret. Browser pages cannot read GitHub Secrets for security. To verify Brave is working, check the latest workflow run and the Public Searches count in this panel.');
+    },
+    refresh:()=>run()
+  };
+
+  async function run(){
+    setGroqLive();
+    const radarJson=await latestRadarJson();
+    const c=computeLocalCounts(radarJson);
+    reconcileVisibleCounts(c);
+    injectTruthPanel(c);
+    await injectApiStatus(c);
+    // expose for debugging
+    window.BASIN_V70_COUNTS=c;
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{setTimeout(run,300);setTimeout(run,1800);setTimeout(run,5000);});
+  else {setTimeout(run,300);setTimeout(run,1800);setTimeout(run,5000);}
+  new MutationObserver(()=>{clearTimeout(window.__v71CountTimer); window.__v71CountTimer=setTimeout(run,500);}).observe(document.body,{childList:true,subtree:true});
+})();
+
+
+
+/* Basin OS V7.1 — Integrated Lead Card CRM
+   Makes the full lead card the operating hub:
+   - Call notes attach to the lead ID.
+   - Notes show at the bottom of every full lead card.
+   - Disposition + follow-up updates lead status.
+   - Director handoff can be copied/printed/saved from the card.
+   - Follow-up/dashboard data stays connected.
+   - Count/API status fix from V7.0 remains active.
+*/
+(function(){
+  'use strict';
+
+  const STORE_KEY='basin_os_integrated';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
+  const now=()=>new Date().toISOString();
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const uid=p=>`${p}_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
+  function getStore(){
+    let s={}; try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){}
+    if(window.STORE && typeof window.STORE==='object') s=Object.assign({},s,window.STORE);
+    s.leads=Array.isArray(s.leads)?s.leads:[];
+    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
+    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
+    s.callNotes=Array.isArray(s.callNotes)?s.callNotes:[];
+    s.followUps=Array.isArray(s.followUps)?s.followUps:[];
+    s.directorHandoffs=Array.isArray(s.directorHandoffs)?s.directorHandoffs:[];
+    s.activities=Array.isArray(s.activities)?s.activities:[];
+    s.leadFactory=s.leadFactory||{};
+    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
+    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
+    return s;
+  }
+  function saveStore(s){
+    try{
+      localStorage.setItem(STORE_KEY,JSON.stringify(s));
+      window.STORE=Object.assign(window.STORE||{},s);
+      if(typeof window.save==='function') window.save();
+      if(typeof window.flushSave==='function') window.flushSave(true);
+    }catch(e){console.warn('[V7.1] save failed',e);}
+  }
+  function leadKey(l){
+    return clean([l.id,l.leadId,l.name,l.company,l.title,l.sourceUrl||l.url].filter(Boolean).join('|')).toLowerCase();
+  }
+  function leadMatches(l,id){
+    if(!l) return false;
+    return l.id===id || l.leadId===id || leadKey(l)===id;
+  }
+  function allLeads(){
+    const s=getStore(), arr=[...s.leads,...s.radarLeads,...s.leadWorkflow,...s.leadFactory.leads,...s.leadFactory.research].filter(Boolean);
+    const m=new Map();
+    arr.forEach((l,i)=>{
+      const k=leadKey(l)||String(i);
+      if(!m.has(k)||Number(m.get(k).score||0)<Number(l.score||0)) m.set(k,l);
+    });
+    return [...m.values()];
+  }
+  function findLead(id){
+    const leads=allLeads();
+    return leads.find(l=>leadMatches(l,id)) || leads.find(l=>clean(l.name).toLowerCase()===clean(id).toLowerCase());
+  }
+  function getLeadId(l){
+    return l?.id || l?.leadId || leadKey(l) || uid('lead');
+  }
+  function updateLeadEverywhere(id, updater){
+    const s=getStore();
+    const apply=l=>{
+      if(leadMatches(l,id)){
+        const next=updater(Object.assign({},l)) || l;
+        next.updatedAt=now();
+        return next;
+      }
+      return l;
+    };
+    ['leads','radarLeads','leadWorkflow'].forEach(k=>{s[k]=(s[k]||[]).map(apply);});
+    s.leadFactory=s.leadFactory||{};
+    ['leads','research'].forEach(k=>{s.leadFactory[k]=(s.leadFactory[k]||[]).map(apply);});
+    saveStore(s);
+    return s;
+  }
+  function contactMethods(l){
+    const arr=[];
+    const add=(type,value,status)=>{
+      value=clean(value); if(!value) return;
+      const key=(type+'|'+value).toLowerCase();
+      if(arr.some(x=>(x.type+'|'+x.value).toLowerCase()===key)) return;
+      arr.push({type,value,status:status||''});
+    };
+    (Array.isArray(l.contactMethods)?l.contactMethods:[]).forEach(c=>add(c.type||c.kind||'',c.value||c.url||c.href||'',c.status||c.confidence||''));
+    add('Email',l.email,'Verified');
+    add('Phone',l.phone,'Verified');
+    add('LinkedIn',l.linkedin||l.linkedinUrl||l.linkedInUrl,l.linkedinVerified?'Verified':'Needs Manual Confirmation');
+    return arr;
+  }
+  function evidence(l){
+    return Array.isArray(l.evidenceTrail)?l.evidenceTrail:[];
+  }
+  function currentDay(l){
+    return Math.max(1,Math.min(10,Number(l.day||l.workflowDay||String(l.bucket||'day1').replace(/\D/g,'')||1)));
+  }
+  const cadenceTitles={
+    1:'Day 1 — Evidence-Based Email / LinkedIn Touch',
+    2:'Day 2 — Research-Based Intro Call / Signal Reminder',
+    3:'Day 3 — LinkedIn Touch / Engagement Follow-Up',
+    4:'Day 4 — Credibility Angle',
+    5:'Day 5 — Value Follow-Up / Overview Send',
+    6:'Day 6 — Final Research-Based Call',
+    7:'Day 7 — Light Touch / Objection-Aware Follow-Up',
+    8:'Day 8 — Nurture Decision / Future Timing Check',
+    9:'Day 9 — Final Review / Director-Call Push',
+    10:'Day 10 — Longer-Term Permission Call'
+  };
+  function defaultFollowUpFor(l, disposition){
+    const d=currentDay(l);
+    if(/callback/i.test(disposition)) return new Date(Date.now()+24*60*60*1000).toISOString().slice(0,16);
+    if(/interested|director/i.test(disposition)) return new Date(Date.now()+2*60*60*1000).toISOString().slice(0,16);
+    if(/no answer|left voicemail|sent touch/i.test(disposition)) return new Date(Date.now()+24*60*60*1000).toISOString().slice(0,16);
+    if(d>=10) return '';
+    return new Date(Date.now()+24*60*60*1000).toISOString().slice(0,16);
+  }
+  function nextActionAfter(l, disposition){
+    const d=currentDay(l);
+    if(/interested|director/i.test(disposition)) return 'Prepare / send director handoff and schedule director call.';
+    if(/callback/i.test(disposition)) return 'Callback due at selected follow-up time.';
+    if(/not interested|remove|do not contact/i.test(disposition)) return 'Do not continue outreach unless manually reactivated.';
+    if(/research/i.test(disposition)) return 'Research needed before next outreach.';
+    return cadenceTitles[Math.min(10,d+1)] || cadenceTitles[10];
+  }
+  function noteListFor(id){
+    const s=getStore();
+    return s.callNotes.filter(n=>n.leadId===id || n.leadKey===id || n.leadName===findLead(id)?.name)
+      .sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  }
+  function lastNoteFor(id){ return noteListFor(id)[0] || null; }
+  function followUpsFor(id){
+    const s=getStore();
+    return s.followUps.filter(f=>f.leadId===id || f.leadKey===id || f.leadName===findLead(id)?.name)
+      .sort((a,b)=>String(a.dueAt||'').localeCompare(String(b.dueAt||'')));
+  }
+
+  function directorHandoffText(l){
+    const id=getLeadId(l);
+    const notes=noteListFor(id).slice(0,8);
+    const contacts=contactMethods(l);
+    const ev=evidence(l);
+    return [
+      `BASIN VENTURES — DIRECTOR HANDOFF`,
+      ``,
+      `Lead: ${l.name||''}`,
+      `Title / Role: ${l.title||l.role||l.specialty||''}`,
+      `Company / Practice: ${l.company||''}`,
+      `Location: ${l.practiceLocation||l.location||''}`,
+      `Grade / Score: ${(l.grade||'')} / ${(l.score||'')}`,
+      `Status: ${l.status||l.queue||''}`,
+      `Best Contact Route: ${l.bestContactRoute||l.contactPriority||''}`,
+      `Next Action: ${l.nextAction||l.bestFirstAction||''}`,
+      ``,
+      `Fit Reason:`,
+      `${l.fitReason||'Potential fit based on role and public evidence.'}`,
+      ``,
+      `Accredited-Likely Reason:`,
+      `${l.accreditedLikelyReason||'Not proven. Must be verified compliantly.'}`,
+      ``,
+      `Source Confidence:`,
+      `${l.sourceConfidence||'Not labeled'}`,
+      ``,
+      `Evidence Trail:`,
+      ...(ev.length?ev.slice(0,8).map(e=>`- ${e.source||'Source'}: ${e.whatItProves||''} ${e.url?`(${e.url})`:''}`):['- No evidence captured.']),
+      ``,
+      `Contact Methods:`,
+      ...(contacts.length?contacts.map(c=>`- ${c.type}: ${c.value} ${c.status?`[${c.status}]`:''}`):['- No contact route captured.']),
+      ``,
+      `Recent Notes:`,
+      ...(notes.length?notes.map(n=>`- ${n.createdAt||''} | ${n.disposition||''} | ${n.outcome||''}: ${n.note||''}`):['- No notes yet.']),
+      ``,
+      `Compliance Reminders:`,
+      `- Educational director call only.`,
+      `- No guarantees.`,
+      `- No tax advice.`,
+      `- Do not imply the signal means they need the investment.`,
+      `- CPA/tax professional must confirm fit.`
+    ].join('\n');
+  }
+  function saveDirectorHandoff(id){
+    const l=findLead(id); if(!l) return alert('Lead not found.');
+    const s=getStore();
+    const text=directorHandoffText(l);
+    const handoff={id:uid('handoff'),leadId:getLeadId(l),leadKey:leadKey(l),leadName:l.name||'',createdAt:now(),status:'Saved',text};
+    s.directorHandoffs.unshift(handoff);
+    s.activities.unshift({id:uid('act'),type:'director_handoff_saved',leadId:getLeadId(l),leadName:l.name||'',createdAt:now(),summary:'Director handoff saved.'});
+    saveStore(s);
+    updateLeadEverywhere(getLeadId(l), lead=>Object.assign(lead,{handoffStatus:'Saved',directorHandoffId:handoff.id,nextAction:'Director handoff saved. Schedule or complete director call.'}));
+    alert('Director handoff saved.');
+  }
+  function printDirectorHandoff(id){
+    const l=findLead(id); if(!l) return alert('Lead not found.');
+    const text=directorHandoffText(l);
+    const w=window.open('','_blank');
+    if(!w) return alert('Popup blocked. Allow popups to print handoff.');
+    w.document.write('<!doctype html><html><head><title>Director Handoff</title><style>body{font-family:Arial,sans-serif;line-height:1.45;padding:28px;color:#111}pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body><pre>'+esc(text)+'</pre><script>window.onload=()=>window.print()<\/script></body></html>');
+    w.document.close();
+  }
+  function copyDirectorHandoff(id){
+    const l=findLead(id); if(!l) return alert('Lead not found.');
+    const text=directorHandoffText(l);
+    navigator.clipboard?.writeText(text).then(()=>alert('Director handoff copied.')).catch(()=>prompt('Copy director handoff:',text));
+  }
+
+  function addCallNote(id){
+    const l=findLead(id); if(!l) return alert('Lead not found.');
+    const leadId=getLeadId(l);
+    const dispositionEl=$(`#v71-disposition-${CSS.escape(leadId)}`) || $('#v71-disposition');
+    const outcomeEl=$(`#v71-outcome-${CSS.escape(leadId)}`) || $('#v71-outcome');
+    const followEl=$(`#v71-follow-${CSS.escape(leadId)}`) || $('#v71-follow');
+    const noteEl=$(`#v71-note-${CSS.escape(leadId)}`) || $('#v71-note');
+    const disposition=clean(dispositionEl?.value||'');
+    const outcome=clean(outcomeEl?.value||'');
+    const note=clean(noteEl?.value||'',3000);
+    let dueAt=clean(followEl?.value||'');
+    if(!disposition) return alert('Select a disposition before saving the note.');
+    if(!note || note.length<8) return alert('Add a real note before saving.');
+    if(!dueAt) dueAt=defaultFollowUpFor(l,disposition);
+
+    const s=getStore();
+    const callNote={
+      id:uid('note'),
+      leadId,
+      leadKey:leadKey(l),
+      leadName:l.name||'',
+      createdAt:now(),
+      day:currentDay(l),
+      cadenceTitle:cadenceTitles[currentDay(l)]||'',
+      disposition,
+      outcome,
+      dueAt,
+      note,
+      source:'Lead Card'
+    };
+    s.callNotes.unshift(callNote);
+    s.activities.unshift({id:uid('act'),type:'call_note',leadId,leadName:l.name||'',createdAt:now(),summary:`${disposition}: ${note.slice(0,120)}`});
+
+    if(dueAt && !/not interested|remove|do not contact/i.test(disposition)){
+      s.followUps.unshift({id:uid('fu'),leadId,leadKey:leadKey(l),leadName:l.name||'',createdAt:now(),dueAt,disposition,outcome,note:note.slice(0,300),status:'Open',nextAction:nextActionAfter(l,disposition)});
+    }
+
+    saveStore(s);
+
+    updateLeadEverywhere(leadId, lead=>{
+      const d=currentDay(lead);
+      let patch={lastNote:note,lastNoteAt:now(),lastDisposition:disposition,lastOutcome:outcome,nextFollowUpAt:dueAt,nextAction:nextActionAfter(lead,disposition)};
+      if(/interested|director/i.test(disposition)){
+        patch.status='Director Handoff Needed';
+        patch.bucket='director-ready';
+        patch.handoffStatus='Needed';
+      } else if(/callback/i.test(disposition)){
+        patch.status='Callback';
+        patch.bucket='callback';
+      } else if(/not interested|remove|do not contact/i.test(disposition)){
+        patch.status='Not Interested';
+        patch.bucket='notinterested';
+        patch.suppressed=true;
+      } else if(/research/i.test(disposition)){
+        patch.status='Research Needed';
+        patch.bucket='research';
+        patch.associateReady=false;
+      } else {
+        const nd=Math.min(10,d+1);
+        patch.status='Ready to Work';
+        patch.day=nd;
+        patch.workflowDay=nd;
+        patch.bucket='day'+nd;
+      }
+      return Object.assign(lead,patch);
+    });
+
+    if(noteEl) noteEl.value='';
+    renderLeadCrmPanel(leadId,true);
+    if(window.BasinV70ApiStatus && window.BasinV70ApiStatus.refresh) window.BasinV70ApiStatus.refresh();
+    alert('Call note saved and lead updated.');
+  }
+
+  function crmPanelHtml(l){
+    const leadId=getLeadId(l);
+    const notes=noteListFor(leadId);
+    const fus=followUpsFor(leadId).filter(f=>f.status!=='Closed');
+    const last=notes[0];
+    const nextFu=fus[0];
+    const day=currentDay(l);
+    const safeId=esc(leadId);
+    return '<div id="v71-lead-crm-panel" class="panel" style="margin-top:14px;border:1px solid rgba(77,209,185,.45)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Lead CRM Hub — Notes, Follow-Up, Handoff</div>'
+      + '<div class="panel-sub">This is attached directly to the lead card. Notes saved here update cadence, follow-up, and handoff status.</div></div></div>'
+      + '<div class="panel-bd">'
+      + '<div class="grid3" style="margin-bottom:12px">'
+      + `<div class="stat"><div class="stat-val">${esc(String(day))}</div><div class="stat-lbl">CURRENT CADENCE DAY</div><div class="mini-note">${esc(cadenceTitles[day]||'')}</div></div>`
+      + `<div class="stat"><div class="stat-val">${nextFu?esc(String(nextFu.dueAt||'Due')):'NONE'}</div><div class="stat-lbl">NEXT FOLLOW-UP</div><div class="mini-note">${esc(nextFu?.nextAction || l.nextAction || l.bestFirstAction || 'No follow-up set.')}</div></div>`
+      + `<div class="stat"><div class="stat-val">${esc(l.handoffStatus||'OPEN')}</div><div class="stat-lbl">HANDOFF STATUS</div><div class="mini-note">${esc(last?('Last note: '+last.disposition):'No notes yet.')}</div></div>`
+      + '</div>'
+      + '<div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'
+      + '<div>'
+      + '<label class="lbl">Disposition</label>'
+      + `<select id="v71-disposition-${safeId}" class="input"><option value="">Select disposition...</option><option>No Answer / Left Voicemail</option><option>Sent Email / LinkedIn Touch</option><option>Callback</option><option>Interested / Director Handoff Needed</option><option>Needs Research</option><option>Not Interested / Remove</option></select>`
+      + '<label class="lbl" style="margin-top:10px">Outcome / Objection</label>'
+      + `<input id="v71-outcome-${safeId}" class="input" placeholder="Outcome, objection, interest level, gatekeeper notes..." />`
+      + '<label class="lbl" style="margin-top:10px">Next Follow-Up</label>'
+      + `<input id="v71-follow-${safeId}" class="input" type="datetime-local" />`
+      + '</div><div>'
+      + '<label class="lbl">Call / Touch Note</label>'
+      + `<textarea id="v71-note-${safeId}" class="input" rows="7" placeholder="What happened? What was completed? Next reason?"></textarea>`
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">'
+      + `<button class="btn btn-primary" onclick="BasinV71CRM.addCallNote('${safeId}')">Save Note + Update Lead</button>`
+      + `<button class="btn btn-ghost" onclick="BasinV71CRM.copyHandoff('${safeId}')">Copy Director Handoff</button>`
+      + `<button class="btn btn-ghost" onclick="BasinV71CRM.printHandoff('${safeId}')">Print Handoff</button>`
+      + `<button class="btn btn-primary" onclick="BasinV71CRM.saveHandoff('${safeId}')">Save Handoff</button>`
+      + '</div></div></div>'
+      + '<div class="panel" style="margin-top:12px"><div class="panel-hd"><div><div class="panel-title">Attached Call Notes</div><div class="panel-sub">Searchable from Call Notes, but stored here on the lead record.</div></div></div><div class="panel-bd">'
+      + (notes.length?notes.slice(0,10).map(n=>'<div class="record" style="grid-template-columns:1fr auto"><div><div class="rec-name">'+esc(n.disposition||'Note')+'</div><div class="rec-meta">'+esc([n.createdAt,n.cadenceTitle,n.outcome].filter(Boolean).join(' · '))+'</div><div class="mini-note">'+esc(n.note||'')+'</div></div><div class="tag gray">'+esc(n.dueAt?'FU '+n.dueAt:'No FU')+'</div></div>').join(''):'<div class="empty"><div class="empty-title">No attached notes yet.</div></div>')
+      + '</div></div>'
+      + '</div></div>';
+  }
+
+  function renderLeadCrmPanel(id,force){
+    const l=findLead(id);
+    if(!l) return;
+    $('#v71-lead-crm-panel')?.remove();
+
+    // Locate the best place: existing full lead modal/drawer/card, else current page.
+    const modal=$('.modal.show,.modal.active,.drawer.open,.drawer.active,.lead-card-modal,.full-lead-card,[role="dialog"]') || document.body;
+    const fullCard=[...$$('.panel,.card,.modal,.drawer,.record',modal)].reverse().find(el=>/Full Lead|Lead Card|Contact|Evidence|Fit Reason|Accredited|CRM/i.test(el.textContent||'')) || modal;
+    fullCard.insertAdjacentHTML('beforeend', crmPanelHtml(l));
+
+    // Pre-fill follow-up with a sensible default when possible.
+    const leadId=getLeadId(l);
+    const follow=$(`#v71-follow-${CSS.escape(leadId)}`);
+    if(follow && !follow.value) follow.value=defaultFollowUpFor(l,'No Answer / Left Voicemail');
+  }
+
+  function openLeadWrapper(id){
+    const l=findLead(id);
+    if(!l) return alert('Lead not found.');
+    // Try existing full lead card first.
+    try{
+      if(window.BasinLeadFactory && typeof window.BasinLeadFactory.openLead==='function' && !openLeadWrapper.__inside){
+        openLeadWrapper.__inside=true;
+        window.BasinLeadFactory.openLead(getLeadId(l));
+        openLeadWrapper.__inside=false;
+        setTimeout(()=>renderLeadCrmPanel(getLeadId(l),true),500);
+        setTimeout(()=>renderLeadCrmPanel(getLeadId(l),true),1400);
+        return;
+      }
+    }catch(e){openLeadWrapper.__inside=false;}
+    // Fallback simple card.
+    const html='<div class="modal show active" id="v71-fallback-modal" style="position:fixed;inset:4%;z-index:99999;overflow:auto;background:#10141d;border:1px solid #344055;border-radius:16px;padding:18px;color:white">'
+      + '<button class="btn btn-danger" style="float:right" onclick="document.getElementById(\'v71-fallback-modal\').remove()">Close</button>'
+      + '<h2>'+esc(l.name||'Lead')+'</h2><p>'+esc([l.title,l.company,l.location].filter(Boolean).join(' · '))+'</p>'
+      + '<p><strong>Next:</strong> '+esc(l.nextAction||l.bestFirstAction||'')+'</p>'
+      + '</div>';
+    document.body.insertAdjacentHTML('beforeend',html);
+    renderLeadCrmPanel(getLeadId(l),true);
+  }
+
+  function patchOpenButtons(){
+    $$('button,a').forEach(btn=>{
+      const txt=clean(btn.textContent||'');
+      if(!/Open Full Lead Card|Full CRM Card|Open Lead Card/i.test(txt)) return;
+      if(btn.__v71Patched) return;
+      btn.__v71Patched=true;
+      btn.addEventListener('click',()=>{
+        setTimeout(()=>{
+          // Find the closest lead name near the clicked card.
+          const rec=btn.closest('.record,.card,.panel');
+          const name=clean((rec?.querySelector('.rec-name')||{}).textContent||'');
+          const l=name ? allLeads().find(x=>clean(x.name)===name) : null;
+          if(l) renderLeadCrmPanel(getLeadId(l),true);
+        },700);
+      },true);
+    });
+  }
+  function injectQuickButtonsOnLeadCards(){
+    $$('.record').forEach(rec=>{
+      if(rec.querySelector('.v71-open-crm')) return;
+      const name=clean((rec.querySelector('.rec-name')||{}).textContent||'');
+      if(!name) return;
+      const l=allLeads().find(x=>clean(x.name)===name);
+      if(!l) return;
+      const actions=rec.querySelector('.rec-actions') || rec;
+      const id=esc(getLeadId(l));
+      const btn=document.createElement('button');
+      btn.className='btn btn-primary btn-sm v71-open-crm';
+      btn.textContent='Open CRM Hub';
+      btn.onclick=()=>openLeadWrapper(id);
+      actions.appendChild(btn);
+      const last=lastNoteFor(getLeadId(l));
+      if(last && !rec.querySelector('.v71-last-note')){
+        const info=document.createElement('div');
+        info.className='mini-note v71-last-note';
+        info.style.marginTop='7px';
+        info.innerHTML='<strong>Last Note:</strong> '+esc(last.disposition)+' — '+esc((last.note||'').slice(0,160));
+        (rec.querySelector('.rec-tags')||rec).insertAdjacentElement('afterend',info);
+      }
+      const fus=followUpsFor(getLeadId(l)).filter(f=>f.status!=='Closed');
+      if(fus[0] && !rec.querySelector('.v71-next-fu')){
+        const info=document.createElement('div');
+        info.className='mini-note v71-next-fu';
+        info.style.marginTop='7px';
+        info.innerHTML='<strong>Next Follow-Up:</strong> '+esc(fus[0].dueAt||'')+' — '+esc(fus[0].nextAction||'');
+        (rec.querySelector('.v71-last-note')||rec.querySelector('.rec-tags')||rec).insertAdjacentElement('afterend',info);
+      }
+    });
+  }
+
+  function renderCallNotesSearchPage(){
+    const page=[...$$('.page')].find(p=>/Call Notes/i.test(p.textContent||'') && p.classList.contains('active'));
+    if(!page || $('#v71-call-notes-library',page)) return;
+    const s=getStore();
+    const html='<div id="v71-call-notes-library" class="panel" style="margin:14px 0;border:1px solid rgba(77,209,185,.35)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Attached Call Notes Library</div><div class="panel-sub">Notes are created from lead cards and searchable here.</div></div></div>'
+      + '<div class="panel-bd"><input class="input" id="v71-note-search" placeholder="Search notes by name, disposition, outcome, text..." oninput="BasinV71CRM.renderNoteLibrary()" />'
+      + '<div id="v71-note-results" style="margin-top:12px"></div></div></div>';
+    const anchor=$('.panel',page)||page;
+    anchor.insertAdjacentHTML('beforebegin',html);
+    renderNoteLibrary();
+  }
+  function renderNoteLibrary(){
+    const box=$('#v71-note-results'); if(!box) return;
+    const q=clean($('#v71-note-search')?.value||'').toLowerCase();
+    const notes=getStore().callNotes.filter(n=>!q || [n.leadName,n.disposition,n.outcome,n.note,n.cadenceTitle].join(' ').toLowerCase().includes(q));
+    box.innerHTML=notes.length?notes.slice(0,100).map(n=>'<div class="record" style="grid-template-columns:1fr auto"><div><div class="rec-name">'+esc(n.leadName||'Lead')+'</div><div class="rec-meta">'+esc([n.createdAt,n.disposition,n.outcome,n.cadenceTitle].filter(Boolean).join(' · '))+'</div><div class="mini-note">'+esc(n.note||'')+'</div></div><button class="btn btn-ghost btn-sm" onclick="BasinV71CRM.openLead(\''+esc(n.leadId||n.leadKey)+'\')">Open Lead</button></div>').join(''):'<div class="empty"><div class="empty-title">No notes found.</div></div>';
+  }
+
+  function renderFollowUpDashboard(){
+    const page=[...$$('.page')].find(p=>/Follow-Up Dashboard/i.test(p.textContent||'') && p.classList.contains('active'));
+    if(!page || $('#v71-followup-panel',page)) return;
+    const fus=getStore().followUps.filter(f=>f.status!=='Closed').sort((a,b)=>String(a.dueAt||'').localeCompare(String(b.dueAt||'')));
+    const html='<div id="v71-followup-panel" class="panel" style="margin:14px 0;border:1px solid rgba(216,148,36,.45)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Lead Card Follow-Ups</div><div class="panel-sub">Generated automatically when notes are saved from the lead card.</div></div></div><div class="panel-bd">'
+      + (fus.length?fus.slice(0,100).map(f=>'<div class="record" style="grid-template-columns:1fr auto"><div><div class="rec-name">'+esc(f.leadName||'Lead')+'</div><div class="rec-meta">'+esc([f.dueAt,f.disposition,f.outcome].filter(Boolean).join(' · '))+'</div><div class="mini-note">'+esc(f.nextAction||f.note||'')+'</div></div><button class="btn btn-primary btn-sm" onclick="BasinV71CRM.openLead(\''+esc(f.leadId||f.leadKey)+'\')">Open Lead</button></div>').join(''):'<div class="empty"><div class="empty-title">No open follow-ups.</div></div>')
+      + '</div></div>';
+    const anchor=$('.panel',page)||page;
+    anchor.insertAdjacentHTML('beforebegin',html);
+  }
+
+  function renderDirectorHandoffsPage(){
+    const page=[...$$('.page')].find(p=>/Director Handoffs/i.test(p.textContent||'') && p.classList.contains('active'));
+    if(!page || $('#v71-handoff-library',page)) return;
+    const hs=getStore().directorHandoffs;
+    const html='<div id="v71-handoff-library" class="panel" style="margin:14px 0;border:1px solid rgba(77,209,185,.35)">'
+      + '<div class="panel-hd"><div><div class="panel-title">Saved Director Handoffs</div><div class="panel-sub">Created from lead cards.</div></div></div><div class="panel-bd">'
+      + (hs.length?hs.slice(0,100).map(h=>'<div class="record" style="grid-template-columns:1fr auto"><div><div class="rec-name">'+esc(h.leadName||'Lead')+'</div><div class="rec-meta">'+esc([h.createdAt,h.status].filter(Boolean).join(' · '))+'</div><pre class="mini-note" style="white-space:pre-wrap;max-height:140px;overflow:auto">'+esc((h.text||'').slice(0,1200))+'</pre></div><div class="rec-actions"><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText('+JSON.stringify(h.text||'').replace(/</g,'\\u003c')+')">Copy</button><button class="btn btn-primary btn-sm" onclick="BasinV71CRM.openLead(\''+esc(h.leadId||h.leadKey)+'\')">Open Lead</button></div></div>').join(''):'<div class="empty"><div class="empty-title">No handoffs saved yet.</div></div>')
+      + '</div></div>';
+    const anchor=$('.panel',page)||page;
+    anchor.insertAdjacentHTML('beforebegin',html);
+  }
+
+  function run(){
+    patchOpenButtons();
+    injectQuickButtonsOnLeadCards();
+    renderCallNotesSearchPage();
+    renderFollowUpDashboard();
+    renderDirectorHandoffsPage();
+  }
+
+  window.BasinV71CRM={
+    openLead:openLeadWrapper,
+    renderLeadCrmPanel,
+    addCallNote,
+    copyHandoff:copyDirectorHandoff,
+    printHandoff:printDirectorHandoff,
+    saveHandoff:saveDirectorHandoff,
+    renderNoteLibrary,
+    allLeads,
+    findLead
+  };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{setTimeout(run,500);setTimeout(run,1800);setTimeout(run,5000);});
+  else {setTimeout(run,500);setTimeout(run,1800);setTimeout(run,5000);}
+  new MutationObserver(()=>{clearTimeout(window.__v71Timer); window.__v71Timer=setTimeout(run,500);}).observe(document.body,{childList:true,subtree:true});
 })();

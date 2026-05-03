@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Basin OS V6.9 Cross-Referenced Lead Engine
+ * Basin OS V7.1 Cross-Referenced Lead Engine
  *
  * Key fix:
  * - NPI is treated as an identity seed, not the whole lead.
@@ -419,7 +419,7 @@ async function aiEnrich(leads){
   const generatedAt=now();
   const radar={
     generatedAt,
-    engine:'Basin OS V6.9 Cross-Referenced Lead Engine',
+    engine:'Basin OS V7.1 Cross-Referenced Lead Engine',
     automationMode:'NPI/RSS seeds → public search enrichment → source confidence → Meta Llama/Groq evaluation → balanced work queues',
     compliance:{linkedinScraping:false,autoMessaging:false,autoProfileReading:false,candidateUrlsOnly:true,manualConfirmationRequired:true,accreditationProof:'Public data creates accredited-likely proxy only; qualification must be verified compliantly.'},
     stats:{
@@ -450,6 +450,6 @@ async function aiEnrich(leads){
   fs.writeFileSync(out('data/radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
   fs.writeFileSync(out('data/radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
-  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V6.9 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
-  console.log(`V6.9 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
+  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V7.1 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
+  console.log(`V7.1 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
 })().catch(e=>{ console.error(e); process.exitCode=1; });
