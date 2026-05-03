@@ -215,6 +215,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     const hasLinkedIn = contacts.some(c => /linkedin/.test(`${c.type} ${c.value}`.toLowerCase())) || /linkedin/.test(sourceBlob);
     const hasEmail = contacts.some(c => c.type === 'email' || /@/.test(c.value));
     const hasPhone = contacts.some(c => c.type === 'phone' || /\d{3}.*\d{3}.*\d{4}/.test(c.value));
+    const hasWarmRoute = hasLinkedIn || hasEmail;
     const sourceType = detectSource(raw, contacts);
     const isCpa = /cpa|tax|account/i.test([raw.title, raw.role, raw.specialty, raw.company, raw.signal, raw.summary, raw.sourceType].join(' '));
     const rawReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === 'ready' || raw.status === 'Ready to Work' || raw.queue === 'Ready to Work');
@@ -377,11 +378,16 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     const researchLeads = normalized.filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
     const skippedLeads = normalized.filter(l => l.skipped);
 
-    state.store.leads = mergeLeadArrays(state.store.leads, readyLeads);
-    state.store.linkedinVerify = mergeLeadArrays(state.store.linkedinVerify || [], linkedinLeads);
-    state.store.cpaVerify = mergeLeadArrays(state.store.cpaVerify || [], cpaLeads);
-    state.store.research = mergeLeadArrays(state.store.research, researchLeads);
-    state.store.skipped = mergeLeadArrays(state.store.skipped || [], skippedLeads);
+    const manualLeads = (state.store.leads || []).filter(l => l.sourceType === 'manual' || l.source === 'Manual');
+    const manualLinkedIn = (state.store.linkedinVerify || []).filter(l => l.sourceType === 'manual' || l.source === 'Manual');
+    const manualCpa = (state.store.cpaVerify || []).filter(l => l.sourceType === 'manual' || l.source === 'Manual');
+    const manualResearch = (state.store.research || []).filter(l => l.sourceType === 'manual' || l.source === 'Manual');
+
+    state.store.leads = mergeLeadArrays(manualLeads, readyLeads);
+    state.store.linkedinVerify = mergeLeadArrays(manualLinkedIn, linkedinLeads);
+    state.store.cpaVerify = mergeLeadArrays(manualCpa, cpaLeads);
+    state.store.research = mergeLeadArrays(manualResearch, researchLeads);
+    state.store.skipped = skippedLeads;
     state.store.lastRadar = raw;
     state.store.lastLoadedFrom = raw.__loadedFrom || state.store.lastLoadedFrom;
     state.store.lastLoadedAt = new Date().toISOString();

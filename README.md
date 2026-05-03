@@ -1,3 +1,9 @@
+# Basin OS V2.2.1 — Closed Circuit Error Fix
+
+This fixes the browser error: `hasWarmRoute is not defined`.
+
+It also changes Load Shared GitHub Radar so old cached radar leads do not keep polluting the new closed-circuit routing. It preserves manual leads only, then replaces the radar-sourced buckets with the latest GitHub Action output.
+
 # Basin OS V2.2 — Closed Circuit Lead Routing
 
 This version changes the lead operating system from "show me everything" to "show me only what can be worked."
@@ -84,7 +90,7 @@ GROQ_API_KEY
 1. GitHub → Actions → Basin Radar Daily → Run workflow.
 2. Wait for green.
 3. Open:
-   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-2-closed-circuit`
+   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-2-1-errorfix`
 4. Click **Load Shared GitHub Radar**.
 
 ## If LinkedIn and Email still show zero

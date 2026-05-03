@@ -1,8 +1,8 @@
 {
   "name": "basin-os-clean-rebuild",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
-  "description": "Basin OS V2.2 closed-circuit lead routing",
+  "description": "Basin OS V2.2.1 closed-circuit routing error fix",
   "scripts": {
     "check": "node --check basin-radar-runner.js && node --check js/app.js",
     "radar": "node basin-radar-runner.js"
