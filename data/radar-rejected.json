@@ -1,5 +1,10 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-05-03T14:53:52.650Z",
   "skipped": 0,
-  "errors": []
+  "errors": [
+    {
+      "source": "fatal",
+      "reason": "hasContact is not defined"
+    }
+  ]
 }
