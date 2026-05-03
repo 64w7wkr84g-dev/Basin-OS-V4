@@ -1,0 +1,42 @@
+name: Basin Radar Daily
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 13 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Basin Radar
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MAX_NPI: "120"
+          MAX_PUBLIC_SEARCHES: "250"
+        run: node basin-radar-runner.js
+
+      - name: Validate JSON
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('data/radar-leads.json','utf8')); console.log('data/radar-leads.json valid')"
+          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('radar-leads.json valid')"
+
+      - name: Commit radar data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update Basin Radar leads
+          file_pattern: "data/*.json radar-leads.json radar-research-candidates.json radar-rejected.json"
