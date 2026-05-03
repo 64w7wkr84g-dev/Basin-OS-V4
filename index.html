@@ -1971,6 +1971,243 @@ setTimeout(function(){initRadarAutomation(true)},1800);
 applyApiCorsClarity();
 console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 </script>
+
+<script id="basin-v54-contact-visibility-kpi-fix">
+/* Basin OS v5.4 — Contact Visibility + KPI Alignment Patch
+   Safe append-only patch. Does not change storage schema. Does not replace navigation.
+   Fixes:
+   - Has Contact KPI counts contactMethods/phone/email/linkedin instead of only email/linkedin.
+   - Lead Workflow cards show the actual contact method values under the badges.
+   - Contact rows are actionable: Call / Email / Open / Copy.
+   - Lead Radar cards show contact methods and aligned usable/filtered counts.
+*/
+(function(){
+  function $(id){return document.getElementById(id)}
+  function E(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function A(v){return E(v).replace(/`/g,'&#96;')}
+  function clean(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+  function telDigits(v){return String(v||'').replace(/\D/g,'')}
+  function isEmail(v){return /@/.test(String(v||''))}
+  function isPhone(v){return telDigits(v).length>=10}
+  function isDirectLinkedIn(v){return /linkedin\.com\/in\//i.test(String(v||''))}
+  function isNpi(v,t){return /npi/i.test(String(t||'')+String(v||''))}
+  function isWebsite(v,t){return /website|contact|company/i.test(String(t||'')) && /^https?:\/\//i.test(String(v||''))}
+  function methodKey(m){return (String(m.type||'')+'|'+String(m.value||'')).toLowerCase()}
+  function addMethod(out,type,value,confidence,source){
+    value=clean(value); if(!value)return;
+    var m={type:clean(type||'Contact'),value:value,confidence:clean(confidence||''),source:clean(source||'')};
+    var k=methodKey(m); if(out.some(function(x){return methodKey(x)===k}))return;
+    out.push(m)
+  }
+  function contactMethods(l){
+    var out=[];
+    (Array.isArray(l&&l.contactMethods)?l.contactMethods:[]).forEach(function(m){
+      if(typeof m==='string')addMethod(out,m,m,'','existing');
+      else if(m&&m.value)addMethod(out,m.type||'Contact',m.value,m.confidence||'',m.source||'existing');
+    });
+    if(l&&l.email)addMethod(out,'Email',l.email,'High','lead data');
+    if(l&&l.phone)addMethod(out,'Phone',l.phone,'High','lead data');
+    if(l&&l.linkedin)addMethod(out,'LinkedIn Profile',l.linkedin,'High','lead data');
+    if(l&&l.npi)addMethod(out,'NPI Profile','https://npiregistry.cms.hhs.gov/provider-view/'+l.npi,'High','NPI Registry');
+    if(l&&(l.website||l.companyUrl||l.companyURL))addMethod(out,'Company Website',l.website||l.companyUrl||l.companyURL,'Low','lead data');
+    return out;
+  }
+  function actualContactMethods(l){
+    return contactMethods(l).filter(function(m){
+      var t=String(m.type||'').toLowerCase(), v=String(m.value||'');
+      if(t.indexOf('email')>-1 && isEmail(v))return true;
+      if(t.indexOf('phone')>-1 && isPhone(v))return true;
+      if(isDirectLinkedIn(v))return true;
+      if(isNpi(v,t))return true;
+      return false;
+    });
+  }
+  function supportMethods(l){
+    return contactMethods(l).filter(function(m){
+      return !actualContactMethods(l).some(function(a){return methodKey(a)===methodKey(m)}) && (isWebsite(m.value,m.type)||/^https?:\/\//i.test(m.value));
+    });
+  }
+  function hasActualContact(l){return actualContactMethods(l).length>0}
+  function scoreVal(l){return Number((l&&l.score)||0)||0}
+  function gradeVal(l){return (l&&l.grade)||(scoreVal(l)>=82?'A':scoreVal(l)>=68?'B':scoreVal(l)>=52?'C':'D')}
+  function rejectedCount(){
+    var a=Array.isArray(STORE.rejectedRadarLeads)?STORE.rejectedRadarLeads.length:0;
+    var b=Array.isArray(STORE.radarRejected)?STORE.radarRejected.length:0;
+    var c=Array.isArray(STORE.rejectedLeads)?STORE.rejectedLeads.length:0;
+    return Math.max(a,b,c,0);
+  }
+  function copyContact(btn){
+    var v=btn&&btn.getAttribute('data-copy')||'';
+    if(!v)return;
+    try{navigator.clipboard.writeText(v); if(typeof toast==='function')toast('CONTACT COPIED')}catch(e){prompt('Copy contact',v)}
+  }
+  window.basinCopyContact=copyContact;
+  function actionFor(m){
+    var t=String(m.type||''), v=String(m.value||'');
+    if(/email/i.test(t)&&isEmail(v))return '<a class="btn btn-primary btn-sm" href="mailto:'+A(v)+'">Email</a>';
+    if(/phone/i.test(t)&&isPhone(v))return '<a class="btn btn-primary btn-sm" href="tel:'+A(telDigits(v))+'">Call</a>';
+    if(/^https?:\/\//i.test(v))return '<a class="btn btn-primary btn-sm" target="_blank" href="'+A(v)+'">Open</a>';
+    return '';
+  }
+  function contactBlock(l){
+    var actual=actualContactMethods(l), support=supportMethods(l);
+    var rows=[];
+    actual.forEach(function(m){
+      rows.push('<div class="contact-row verified"><div><strong>'+E(m.type)+'</strong><span>'+E(m.value)+'</span></div><div class="contact-actions">'+actionFor(m)+'<button class="btn btn-ghost btn-sm" data-copy="'+A(m.value)+'" onclick="basinCopyContact(this)">Copy</button></div></div>');
+    });
+    support.forEach(function(m){
+      rows.push('<div class="contact-row support"><div><strong>'+E(m.type)+'</strong><span>'+E(m.value)+'</span></div><div class="contact-actions">'+actionFor(m)+'<button class="btn btn-ghost btn-sm" data-copy="'+A(m.value)+'" onclick="basinCopyContact(this)">Copy</button></div></div>');
+    });
+    if(!actual.length){
+      rows.push('<div class="contact-row missing"><div><strong>No verified contact method</strong><span>This record should be research only, not active workflow.</span></div></div>');
+    }
+    return '<div class="contact-box"><div class="contact-title">CONTACT METHOD'+(actual.length>1?'S':'')+' VERIFIED</div>'+rows.join('')+'</div>';
+  }
+  function contactTags(l){
+    var a=actualContactMethods(l), s=supportMethods(l), html='';
+    a.forEach(function(m){html+='<span class="tag green">'+E(m.type)+'</span>'});
+    s.forEach(function(m){html+='<span class="tag blue">'+E(m.type)+'</span>'});
+    if(!a.length)html+='<span class="tag red">NO VERIFIED CONTACT</span>';
+    return html;
+  }
+  function sortLeads(arr){
+    var rank={A:4,B:3,C:2,D:1};
+    return (arr||[]).slice().sort(function(a,b){return (rank[gradeVal(b)]||0)-(rank[gradeVal(a)]||0)||scoreVal(b)-scoreVal(a)})
+  }
+  function countsForTasks(w){
+    var st=(w&&w.dailyState)||{}, bucket=(w&&w.bucket)||'day1', d=Number(String(bucket).replace(/\D/g,''))||1;
+    if(typeof basinLeadDayState==='function'){
+      try{st=basinLeadDayState(w,d)||st}catch(e){}
+    }
+    var tasks=Array.isArray(st.tasks)?st.tasks:[];
+    var total=5, done=tasks.filter(Boolean).length;
+    return {done:done,total:total,state:st,day:d}
+  }
+  var REQUIRED={
+    1:['Review source/evidence trail','Confirm named human contact and contact route','Complete first outreach touch','Select disposition','Add note'],
+    2:['Attempt call or strongest direct contact route','Leave voicemail if phone exists and no answer','Send follow-up through best available channel','Select disposition','Add note'],
+    3:['Complete LinkedIn / secondary-channel touch','Check for reply, open, or engagement','Adjust next angle based on response or lack of response','Select disposition','Add note'],
+    4:['Make second call or alternate-channel attempt','Use a different angle or time window','Log objection, no-answer, or contact result','Select disposition','Add note'],
+    5:['Send value email or tax / IDC angle','Personalize using source signal and role','Verify contact quality is still usable','Select disposition','Add note'],
+    6:['Make final major live/direct attempt','Ask for director call if reached','Send short follow-up if not reached','Select disposition','Add note'],
+    7:['Send Loom/video or highly personalized note if appropriate','Reference exact signal and reason for outreach','Check compliance language before sending','Select disposition','Add note'],
+    8:['Complete light follow-up','Avoid repeating prior message','Decide callback/future/nurture','Select disposition','Add note'],
+    9:['Final verification of fit, contact route, and engagement','Make final short touch if still viable','Decide continue, pause, or close','Select disposition','Add note'],
+    10:['Send close-loop or breakup message','Choose final route','Document final reason','Select disposition','Add note']
+  };
+  function nextText(bucket){
+    var d=Number(String(bucket||'day1').replace(/\D/g,''))||1;
+    return 'Day '+d+': Review source/evidence trail, confirm contact method, complete outreach, disposition, and note.'
+  }
+  function dispoOptions(val){
+    var opts=['','Callback','Future','Research','Not Interested','Pipeline'];
+    return opts.map(function(o){return '<option value="'+A(o)+'" '+(o===val?'selected':'')+'>'+(o?E(o):'Select disposition...')+'</option>'}).join('')
+  }
+  function card(w){
+    var c=countsForTasks(w), st=c.state||{}, isDay=/^day/.test(w.bucket||'day1'), locked=isDay && (c.done<5 || !st.disposition || !(st.note||w.notes));
+    var source=w.url||w.sourceUrl||'';
+    var tasks=isDay?'<div class="info teal required-box"><strong>Required Today:</strong> '+E(nextText(w.bucket))+'</div><div class="stack" style="gap:6px">'+(REQUIRED[c.day]||REQUIRED[1]).map(function(t,idx){return '<label class="task-line"><input type="checkbox" '+(st.tasks&&st.tasks[idx]?'checked':'')+' data-id="'+A(w.id)+'" onchange="basinToggleLeadTask&&basinToggleLeadTask(this.dataset.id,'+idx+',this.checked)"><span>'+E(t)+'</span></label>'}).join('')+'</div><div class="row2 lead-disposition-row"><div><label class="label">Required Disposition</label><select class="select" data-id="'+A(w.id)+'" onchange="basinSetLeadDisposition&&basinSetLeadDisposition(this.dataset.id,this.value)">'+dispoOptions(st.disposition||'')+'</select></div><div><label class="label">Status</label><div class="info '+(locked?'red':'teal')+'" style="margin:0;padding:9px 10px">'+(locked?'Locked: tasks, disposition, and note required.':'Unlocked: ready for next step.')+'</div></div></div><div style="margin-top:10px"><label class="label">Required Note</label><textarea class="textarea" style="min-height:58px" data-id="'+A(w.id)+'" placeholder="What was completed today? Outcome? Next reason?" onblur="basinSetLeadNote&&basinSetLeadNote(this.dataset.id,this.value)">'+E(st.note||w.notes||'')+'</textarea></div>':'<div class="info teal required-box"><strong>Bucket:</strong> '+E(w.bucket||'')+'</div>';
+    return '<div class="record lead-work-card" style="grid-template-columns:46px 1fr auto;align-items:start"><div class="score '+E(gradeVal(w))+'">'+E(gradeVal(w))+'</div><div><div class="rec-name">'+E(w.name)+'</div><div class="rec-meta">'+E(w.company||w.title||'')+' · Score '+E(scoreVal(w))+' · '+E(w.qualificationStatus||w.status||'Potential')+'</div><div class="rec-tags"><span class="tag gold">'+E((w.bucket||'day1').toUpperCase())+'</span><span class="tag green">Score '+E(scoreVal(w))+'</span><span class="tag blue">'+E(w.qualificationStatus||'Potential')+'</span><span class="tag green">'+c.done+'/'+c.total+' TASKS</span>'+contactTags(w)+'</div>'+contactBlock(w)+'<div class="mini-note next-action-line">'+E(w.nextAction||nextText(w.bucket))+'</div>'+(source?'<div class="mini-note evidence-line">Evidence: '+E(source)+'</div>':'')+tasks+'</div><div class="rec-actions lead-actions" style="flex-wrap:wrap;max-width:330px">'+(isDay?'<button class="btn btn-primary btn-sm" data-id="'+A(w.id)+'" onclick="advanceLeadWorkflow&&advanceLeadWorkflow(this.dataset.id)">'+(locked?'Locked':'Complete / Next Step')+'</button>':'')+'<button class="btn btn-ghost btn-sm" data-id="'+A(w.id)+'" data-bucket="callback" onclick="setLeadWorkflowBucket&&setLeadWorkflowBucket(this.dataset.id,this.dataset.bucket)">Callback</button><button class="btn btn-ghost btn-sm" data-id="'+A(w.id)+'" data-bucket="future" onclick="setLeadWorkflowBucket&&setLeadWorkflowBucket(this.dataset.id,this.dataset.bucket)">Future</button><button class="btn btn-ghost btn-sm" data-id="'+A(w.id)+'" data-bucket="needsresearch" onclick="setLeadWorkflowBucket&&setLeadWorkflowBucket(this.dataset.id,this.dataset.bucket)">Research</button><button class="btn btn-danger btn-sm" data-id="'+A(w.id)+'" data-bucket="notinterested" onclick="setLeadWorkflowBucket&&setLeadWorkflowBucket(this.dataset.id,this.dataset.bucket)">Not Interested</button><button class="btn btn-ghost btn-sm" data-id="'+A(w.id)+'" onclick="makeInvestorFromWorkflow&&makeInvestorFromWorkflow(this.dataset.id)">Pipeline</button></div></div>'
+  }
+  function renderLeadsWorkflowV54(){
+    if(typeof hardEnsure==='function')try{hardEnsure()}catch(e){}
+    var root=$('leads-workflow-root'); if(!root || !window.STORE)return;
+    var wf=STORE.leadWorkflow||[], usable=wf.filter(hasActualContact), filtered=rejectedCount(), active=wf.filter(function(w){return /^day/.test(w.bucket||'day1')});
+    var buckets=[]; for(var i=1;i<=10;i++)buckets.push(['day'+i,'Day '+i]); buckets.push(['callback','Callbacks'],['future','Long-Term Future'],['needsresearch','Research'],['notinterested','Not Interested']);
+    var html='<div class="info gold"><strong>Lead Workflow:</strong> Only real named contacts with a visible contact method should be worked. Contact info is shown directly under every lead. Click Call, Email, Open, or Copy from the contact row.</div>';
+    html+='<div class="grid3" style="margin-bottom:14px"><div class="stat"><div class="stat-val">'+usable.length+'</div><div class="stat-lbl">Usable Leads</div></div><div class="stat"><div class="stat-val">'+active.length+'</div><div class="stat-lbl">Active Lead Work</div></div><div class="stat"><div class="stat-val">'+filtered+'</div><div class="stat-lbl">Filtered / Not Usable</div></div></div>';
+    buckets.forEach(function(b){
+      var list=sortLeads(wf.filter(function(w){return (w.bucket||'day1')===b[0]}));
+      html+='<div class="panel workflow-panel"><div class="panel-hd"><div><div class="panel-title">'+E(b[1])+'</div><div class="panel-sub">'+list.length+' leads · contact method visible on every card</div></div></div><div class="panel-bd">'+(list.length?list.map(card).join(''):'<div class="empty" style="padding:24px"><div class="empty-title">No leads in '+E(b[1])+'</div></div>')+'</div></div>';
+    });
+    root.innerHTML=html;
+  }
+  window.renderLeadsWorkflowPage=renderLeadsWorkflowV54;
+
+  function renderRadarSummaryV54(){
+    var root=$('radar-summary'); if(!root || !window.STORE)return;
+    var leads=STORE.radarLeads||[], usable=leads.filter(hasActualContact), a=usable.filter(function(l){return gradeVal(l)==='A'}).length, contact=usable.length, supp=leads.filter(function(l){return l.status==='Suppressed'||(typeof isSuppressedLead==='function'&&isSuppressedLead(l))}).length, workflow=(STORE.leadWorkflow||[]).filter(hasActualContact).length, filtered=rejectedCount(), last=(STORE.radarRuns&&STORE.radarRuns[0]&&STORE.radarRuns[0].ts)||'Latest GitHub radar data';
+    root.innerHTML='<div class="radar-kpis"><div class="radar-kpi"><div class="radar-kpi-num">'+usable.length+'</div><div class="radar-kpi-lbl">Usable Leads</div></div><div class="radar-kpi"><div class="radar-kpi-num">'+a+'</div><div class="radar-kpi-lbl">A Leads</div></div><div class="radar-kpi"><div class="radar-kpi-num">'+contact+'</div><div class="radar-kpi-lbl">Has Contact</div></div><div class="radar-kpi"><div class="radar-kpi-num">'+workflow+'</div><div class="radar-kpi-lbl">Loaded Workflow</div></div><div class="radar-kpi"><div class="radar-kpi-num">'+(filtered||supp)+'</div><div class="radar-kpi-lbl">Filtered / Not Usable</div></div></div><div class="mini-note" style="margin:-8px 0 14px">Last Radar data: '+E(last)+'. KPI rule: Has Contact means phone, email, direct LinkedIn profile, or verified NPI contact path exists and is displayed on the lead card.</div>'
+  }
+  window.renderRadarSummary=renderRadarSummaryV54;
+
+  function radarLeadHTMLV54(l){
+    var external=l.url?'<a class="btn btn-ghost btn-sm" target="_blank" href="'+A(l.url)+'">Open Source</a>':'';
+    return '<div class="radar-lead '+(gradeVal(l)==='A'?'hot':'')+'"><div class="radar-top"><div><div class="radar-name">'+E(l.name||'Unnamed signal')+'</div><div class="radar-meta">'+E(l.title||'')+(l.company?' · '+E(l.company):'')+' · '+E(l.location||'')+' · '+E(l.source||'')+(l.sourceDate?' · '+E(l.sourceDate):'')+'</div></div><div style="text-align:right"><span class="score '+E(gradeVal(l))+'" style="width:42px;height:42px;font-size:15px;margin-left:auto">'+E(gradeVal(l))+'</span><div class="mini-note">'+scoreVal(l)+'/100 effective</div></div></div><div class="radar-why"><strong>'+E(l.signal||'Signal')+':</strong> '+E(l.summary||'Review source for details.')+'</div><div class="rec-tags" style="margin-top:8px"><span class="tag '+(l.status==='Suppressed'?'gray':'gold')+'">'+E(l.status||'New')+'</span>'+contactTags(l)+'<span class="tag gray">'+E(l.foundAt||'')+'</span></div>'+contactBlock(l)+'<div class="radar-actions"><button class="btn btn-primary btn-sm" data-id="'+A(l.id)+'" onclick="setActiveLeadById&&setActiveLeadById(this.dataset.id)">Activate</button><button class="btn btn-ghost btn-sm" data-id="'+A(l.id)+'" onclick="loadRadarToProfiler&&loadRadarToProfiler(this.dataset.id)">Profile</button><button class="btn btn-ghost btn-sm" data-id="'+A(l.id)+'" onclick="loadRadarToSequence&&loadRadarToSequence(this.dataset.id)">Sequence</button><button class="btn btn-ghost btn-sm" data-id="'+A(l.id)+'" onclick="loadRadarToNotes&&loadRadarToNotes(this.dataset.id)">Log Note</button>'+external+'<button class="btn btn-danger btn-sm" data-id="'+A(l.id)+'" onclick="suppressRadarLead&&suppressRadarLead(this.dataset.id)">Suppress</button></div></div>'
+  }
+  function renderRadarResultsV54(){
+    var root=$('radar-results'); if(!root || !window.STORE)return;
+    var f=($('radar-filter')&&$('radar-filter').value)||'all', q=(($('radar-search')&&$('radar-search').value)||'').toLowerCase();
+    var leads=sortLeads((STORE.radarLeads||[]).slice()).filter(function(l){
+      var blob=[l.name,l.title,l.company,l.source,l.signal,l.summary].join(' ').toLowerCase();
+      if(q&&blob.indexOf(q)===-1)return false;
+      if(f==='new')return l.status==='New'||l.status==='Research Queue';
+      if(f==='A'||f==='B')return gradeVal(l)===f;
+      if(f==='needs-contact')return !hasActualContact(l);
+      if(f==='reviewed')return l.status==='Reviewed';
+      if(f==='suppressed')return l.status==='Suppressed'||(typeof isSuppressedLead==='function'&&isSuppressedLead(l));
+      return true;
+    });
+    if($('radar-count-label'))$('radar-count-label').textContent=leads.length+' visible · '+(STORE.radarLeads||[]).filter(hasActualContact).length+' usable with contact';
+    root.innerHTML=leads.length?'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="btn btn-primary btn-sm" onclick="batchProfileTopRadar&&batchProfileTopRadar(5)">Profile Top 5</button><button class="btn btn-ghost btn-sm" onclick="buildDailyActionPlan&&buildDailyActionPlan(true)">Build Action Plan</button></div>'+leads.map(radarLeadHTMLV54).join(''):'<div class="empty"><div class="empty-icon">📡</div><div class="empty-title">No radar leads visible</div><div class="empty-sub">Run GitHub Radar and reload. Records without contact are not active leads.</div></div>';
+  }
+  window.renderRadarResults=renderRadarResultsV54;
+
+  var oldRenderActive=window.renderActivePage;
+  if(oldRenderActive){
+    window.renderActivePage=function(){
+      var page=(typeof currentPageId==='function'?currentPageId():'');
+      if(page==='leads'){renderLeadsWorkflowV54();return}
+      oldRenderActive();
+      if(page==='radar'||page==='finder'){
+        setTimeout(function(){renderRadarSummaryV54();renderRadarResultsV54()},0);
+      }
+    }
+  }
+  var oldUpdate=window.updateCounts;
+  if(oldUpdate){
+    window.updateCounts=function(){
+      oldUpdate();
+      try{
+        if($('radar-badge'))$('radar-badge').textContent=(STORE.radarLeads||[]).filter(hasActualContact).length;
+        if($('lead-workflow-badge'))$('lead-workflow-badge').textContent=(STORE.leadWorkflow||[]).filter(hasActualContact).length;
+      }catch(e){}
+    }
+  }
+  function addCss(){
+    if($('basin-v54-contact-css'))return;
+    var css=document.createElement('style'); css.id='basin-v54-contact-css';
+    css.textContent=[
+      '.contact-box{margin:10px 0 8px;border:1px solid rgba(35,213,192,.35);background:rgba(35,213,192,.055);border-radius:14px;overflow:hidden}',
+      '.contact-title{font:800 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green);padding:8px 10px;border-bottom:1px solid rgba(35,213,192,.18)}',
+      '.contact-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border-top:1px solid rgba(255,255,255,.06)}',
+      '.contact-row:first-of-type{border-top:0}',
+      '.contact-row strong{display:block;font-size:11px;color:var(--text)}',
+      '.contact-row span{display:block;font-size:12px;color:var(--text2);word-break:break-word;margin-top:2px}',
+      '.contact-row.verified{background:rgba(39,208,167,.055)}',
+      '.contact-row.support{background:rgba(92,140,255,.045)}',
+      '.contact-row.missing{background:rgba(255,96,120,.08);border-color:rgba(255,96,120,.25)}',
+      '.contact-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}',
+      '.lead-work-card{border-color:rgba(216,148,36,.18)!important}',
+      '.lead-work-card .rec-name,.radar-name{font-size:15px}',
+      '.next-action-line{margin-top:8px}',
+      '.evidence-line{opacity:.82}',
+      '.required-box{margin-top:9px;margin-bottom:8px}',
+      '.task-line{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);line-height:1.45}',
+      '.lead-disposition-row{margin-top:10px}',
+      '@media(max-width:800px){.contact-row{grid-template-columns:1fr}.contact-actions{justify-content:flex-start}.lead-work-card{grid-template-columns:46px minmax(0,1fr)!important}.lead-actions{grid-column:1/3;max-width:none!important}}'
+    ].join('\\n');
+    document.head.appendChild(css);
+  }
+  function init(){
+    addCss();
+    try{if(typeof refresh==='function')refresh()}catch(e){}
+    setTimeout(function(){try{if((typeof currentPageId==='function'?currentPageId():'')==='leads')renderLeadsWorkflowV54();if((typeof currentPageId==='function'?currentPageId():'')==='radar'){renderRadarSummaryV54();renderRadarResultsV54()}}catch(e){}},500)
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
 </body>
 </html>
 
