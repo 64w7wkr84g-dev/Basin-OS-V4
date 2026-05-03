@@ -1,4 +1,25 @@
 {
-  "generatedAt": null,
-  "stats": {}
+  "generatedAt": "2026-05-03T16:25:19.021Z",
+  "stats": {
+    "totalFound": 77,
+    "activeVisible": 0,
+    "readyToWork": 0,
+    "linkedinVerify": 0,
+    "cpaVerify": 0,
+    "skipped": 77,
+    "npiCollected": 77,
+    "rssCollected": 0,
+    "linkedinDiscoveryCollected": 0,
+    "cpaCollected": 0,
+    "emailFound": 0,
+    "linkedinCandidatesFound": 0,
+    "phoneFound": 0,
+    "publicSearches": 90,
+    "groqCalls": 2,
+    "groqFailures": 146,
+    "braveFailures": 90,
+    "braveConfigured": true,
+    "groqConfigured": true,
+    "errors": 0
+  }
 }
