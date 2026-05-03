@@ -1,16 +1,18 @@
 {
-  "lastRunAt": "2026-05-03T08:20:16.232Z",
-  "startedAt": "2026-05-03T08:19:58.208Z",
+  "lastRunAt": "2026-05-03T08:30:20.785Z",
+  "startedAt": "2026-05-03T08:29:42.908Z",
   "status": "complete",
-  "usableLeads": 180,
-  "npiVerifiedLeads": 1595,
+  "activeUsableLeads": 0,
   "rssVerifiedContactLeads": 0,
-  "rssResearchCandidates": 127,
-  "rssArticleFetches": 40,
-  "rejected": 61,
+  "rssResearchCandidates": 126,
+  "npiWarmRouteLeads": 0,
+  "npiPhoneOnlyCandidates": 250,
+  "npiEnrichmentSearches": 80,
+  "rssArticleFetches": 50,
+  "rejected": 44,
   "errors": 0,
   "githubModelsUsed": false,
   "githubModelsModel": "",
   "githubModelCalls": 0,
-  "message": "V5.6 completed: 180 active verified-contact leads, 127 RSS research candidates."
+  "message": "V5.7 completed: 0 active warm-route leads, 250 NPI phone-only candidates, 126 RSS research candidates."
 }
