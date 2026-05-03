@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#07110f" />
+  <title>Basin OS V2 — Lead Generation Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=v2-command">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar" aria-label="Basin OS navigation">
+      <div class="brand-card">
+        <div class="brand-mark">
+          <div class="logo-orb">B</div>
+          <div>
+            <div class="brand-name">BASIN</div>
+            <div class="brand-sub">VENTURES</div>
+          </div>
+        </div>
+        <div class="brand-caption">Lead Generation + Playbook</div>
+      </div>
+
+      <nav class="nav">
+        <div class="nav-section">Overview</div>
+        <button class="nav-item active" data-page="dashboard">⚡ <span>Dashboard</span><b id="navCount-dashboard">0</b></button>
+        <button class="nav-item" data-page="radar">📡 <span>Lead Radar</span><b id="navCount-radar">0</b></button>
+        <button class="nav-item" data-page="workflow">🧭 <span>Leads Workflow</span><b id="navCount-workflow">0</b></button>
+        <button class="nav-item" data-page="linkedin">💼 <span>LinkedIn Verify</span><b id="navCount-linkedin">0</b></button>
+        <button class="nav-item" data-page="pipeline">👤 <span>Investor Pipeline</span><b id="navCount-pipeline">0</b></button>
+        <button class="nav-item" data-page="cpa">🤝 <span>CPA Pipeline</span><b id="navCount-cpa">0</b></button>
+
+        <div class="nav-section">Execution</div>
+        <button class="nav-item" data-page="sequence">✉️ <span>7-Channel Sequence</span></button>
+        <button class="nav-item" data-page="callcoach">🎙️ <span>Call Coach</span></button>
+        <button class="nav-item" data-page="notes">📝 <span>Call Notes</span><b id="navCount-notes">0</b></button>
+        <button class="nav-item" data-page="handoffs">📄 <span>Director Handoffs</span></button>
+        <button class="nav-item" data-page="calendar">📅 <span>Follow-Up Calendar</span><b id="navCount-calendar">0</b></button>
+        <button class="nav-item" data-page="analytics">📊 <span>Analytics</span></button>
+
+        <div class="nav-section">System</div>
+        <button class="nav-item" data-page="api">🧠 <span>API Command Center</span><b id="apiBadge">OFF</b></button>
+        <button class="nav-item" data-page="settings">⚙️ <span>Settings</span></button>
+        <button class="nav-item" id="exportAllBtn">💾 <span>Export All Data</span></button>
+      </nav>
+
+      <div class="compliance-box">
+        <strong>Compliance Always</strong>
+        <span>Educational intro only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.</span>
+      </div>
+
+      <div class="version-box">Basin OS V2.0 Command Center</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title-block">
+          <div class="eyebrow">Basin Ventures Command Center</div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSubtitle">A single, clean operating system for lead discovery, verification, cadence, notes, follow-ups, and director handoffs.</p>
+        </div>
+        <div class="top-actions">
+          <input id="globalSearch" class="search" placeholder="Search leads, companies, signals, notes, contact methods..." />
+          <button id="reloadRadarBtn" class="btn btn-primary">Load Shared GitHub Radar</button>
+          <button id="runLocalBtn" class="btn btn-secondary">Manual Add</button>
+        </div>
+      </header>
+
+      <section id="statusBanner" class="status-banner">
+        Loading Basin OS...
+      </section>
+
+      <section id="page-dashboard" class="page active"></section>
+      <section id="page-radar" class="page"></section>
+      <section id="page-workflow" class="page"></section>
+      <section id="page-linkedin" class="page"></section>
+      <section id="page-pipeline" class="page"></section>
+      <section id="page-cpa" class="page"></section>
+      <section id="page-sequence" class="page"></section>
+      <section id="page-callcoach" class="page"></section>
+      <section id="page-notes" class="page"></section>
+      <section id="page-handoffs" class="page"></section>
+      <section id="page-calendar" class="page"></section>
+      <section id="page-analytics" class="page"></section>
+      <section id="page-api" class="page"></section>
+      <section id="page-settings" class="page"></section>
+    </main>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Full CRM Lead Card</div>
+          <h2 id="modalTitle">Lead Card</h2>
+        </div>
+        <button id="closeModalBtn" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/app.js?v=v2-command"></script>
+</body>
+</html>

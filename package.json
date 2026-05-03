@@ -1,0 +1,13 @@
+{
+  "name": "basin-os-clean-rebuild",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Basin Ventures high-tech clean command center with integrated lead workflow",
+  "scripts": {
+    "check": "node --check basin-radar-runner.js && node --check js/app.js",
+    "radar": "node basin-radar-runner.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
