@@ -1,4 +1,34 @@
 {
-  "generatedAt": null,
-  "stats": {}
+  "generatedAt": "2026-05-03T18:35:42.697Z",
+  "stats": {
+    "totalFound": 232,
+    "activeVisible": 232,
+    "readyForAssociate": 8,
+    "readyToWork": 8,
+    "linkedinVerify": 224,
+    "cpaVerify": 0,
+    "research": 0,
+    "skipped": 0,
+    "npiCollected": 59,
+    "rssCollected": 73,
+    "linkedinDiscoveryCollected": 80,
+    "cpaCollected": 41,
+    "emailFound": 12,
+    "linkedinCandidatesFound": 232,
+    "phoneFound": 85,
+    "publicSearches": 499,
+    "groqCalls": 1,
+    "groqFailures": 221,
+    "braveFailures": 0,
+    "rssFailures": 0,
+    "npiFailures": 0,
+    "firstBraveError": "",
+    "firstGroqError": "Groq 429: {\"error\":{\"message\":\"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kqe9n2tdf6q99cjb3krwa740` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99534, Requested 1169. Please try again in 10m7.392s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}",
+    "firstRssError": "",
+    "firstNpiError": "",
+    "braveConfigured": true,
+    "groqConfigured": true,
+    "errors": 0
+  },
+  "errors": []
 }
