@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T08:30:20.785Z",
+  "generatedAt": "2026-05-03T08:39:43.504Z",
   "engine": "Multi-Source Lead Priority V5.7",
   "stats": {
     "totalRejected": 44,
@@ -8,7 +8,7 @@
   "errors": [],
   "rejected": [
     {
-      "id": "reject-1777796998136-e27ee61507b8",
+      "id": "reject-1777797556716-89607970db82",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1417203803",
@@ -17,11 +17,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1417203803",
-      "skippedAt": "2026-05-03T08:29:58.136Z",
-      "nextEligibleCheck": "2026-05-17T08:29:58.136Z"
+      "skippedAt": "2026-05-03T08:39:16.716Z",
+      "nextEligibleCheck": "2026-05-17T08:39:16.716Z"
     },
     {
-      "id": "reject-1777797002478-8fdc2f0c77ca28",
+      "id": "reject-1777797561240-c24f3d7e2ac76",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1831542828",
@@ -30,11 +30,11 @@
       "specialty": "Ophthalmology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1831542828",
-      "skippedAt": "2026-05-03T08:30:02.478Z",
-      "nextEligibleCheck": "2026-05-17T08:30:02.478Z"
+      "skippedAt": "2026-05-03T08:39:21.240Z",
+      "nextEligibleCheck": "2026-05-17T08:39:21.240Z"
     },
     {
-      "id": "reject-1777797004329-89e4c09883d9a8",
+      "id": "reject-1777797563250-52cab7c68d43b",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1649520917",
@@ -43,11 +43,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1649520917",
-      "skippedAt": "2026-05-03T08:30:04.329Z",
-      "nextEligibleCheck": "2026-05-17T08:30:04.329Z"
+      "skippedAt": "2026-05-03T08:39:23.250Z",
+      "nextEligibleCheck": "2026-05-17T08:39:23.250Z"
     },
     {
-      "id": "reject-1777797008116-6d8c9d8b59ad78",
+      "id": "reject-1777797567336-7248713c12989",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1275362014",
@@ -56,11 +56,11 @@
       "specialty": "Urology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1275362014",
-      "skippedAt": "2026-05-03T08:30:08.117Z",
-      "nextEligibleCheck": "2026-05-17T08:30:08.117Z"
+      "skippedAt": "2026-05-03T08:39:27.336Z",
+      "nextEligibleCheck": "2026-05-17T08:39:27.336Z"
     },
     {
-      "id": "reject-1777797013124-92b19e7b783558",
+      "id": "reject-1777797572778-26c4c1561b6ba",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1689036337",
@@ -69,11 +69,11 @@
       "specialty": "Radiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1689036337",
-      "skippedAt": "2026-05-03T08:30:13.124Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.125Z"
+      "skippedAt": "2026-05-03T08:39:32.778Z",
+      "nextEligibleCheck": "2026-05-17T08:39:32.778Z"
     },
     {
-      "id": "reject-1777797013218-ab7394c7020058",
+      "id": "reject-1777797572930-066ad9c014cc",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1083252332",
@@ -82,11 +82,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1083252332",
-      "skippedAt": "2026-05-03T08:30:13.218Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.218Z"
+      "skippedAt": "2026-05-03T08:39:32.930Z",
+      "nextEligibleCheck": "2026-05-17T08:39:32.930Z"
     },
     {
-      "id": "reject-1777797013309-e0aeeadef9574",
+      "id": "reject-1777797573108-8c8c942c5c5a78",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1982103453",
@@ -95,11 +95,11 @@
       "specialty": "Oral & Maxillofacial Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1982103453",
-      "skippedAt": "2026-05-03T08:30:13.309Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.309Z"
+      "skippedAt": "2026-05-03T08:39:33.108Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.108Z"
     },
     {
-      "id": "reject-1777797013378-e9b3b5bdba4138",
+      "id": "reject-1777797573195-d5c96d4f727048",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1558814277",
@@ -108,11 +108,11 @@
       "specialty": "Orthopaedic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1558814277",
-      "skippedAt": "2026-05-03T08:30:13.378Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.378Z"
+      "skippedAt": "2026-05-03T08:39:33.195Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.195Z"
     },
     {
-      "id": "reject-1777797013468-4e474ed893e28",
+      "id": "reject-1777797573277-a0202ae63abaf8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1538571849",
@@ -121,11 +121,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1538571849",
-      "skippedAt": "2026-05-03T08:30:13.468Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.468Z"
+      "skippedAt": "2026-05-03T08:39:33.277Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.277Z"
     },
     {
-      "id": "reject-1777797013693-3d1464ee5ed6c",
+      "id": "reject-1777797573714-f628bdf55fcf98",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1104311901",
@@ -134,11 +134,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1104311901",
-      "skippedAt": "2026-05-03T08:30:13.693Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.693Z"
+      "skippedAt": "2026-05-03T08:39:33.714Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.714Z"
     },
     {
-      "id": "reject-1777797013693-db1cf7e135c378",
+      "id": "reject-1777797573714-9d23f546c690c8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1902191307",
@@ -147,11 +147,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1902191307",
-      "skippedAt": "2026-05-03T08:30:13.693Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.693Z"
+      "skippedAt": "2026-05-03T08:39:33.714Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.714Z"
     },
     {
-      "id": "reject-1777797013859-4a125b4b7a51b8",
+      "id": "reject-1777797573990-df77523128fa3",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1457397978",
@@ -160,11 +160,11 @@
       "specialty": "Anesthesiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1457397978",
-      "skippedAt": "2026-05-03T08:30:13.859Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.859Z"
+      "skippedAt": "2026-05-03T08:39:33.990Z",
+      "nextEligibleCheck": "2026-05-17T08:39:33.990Z"
     },
     {
-      "id": "reject-1777797013919-14aabac89a3ee8",
+      "id": "reject-1777797574077-0be1b46e633198",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1215076344",
@@ -173,11 +173,11 @@
       "specialty": "Radiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1215076344",
-      "skippedAt": "2026-05-03T08:30:13.919Z",
-      "nextEligibleCheck": "2026-05-17T08:30:13.919Z"
+      "skippedAt": "2026-05-03T08:39:34.077Z",
+      "nextEligibleCheck": "2026-05-17T08:39:34.077Z"
     },
     {
-      "id": "reject-1777797014125-1babfdb2511158",
+      "id": "reject-1777797574343-4a07edc41970f",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1366823262",
@@ -186,11 +186,11 @@
       "specialty": "Oral & Maxillofacial Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1366823262",
-      "skippedAt": "2026-05-03T08:30:14.125Z",
-      "nextEligibleCheck": "2026-05-17T08:30:14.125Z"
+      "skippedAt": "2026-05-03T08:39:34.343Z",
+      "nextEligibleCheck": "2026-05-17T08:39:34.343Z"
     },
     {
-      "id": "reject-1777797014125-911174fe69f388",
+      "id": "reject-1777797574343-dcd1f6603f721",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1912532771",
@@ -199,11 +199,11 @@
       "specialty": "Oral & Maxillofacial Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1912532771",
-      "skippedAt": "2026-05-03T08:30:14.125Z",
-      "nextEligibleCheck": "2026-05-17T08:30:14.125Z"
+      "skippedAt": "2026-05-03T08:39:34.343Z",
+      "nextEligibleCheck": "2026-05-17T08:39:34.343Z"
     },
     {
-      "id": "reject-1777797014328-1513ce93c3e898",
+      "id": "reject-1777797574699-003b47f2e2db38",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1346774510",
@@ -212,11 +212,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1346774510",
-      "skippedAt": "2026-05-03T08:30:14.328Z",
-      "nextEligibleCheck": "2026-05-17T08:30:14.328Z"
+      "skippedAt": "2026-05-03T08:39:34.699Z",
+      "nextEligibleCheck": "2026-05-17T08:39:34.699Z"
     },
     {
-      "id": "reject-1777797015610-bff86da51c1568",
+      "id": "reject-1777797576441-4686c6a5e3db6",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1992883805",
@@ -225,11 +225,11 @@
       "specialty": "Urology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1992883805",
-      "skippedAt": "2026-05-03T08:30:15.610Z",
-      "nextEligibleCheck": "2026-05-17T08:30:15.610Z"
+      "skippedAt": "2026-05-03T08:39:36.441Z",
+      "nextEligibleCheck": "2026-05-17T08:39:36.441Z"
     },
     {
-      "id": "reject-1777797016385-80310de75b73d",
+      "id": "reject-1777797577375-4eaa53b3681d7",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1740016807",
@@ -238,11 +238,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1740016807",
-      "skippedAt": "2026-05-03T08:30:16.385Z",
-      "nextEligibleCheck": "2026-05-17T08:30:16.385Z"
+      "skippedAt": "2026-05-03T08:39:37.375Z",
+      "nextEligibleCheck": "2026-05-17T08:39:37.375Z"
     },
     {
-      "id": "reject-1777797016445-8f9fe449fbc068",
+      "id": "reject-1777797577548-6e02b3a0dddf",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1851066278",
@@ -251,11 +251,11 @@
       "specialty": "Urology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1851066278",
-      "skippedAt": "2026-05-03T08:30:16.446Z",
-      "nextEligibleCheck": "2026-05-17T08:30:16.446Z"
+      "skippedAt": "2026-05-03T08:39:37.548Z",
+      "nextEligibleCheck": "2026-05-17T08:39:37.548Z"
     },
     {
-      "id": "reject-1777797016704-5ce5dd562b7618",
+      "id": "reject-1777797577984-9413717dff1ad8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1053674408",
@@ -264,11 +264,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1053674408",
-      "skippedAt": "2026-05-03T08:30:16.704Z",
-      "nextEligibleCheck": "2026-05-17T08:30:16.704Z"
+      "skippedAt": "2026-05-03T08:39:37.984Z",
+      "nextEligibleCheck": "2026-05-17T08:39:37.984Z"
     },
     {
-      "id": "reject-1777797016704-07bd5d4cceec38",
+      "id": "reject-1777797577984-f5837ec03ddfe8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1407217318",
@@ -277,11 +277,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1407217318",
-      "skippedAt": "2026-05-03T08:30:16.704Z",
-      "nextEligibleCheck": "2026-05-17T08:30:16.704Z"
+      "skippedAt": "2026-05-03T08:39:37.984Z",
+      "nextEligibleCheck": "2026-05-17T08:39:37.984Z"
     },
     {
-      "id": "reject-1777797016978-644b772a65049",
+      "id": "reject-1777797578235-fb86651eb676e",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1538659487",
@@ -290,11 +290,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1538659487",
-      "skippedAt": "2026-05-03T08:30:16.978Z",
-      "nextEligibleCheck": "2026-05-17T08:30:16.978Z"
+      "skippedAt": "2026-05-03T08:39:38.235Z",
+      "nextEligibleCheck": "2026-05-17T08:39:38.235Z"
     },
     {
-      "id": "reject-1777797017128-783ddc1df6391",
+      "id": "reject-1777797578394-a73418b4b4f378",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1386208692",
@@ -303,11 +303,11 @@
       "specialty": "Ophthalmology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1386208692",
-      "skippedAt": "2026-05-03T08:30:17.128Z",
-      "nextEligibleCheck": "2026-05-17T08:30:17.128Z"
+      "skippedAt": "2026-05-03T08:39:38.394Z",
+      "nextEligibleCheck": "2026-05-17T08:39:38.394Z"
     },
     {
-      "id": "reject-1777797017359-bbae9d8f7a4088",
+      "id": "reject-1777797578802-cb23ae762a873",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1619322492",
@@ -316,11 +316,11 @@
       "specialty": "Anesthesiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1619322492",
-      "skippedAt": "2026-05-03T08:30:17.359Z",
-      "nextEligibleCheck": "2026-05-17T08:30:17.359Z"
+      "skippedAt": "2026-05-03T08:39:38.802Z",
+      "nextEligibleCheck": "2026-05-17T08:39:38.802Z"
     },
     {
-      "id": "reject-1777797017663-6600aa9fd796e",
+      "id": "reject-1777797579308-2af4dfec7e6458",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1023423977",
@@ -329,11 +329,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1023423977",
-      "skippedAt": "2026-05-03T08:30:17.663Z",
-      "nextEligibleCheck": "2026-05-17T08:30:17.663Z"
+      "skippedAt": "2026-05-03T08:39:39.308Z",
+      "nextEligibleCheck": "2026-05-17T08:39:39.308Z"
     },
     {
-      "id": "reject-1777797017725-9916df2f00ccc8",
+      "id": "reject-1777797579478-c6cc405b901048",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1831121672",
@@ -342,11 +342,11 @@
       "specialty": "Dermatology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1831121672",
-      "skippedAt": "2026-05-03T08:30:17.725Z",
-      "nextEligibleCheck": "2026-05-17T08:30:17.725Z"
+      "skippedAt": "2026-05-03T08:39:39.478Z",
+      "nextEligibleCheck": "2026-05-17T08:39:39.478Z"
     },
     {
-      "id": "reject-1777797017848-3d763c9719e75",
+      "id": "reject-1777797579639-fc048cda07917",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1639829427",
@@ -355,11 +355,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1639829427",
-      "skippedAt": "2026-05-03T08:30:17.848Z",
-      "nextEligibleCheck": "2026-05-17T08:30:17.848Z"
+      "skippedAt": "2026-05-03T08:39:39.639Z",
+      "nextEligibleCheck": "2026-05-17T08:39:39.639Z"
     },
     {
-      "id": "reject-1777797018143-794332376d0828",
+      "id": "reject-1777797579968-d42c33bd4890b8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1699124263",
@@ -368,11 +368,11 @@
       "specialty": "Radiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1699124263",
-      "skippedAt": "2026-05-03T08:30:18.143Z",
-      "nextEligibleCheck": "2026-05-17T08:30:18.143Z"
+      "skippedAt": "2026-05-03T08:39:39.968Z",
+      "nextEligibleCheck": "2026-05-17T08:39:39.968Z"
     },
     {
-      "id": "reject-1777797018212-1748331db85918",
+      "id": "reject-1777797580054-5bbe814cc9d048",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1407581192",
@@ -381,11 +381,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1407581192",
-      "skippedAt": "2026-05-03T08:30:18.212Z",
-      "nextEligibleCheck": "2026-05-17T08:30:18.212Z"
+      "skippedAt": "2026-05-03T08:39:40.054Z",
+      "nextEligibleCheck": "2026-05-17T08:39:40.054Z"
     },
     {
-      "id": "reject-1777797018212-de54efb55981e8",
+      "id": "reject-1777797580054-40949fd5ff2938",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1316469109",
@@ -394,11 +394,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1316469109",
-      "skippedAt": "2026-05-03T08:30:18.212Z",
-      "nextEligibleCheck": "2026-05-17T08:30:18.212Z"
+      "skippedAt": "2026-05-03T08:39:40.054Z",
+      "nextEligibleCheck": "2026-05-17T08:39:40.054Z"
     },
     {
-      "id": "reject-1777797018574-56ee24fc0339f8",
+      "id": "reject-1777797580646-d216f7ddbb1af",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1508241209",
@@ -407,11 +407,11 @@
       "specialty": "Ophthalmology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1508241209",
-      "skippedAt": "2026-05-03T08:30:18.574Z",
-      "nextEligibleCheck": "2026-05-17T08:30:18.574Z"
+      "skippedAt": "2026-05-03T08:39:40.646Z",
+      "nextEligibleCheck": "2026-05-17T08:39:40.646Z"
     },
     {
-      "id": "reject-1777797018818-717ee4bfe463b8",
+      "id": "reject-1777797581058-99da3669f5a6e8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1275664096",
@@ -420,11 +420,11 @@
       "specialty": "Radiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1275664096",
-      "skippedAt": "2026-05-03T08:30:18.818Z",
-      "nextEligibleCheck": "2026-05-17T08:30:18.818Z"
+      "skippedAt": "2026-05-03T08:39:41.058Z",
+      "nextEligibleCheck": "2026-05-17T08:39:41.058Z"
     },
     {
-      "id": "reject-1777797019070-496e79ec99f358",
+      "id": "reject-1777797581487-fe6911a7ca0148",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1659876969",
@@ -433,11 +433,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1659876969",
-      "skippedAt": "2026-05-03T08:30:19.070Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.070Z"
+      "skippedAt": "2026-05-03T08:39:41.487Z",
+      "nextEligibleCheck": "2026-05-17T08:39:41.487Z"
     },
     {
-      "id": "reject-1777797019710-06a41b0719105",
+      "id": "reject-1777797582304-db38b362ec3a2",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1083977599",
@@ -446,11 +446,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1083977599",
-      "skippedAt": "2026-05-03T08:30:19.710Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.710Z"
+      "skippedAt": "2026-05-03T08:39:42.304Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.304Z"
     },
     {
-      "id": "reject-1777797019710-94fd340a46f2c8",
+      "id": "reject-1777797582304-ccc2fd97868ab",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1841675725",
@@ -459,11 +459,11 @@
       "specialty": "Cardiovascular Disease",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1841675725",
-      "skippedAt": "2026-05-03T08:30:19.710Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.710Z"
+      "skippedAt": "2026-05-03T08:39:42.304Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.304Z"
     },
     {
-      "id": "reject-1777797019849-5cc1e3e18ed3c",
+      "id": "reject-1777797582472-47d18c690c0ad8",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1790053841",
@@ -472,11 +472,11 @@
       "specialty": "Orthopaedic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1790053841",
-      "skippedAt": "2026-05-03T08:30:19.849Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.849Z"
+      "skippedAt": "2026-05-03T08:39:42.472Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.472Z"
     },
     {
-      "id": "reject-1777797019966-3cc0a0dc88104",
+      "id": "reject-1777797582647-cda147aaf945b",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1578100996",
@@ -485,11 +485,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1578100996",
-      "skippedAt": "2026-05-03T08:30:19.966Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.966Z"
+      "skippedAt": "2026-05-03T08:39:42.647Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.647Z"
     },
     {
-      "id": "reject-1777797019967-6c06c89be81358",
+      "id": "reject-1777797582647-818d32170024c",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1487692711",
@@ -498,11 +498,11 @@
       "specialty": "Gastroenterology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1487692711",
-      "skippedAt": "2026-05-03T08:30:19.967Z",
-      "nextEligibleCheck": "2026-05-17T08:30:19.967Z"
+      "skippedAt": "2026-05-03T08:39:42.647Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.647Z"
     },
     {
-      "id": "reject-1777797020081-fa55e6e538f248",
+      "id": "reject-1777797582731-2b20dd4588894",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1346816568",
@@ -511,11 +511,11 @@
       "specialty": "Dermatology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1346816568",
-      "skippedAt": "2026-05-03T08:30:20.081Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.081Z"
+      "skippedAt": "2026-05-03T08:39:42.731Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.731Z"
     },
     {
-      "id": "reject-1777797020081-244774d1b4bc88",
+      "id": "reject-1777797582731-089885c3b71f2",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1669796629",
@@ -524,11 +524,11 @@
       "specialty": "Dermatology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1669796629",
-      "skippedAt": "2026-05-03T08:30:20.081Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.081Z"
+      "skippedAt": "2026-05-03T08:39:42.731Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.731Z"
     },
     {
-      "id": "reject-1777797020145-c2b3e25a884bc8",
+      "id": "reject-1777797582907-72987c9776c14",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1437825981",
@@ -537,11 +537,11 @@
       "specialty": "Ophthalmology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1437825981",
-      "skippedAt": "2026-05-03T08:30:20.145Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.145Z"
+      "skippedAt": "2026-05-03T08:39:42.907Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.907Z"
     },
     {
-      "id": "reject-1777797020145-3429127ef394a",
+      "id": "reject-1777797582907-5fe67dcd61e388",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1962190827",
@@ -550,11 +550,11 @@
       "specialty": "Ophthalmology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1962190827",
-      "skippedAt": "2026-05-03T08:30:20.145Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.145Z"
+      "skippedAt": "2026-05-03T08:39:42.907Z",
+      "nextEligibleCheck": "2026-05-17T08:39:42.907Z"
     },
     {
-      "id": "reject-1777797020210-69ab5fb878bfb",
+      "id": "reject-1777797583080-465033b890612",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1568889897",
@@ -563,11 +563,11 @@
       "specialty": "Plastic Surgery",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1568889897",
-      "skippedAt": "2026-05-03T08:30:20.210Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.210Z"
+      "skippedAt": "2026-05-03T08:39:43.080Z",
+      "nextEligibleCheck": "2026-05-17T08:39:43.080Z"
     },
     {
-      "id": "reject-1777797020461-2567bceae67a58",
+      "id": "reject-1777797583241-a1a5b61495415",
       "reject": true,
       "reason": "NPI record did not contain valid individual first/last name",
       "npi": "1295976454",
@@ -576,8 +576,8 @@
       "specialty": "Anesthesiology",
       "sourceFeed": "NPI Registry",
       "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1295976454",
-      "skippedAt": "2026-05-03T08:30:20.461Z",
-      "nextEligibleCheck": "2026-05-17T08:30:20.461Z"
+      "skippedAt": "2026-05-03T08:39:43.241Z",
+      "nextEligibleCheck": "2026-05-17T08:39:43.241Z"
     }
   ]
 }
