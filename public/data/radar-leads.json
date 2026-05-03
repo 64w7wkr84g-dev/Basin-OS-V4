@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T17:17:46.750Z",
+  "generatedAt": "2026-05-03T17:26:58.950Z",
   "engine": "Basin OS V4.1 Full Migration Radar Runner",
   "compliance": {
     "linkedin": "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
@@ -29,8 +29,8 @@
     "linkedinCandidatesFound": 0,
     "phoneFound": 0,
     "publicSearches": 57,
-    "groqCalls": 1,
-    "groqFailures": 129,
+    "groqCalls": 0,
+    "groqFailures": 130,
     "braveFailures": 57,
     "braveConfigured": true,
     "groqConfigured": true,
@@ -41,62 +41,6 @@
   "cpaVerifyCandidates": [],
   "researchCandidates": [],
   "skippedCandidates": [
-    {
-      "id": "npi_1699847400",
-      "name": "RICHARD AADALEN",
-      "company": "",
-      "title": "Orthopaedic Surgery MD",
-      "location": "MINNEAPOLIS, MN",
-      "sourceType": "npi",
-      "source": "NPI Registry",
-      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
-      "signal": "NPI provider record: RICHARD AADALEN",
-      "summary": "Name: RICHARD AADALEN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: MINNEAPOLIS, MN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1699847400",
-      "fitReason": "NPI Registry listing for a medical professional with a clear name and title, worth reviewing for potential educational lead or referral path",
-      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
-      "contactMethods": [
-        {
-          "type": "phone",
-          "value": "612-596-6187",
-          "source": "NPI Registry"
-        }
-      ],
-      "evidenceTrail": [
-        {
-          "source": "NPI Registry",
-          "url": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
-          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
-        }
-      ],
-      "score": 58,
-      "grade": "C",
-      "type": "investor",
-      "isPerson": true,
-      "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.409Z",
-      "tags": [
-        "C Grade",
-        "NPI/MPI",
-        "Phone",
-        "Skipped"
-      ],
-      "associateReady": false,
-      "readyForAssociate": false,
-      "linkedinVerify": false,
-      "linkedinVerified": false,
-      "cpaVerify": false,
-      "needsResearch": false,
-      "skipped": true,
-      "bucket": "skipped",
-      "status": "Skipped / No Warm Route",
-      "queue": "Skipped / No Warm Route",
-      "workflowDay": 0,
-      "priorityRank": 9,
-      "bestFirstAction": "Skipped: no email + phone + LinkedIn/manual verification route.",
-      "disposition": "New / Not Worked",
-      "requiredTasks": [],
-      "callHistory": []
-    },
     {
       "id": "npi_1801155767",
       "name": "AMIR ABDUL-JABBAR",
@@ -129,7 +73,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.782Z",
+      "foundAt": "2026-05-03T17:26:54.283Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -185,7 +129,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.200Z",
+      "foundAt": "2026-05-03T17:26:54.968Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -241,7 +185,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.177Z",
+      "foundAt": "2026-05-03T17:26:52.402Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -297,7 +241,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.865Z",
+      "foundAt": "2026-05-03T17:26:53.261Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -353,7 +297,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.705Z",
+      "foundAt": "2026-05-03T17:26:55.632Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -409,7 +353,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.788Z",
+      "foundAt": "2026-05-03T17:26:55.802Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -465,7 +409,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.413Z",
+      "foundAt": "2026-05-03T17:26:56.391Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -521,7 +465,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.279Z",
+      "foundAt": "2026-05-03T17:26:55.138Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -577,7 +521,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.825Z",
+      "foundAt": "2026-05-03T17:26:53.170Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -633,7 +577,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.363Z",
+      "foundAt": "2026-05-03T17:26:53.687Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -689,7 +633,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.745Z",
+      "foundAt": "2026-05-03T17:26:55.708Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -745,7 +689,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.859Z",
+      "foundAt": "2026-05-03T17:26:54.451Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -801,7 +745,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.101Z",
+      "foundAt": "2026-05-03T17:26:52.235Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -857,7 +801,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.703Z",
+      "foundAt": "2026-05-03T17:26:54.114Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -913,7 +857,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.908Z",
+      "foundAt": "2026-05-03T17:26:53.336Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -969,7 +913,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.696Z",
+      "foundAt": "2026-05-03T17:26:52.924Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1025,7 +969,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.321Z",
+      "foundAt": "2026-05-03T17:26:55.214Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1081,7 +1025,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.658Z",
+      "foundAt": "2026-05-03T17:26:52.830Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1137,7 +1081,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.743Z",
+      "foundAt": "2026-05-03T17:26:53.002Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1193,7 +1137,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.453Z",
+      "foundAt": "2026-05-03T17:26:56.467Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1249,7 +1193,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.745Z",
+      "foundAt": "2026-05-03T17:26:54.190Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1305,7 +1249,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.751Z",
+      "foundAt": "2026-05-03T17:26:51.641Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1361,7 +1305,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.673Z",
+      "foundAt": "2026-05-03T17:26:51.473Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1417,7 +1361,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.241Z",
+      "foundAt": "2026-05-03T17:26:55.047Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1473,7 +1417,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.400Z",
+      "foundAt": "2026-05-03T17:26:55.378Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1529,7 +1473,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.822Z",
+      "foundAt": "2026-05-03T17:26:54.359Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1585,7 +1529,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.616Z",
+      "foundAt": "2026-05-03T17:26:52.754Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1641,7 +1585,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.108Z",
+      "foundAt": "2026-05-03T17:26:54.806Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1697,7 +1641,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.978Z",
+      "foundAt": "2026-05-03T17:26:51.994Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1753,7 +1697,63 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.021Z",
+      "foundAt": "2026-05-03T17:26:52.070Z",
+      "tags": [
+        "D Grade",
+        "NPI/MPI",
+        "Phone",
+        "Skipped"
+      ],
+      "associateReady": false,
+      "readyForAssociate": false,
+      "linkedinVerify": false,
+      "linkedinVerified": false,
+      "cpaVerify": false,
+      "needsResearch": false,
+      "skipped": true,
+      "bucket": "skipped",
+      "status": "Skipped / No Warm Route",
+      "queue": "Skipped / No Warm Route",
+      "workflowDay": 0,
+      "priorityRank": 9,
+      "bestFirstAction": "Skipped: no email + phone + LinkedIn/manual verification route.",
+      "disposition": "New / Not Worked",
+      "requiredTasks": [],
+      "callHistory": []
+    },
+    {
+      "id": "npi_1699847400",
+      "name": "RICHARD AADALEN",
+      "company": "",
+      "title": "Orthopaedic Surgery",
+      "location": "MINNEAPOLIS, MN",
+      "sourceType": "npi",
+      "source": "NPI Registry",
+      "sourceUrl": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
+      "signal": "NPI provider record: RICHARD AADALEN",
+      "summary": "Name: RICHARD AADALEN\\nTitle: Orthopaedic Surgery MD\\nCompany: \\nLocation: MINNEAPOLIS, MN\\nSource: NPI Registry\\nhttps://npiregistry.cms.hhs.gov/provider-view/1699847400",
+      "fitReason": "NPI provider record. Manual review required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [
+        {
+          "type": "phone",
+          "value": "612-596-6187",
+          "source": "NPI Registry"
+        }
+      ],
+      "evidenceTrail": [
+        {
+          "source": "NPI Registry",
+          "url": "https://npiregistry.cms.hhs.gov/provider-view/1699847400",
+          "whatItProves": "Named provider in NPI Registry: Orthopaedic Surgery"
+        }
+      ],
+      "score": 50,
+      "grade": "D",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T17:26:51.043Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1809,7 +1809,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:43.404Z",
+      "foundAt": "2026-05-03T17:26:53.763Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1865,7 +1865,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.060Z",
+      "foundAt": "2026-05-03T17:26:52.157Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1921,7 +1921,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.491Z",
+      "foundAt": "2026-05-03T17:26:56.555Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -1977,7 +1977,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.139Z",
+      "foundAt": "2026-05-03T17:26:52.327Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2033,7 +2033,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.374Z",
+      "foundAt": "2026-05-03T17:26:56.304Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2089,7 +2089,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.531Z",
+      "foundAt": "2026-05-03T17:26:56.629Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2145,7 +2145,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.149Z",
+      "foundAt": "2026-05-03T17:26:54.882Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2201,7 +2201,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.633Z",
+      "foundAt": "2026-05-03T17:26:51.397Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2257,7 +2257,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:41.711Z",
+      "foundAt": "2026-05-03T17:26:51.565Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2313,7 +2313,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.569Z",
+      "foundAt": "2026-05-03T17:26:56.721Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2369,7 +2369,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:42.782Z",
+      "foundAt": "2026-05-03T17:26:53.096Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2425,7 +2425,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:44.828Z",
+      "foundAt": "2026-05-03T17:26:55.877Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
@@ -2481,7 +2481,7 @@
       "type": "investor",
       "isPerson": true,
       "isCPA": false,
-      "foundAt": "2026-05-03T17:17:45.332Z",
+      "foundAt": "2026-05-03T17:26:56.227Z",
       "tags": [
         "D Grade",
         "NPI/MPI",
