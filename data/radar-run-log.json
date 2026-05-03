@@ -1,15 +1,16 @@
 {
-  "lastRunAt": "2026-05-03T08:05:55.907Z",
-  "startedAt": "2026-05-03T08:05:37.778Z",
+  "lastRunAt": "2026-05-03T08:20:16.232Z",
+  "startedAt": "2026-05-03T08:19:58.208Z",
   "status": "complete",
-  "usableLeads": 150,
-  "npiLeads": 2159,
-  "rssVerifiedLeads": 0,
-  "rssResearchCandidates": 48,
-  "rejected": 80,
+  "usableLeads": 180,
+  "npiVerifiedLeads": 1595,
+  "rssVerifiedContactLeads": 0,
+  "rssResearchCandidates": 127,
+  "rssArticleFetches": 40,
+  "rejected": 61,
   "errors": 0,
   "githubModelsUsed": false,
   "githubModelsModel": "",
   "githubModelCalls": 0,
-  "message": "NPI verified radar completed with 150 actual-contact leads. RSS candidates needing research: 48."
+  "message": "V5.6 completed: 180 active verified-contact leads, 127 RSS research candidates."
 }
