@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-3-complete-closed-circuit",
-  "version": "4.3.0",
+  "name": "basin-os-v4-3-1-runner-repair-complete",
+  "version": "4.3.1",
   "private": true,
-  "description": "Basin OS V4.3 complete closed-circuit CRM: source discovery, Brave enrichment, LinkedIn verify, ready-for-associate workflow, dispositions, playbook, notes, handoffs.",
+  "description": "Basin OS V4.3.1 complete runner repair: explicit API diagnostics, no NPI-only active pollution, resilient RSS/Brave/Groq fallback parsing, closed-circuit lead workflow.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

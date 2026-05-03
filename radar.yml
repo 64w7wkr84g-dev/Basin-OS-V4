@@ -1,0 +1,156 @@
+name: Basin Radar Daily
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 13 * * 1-5"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Verify required secrets exist
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -z "$BRAVE_API_KEY" ]; then
+            echo "BRAVE_API_KEY is missing from GitHub Actions secrets"
+            exit 1
+          fi
+
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "GROQ_API_KEY is missing from GitHub Actions secrets"
+            exit 1
+          fi
+
+          echo "Required GitHub Actions secrets are present"
+
+      - name: Verify required project files exist
+        run: |
+          if [ ! -f "basin-radar-runner.js" ]; then
+            echo "basin-radar-runner.js is missing"
+            exit 1
+          fi
+
+          if [ ! -f "package.json" ]; then
+            echo "package.json is missing"
+            exit 1
+          fi
+
+          mkdir -p public/data
+          echo "Required project files are present"
+
+      - name: Syntax check radar runner
+        run: node --check basin-radar-runner.js
+
+      - name: Run Basin Radar
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: "llama-3.3-70b-versatile"
+          MAX_PUBLIC_SEARCHES: "500"
+          MAX_GROQ_CALLS: "80"
+          GROQ_SLEEP_MS: "1200"
+          MAX_NPI: "60"
+          MAX_RSS: "160"
+          MAX_LINKEDIN_DISCOVERY: "160"
+          MAX_CPA_DISCOVERY: "100"
+        run: |
+          echo "Starting Basin Radar Runner..."
+          node basin-radar-runner.js
+
+      - name: Validate generated radar JSON
+        run: |
+          if [ ! -f "public/data/radar-leads.json" ]; then
+            echo "public/data/radar-leads.json was not generated"
+            exit 1
+          fi
+
+          if [ ! -f "radar-leads.json" ]; then
+            echo "radar-leads.json was not generated"
+            exit 1
+          fi
+
+          node -e "JSON.parse(require('fs').readFileSync('public/data/radar-leads.json','utf8')); console.log('public/data/radar-leads.json valid')"
+          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('root radar-leads.json valid')"
+
+      - name: Print radar diagnostics
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const j = JSON.parse(fs.readFileSync("public/data/radar-leads.json", "utf8"));
+          const s = j.stats || {};
+          console.log("========== BASIN RADAR DIAGNOSTICS ==========");
+          console.log("generatedAt:", j.generatedAt || "missing");
+          console.log("engine:", j.engine || "missing");
+          console.log("stats:", JSON.stringify(s, null, 2));
+          console.log("bucketCounts:", JSON.stringify({
+            readyForAssociate: (j.leads || []).length,
+            linkedinVerify: (j.linkedinVerifyCandidates || []).length,
+            cpaVerify: (j.cpaVerifyCandidates || []).length,
+            research: (j.researchCandidates || []).length,
+            skipped: (j.skippedCandidates || []).length,
+            allCandidates: (j.allCandidates || []).length
+          }, null, 2));
+          console.log("firstBraveError:", s.firstBraveError || "");
+          console.log("firstGroqError:", s.firstGroqError || "");
+          console.log("firstRssError:", s.firstRssError || "");
+          console.log("firstNpiError:", s.firstNpiError || "");
+          console.log("========== SAMPLE ACTIVE CANDIDATES ==========");
+          const sample = [
+            ...(j.leads || []),
+            ...(j.linkedinVerifyCandidates || []),
+            ...(j.cpaVerifyCandidates || []),
+            ...(j.researchCandidates || [])
+          ].slice(0, 12);
+          for (const lead of sample) {
+            console.log(JSON.stringify({
+              name: lead.name,
+              title: lead.title,
+              company: lead.company,
+              score: lead.score,
+              grade: lead.grade,
+              bucket: lead.bucket,
+              status: lead.status,
+              tags: lead.tags,
+              sourceType: lead.sourceType,
+              source: lead.source,
+              contactMethods: lead.contactMethods
+            }, null, 2));
+          }
+          NODE
+
+      - name: Upload radar debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: basin-radar-debug-json
+          path: |
+            public/data/radar-leads.json
+            public/data/radar-run-log.json
+            radar-leads.json
+            radar-research-candidates.json
+            radar-rejected.json
+          if-no-files-found: warn
+
+      - name: Commit radar data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update Basin Radar leads
+          file_pattern: "public/data/*.json radar-leads.json radar-research-candidates.json radar-rejected.json"
