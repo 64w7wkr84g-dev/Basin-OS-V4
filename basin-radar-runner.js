@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Basin OS V7.3 Cross-Referenced Lead Engine
+ * Basin OS V7.4 Cross-Referenced Lead Engine
  *
  * Key fix:
  * - NPI is treated as an identity seed, not the whole lead.
@@ -16,15 +16,15 @@ const path = require('path');
 
 const MAX_NPI_PER_QUERY = Number(process.env.NPI_MAX_PER_QUERY || 10);
 const MAX_RSS_PER_FEED = Number(process.env.RADAR_MAX_RSS_PER_FEED || 14);
-const ENRICH_NPI_LIMIT = Number(process.env.ENRICH_NPI_LIMIT || 300);
+const ENRICH_NPI_LIMIT = Number(process.env.ENRICH_NPI_LIMIT || 500);
 const MAX_READY_TOTAL = Number(process.env.MAX_READY_TOTAL || 999999);
 const MAX_READY_NPI_PHONE_ONLY = Number(process.env.MAX_READY_NPI_PHONE_ONLY || 999999);
 const NPI_BACKLOG_LIMIT = Number(process.env.NPI_BACKLOG_LIMIT || 500);
-const MAX_PUBLIC_SEARCHES = Number(process.env.PUBLIC_SEARCH_MAX || 300);
+const MAX_PUBLIC_SEARCHES = Number(process.env.PUBLIC_SEARCH_MAX || 500);
 const MAX_AI = Number(process.env.AI_MAX_LEAD_ANALYSES || 80);
 const STRICT_NPI_SECOND_SOURCE = String(process.env.STRICT_NPI_SECOND_SOURCE || 'true').toLowerCase() !== 'false';
 const LINKEDIN_CANDIDATE_PRIORITY = String(process.env.LINKEDIN_CANDIDATE_PRIORITY || 'true').toLowerCase() !== 'false';
-const BRAVE_RESULT_COUNT = Number(process.env.BRAVE_RESULT_COUNT || 8);
+const BRAVE_RESULT_COUNT = Number(process.env.BRAVE_RESULT_COUNT || 10);
 const NO_READY_CAP = String(process.env.NO_READY_CAP || 'true').toLowerCase() !== 'false';
 const NPI_PHONE_ONLY_READY = String(process.env.NPI_PHONE_ONLY_READY || 'false').toLowerCase() === 'true';
 
@@ -366,6 +366,8 @@ async function collectNpi(){
 }
 
 const RSS_FEEDS=[
+  ['Business owner liquidity/public signal','("sold his company" OR "sold her company" OR "acquired by" OR "founder" OR "CEO") (Texas OR Dallas OR Houston OR Fort Worth OR Austin) 2025 OR 2026'],
+  ['Medical practice expansion signal','("opened a new practice" OR "joins" OR "named" OR "launches") (orthopedic OR gastroenterology OR dermatology OR urology OR anesthesiology OR physician) (Texas OR Dallas OR Houston OR Fort Worth) 2025 OR 2026'],
   ['Physician practice openings','("Dr." OR "MD" OR "DO") ("opens" OR "launches" OR "joins" OR "named" OR "promoted") ("medical practice" OR orthopedic OR dermatology OR gastroenterology OR urology) USA 2025 OR 2026'],
   ['Founder liquidity events','("founder" OR "CEO" OR owner) ("sold" OR acquired OR exits OR acquisition) USA 2025 OR 2026'],
   ['CPA tax partner signals','("CPA" OR "tax partner") ("named partner" OR promoted OR joins OR speaker) "business owners" USA 2025 OR 2026'],
@@ -443,8 +445,8 @@ async function aiEnrich(leads){
 }
 
 (async function main(){
-  const npi=await collectNpi();
   const rss=await collectRss();
+  const npi=await collectNpi();
 
   let allCandidates=dedupe([...npi.leads,...rss.leads]).filter(l => personOk(l.name) || l.bucket !== 'day1');
   const aiTarget=allCandidates.filter(l => l.associateReady || l.bucket==='linkedin-verify' || l.bucket==='contact-needed').slice(0,MAX_AI);
@@ -470,7 +472,7 @@ async function aiEnrich(leads){
   const generatedAt=now();
   const radar={
     generatedAt,
-    engine:'Basin OS V7.3 Cross-Referenced Lead Engine',
+    engine:'Basin OS V7.4 Cross-Referenced Lead Engine',
     automationMode:'NPI/RSS seeds → public search enrichment → source confidence → Meta Llama/Groq evaluation → balanced work queues',
     compliance:{linkedinScraping:false,autoMessaging:false,autoProfileReading:false,candidateUrlsOnly:true,manualConfirmationRequired:true,accreditationProof:'Public data creates accredited-likely proxy only; qualification must be verified compliantly.'},
     stats:{
@@ -511,6 +513,6 @@ async function aiEnrich(leads){
   fs.writeFileSync(out('data/radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
   fs.writeFileSync(out('data/radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
-  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V7.3 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
-  console.log(`V7.3 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
+  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V7.4 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
+  console.log(`V7.4 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
 })().catch(e=>{ console.error(e); process.exitCode=1; });
