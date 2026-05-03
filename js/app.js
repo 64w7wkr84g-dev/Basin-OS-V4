@@ -20,10 +20,7 @@
       followUps: [],
       suppressed: [],
       handoffs: [],
-      api: {
-        groqKey: "",
-        groqModel: "llama-3.3-70b-versatile"
-      },
+      api: { groqKey: "", groqModel: "llama-3.3-70b-versatile" },
       lastRadar: null,
       lastLoadedFrom: "",
       lastLoadedAt: ""
@@ -76,119 +73,17 @@ The only question is whether a short educational director call would be worth yo
       linkedin: `Hi [Name] — I am with Basin Ventures in Southlake. We share educational material for accredited investors around direct energy ownership and tax-advantaged structures. Would a short overview be relevant, or should I close the loop?`
     },
     cadence: [
-      {
-        day: 1,
-        title: "Day 1 — Research-Based Intro",
-        email: `Subject: Quick note after seeing [Signal]
-
-Hi [Name],
-
-I came across [Signal] and thought your background as [Role] may make this worth a short educational review.
-
-Basin Ventures works with accredited investors on direct, tax-advantaged oil and gas ownership. No guarantees, no tax advice, and your CPA would need to confirm fit.
-
-Would a short overview be worth sending?
-
-Best,
-James`,
-        phone: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
-
-Basin works with accredited investors on direct, tax-advantaged oil and gas ownership. I am not calling to force a decision. The only goal is a short director call so you can understand the structure and decide whether it is even worth reviewing.
-
-Would this week or next week be better?`,
-        linkedin: `Hi [Name] — I came across [Signal] and thought your background as [Role] may make a short Basin Ventures intro relevant. We share educational info on direct energy ownership for accredited investors. Worth a quick overview?`
-      },
-      {
-        day: 2,
-        title: "Day 2 — Second Attempt / Signal Reminder",
-        email: `Subject: Worth closing the loop?
-
-Hi [Name],
-
-I wanted to follow up on my note about [Signal].
-
-If this is irrelevant, no problem. If it is worth understanding, I can send a short overview or set a quick director call.
-
-Your CPA or advisor would need to confirm whether the structure fits.
-
-Best,
-James`,
-        phone: `Hi [Name], James with Basin Ventures. I reached out because of [Signal], and I wanted to try you once more.
-
-The reason I thought it might fit is that high-income professionals and business owners often want to understand tax-advantaged direct energy ownership, especially when income or liquidity events are in play. Your CPA would need to confirm fit.
-
-Should I send a brief overview or just get you directly to a 20-minute director call?`,
-        linkedin: `Hi [Name] — quick follow-up on my note around [Signal]. If a short educational overview from Basin would be relevant, I can send it over. If not, no problem.`
-      },
-      {
-        day: 4,
-        title: "Day 4 — Credibility Angle",
-        email: `Subject: One clean follow-up
-
-Hi [Name],
-
-One clean follow-up here.
-
-Basin has managed over $1.25B since 2014 and focuses on direct energy opportunities for accredited investors. Given [Signal], I thought the structure may be worth understanding.
-
-If not relevant, no problem. If it is worth a short director call, I can help coordinate.
-
-Best,
-James`,
-        phone: `Hi [Name], James from Basin Ventures. I know we have not spoken before. Basin has managed over $1.25B since 2014, and we focus on direct energy opportunities for accredited investors.
-
-Given [Signal], I thought it was worth making one clean introduction. If it is irrelevant, no problem. If it is worth understanding, I can schedule a short director call.
-
-Does this deserve 20 minutes, or should I close the loop?`,
-        linkedin: `Hi [Name] — one clean follow-up. Basin has managed over $1.25B since 2014 and focuses on direct energy opportunities for accredited investors. Worth a short educational intro, or should I close the loop?`
-      },
-      {
-        day: 6,
-        title: "Day 6 — Final Research-Based Call",
-        email: `Subject: Should I close this out?
-
-Hi [Name],
-
-Last note from me.
-
-I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation. I do not want to chase you.
-
-Should I close this out, or would a short overview be useful?
-
-Best,
-James`,
-        phone: `Hi [Name], last attempt from James at Basin Ventures. I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation.
-
-I do not want to chase you. Should I mark this as not a fit, or would you like one short overview call before I close it out?`,
-        linkedin: `Hi [Name] — last note from me. I reached out because [Signal] looked potentially relevant. Should I close the loop, or would a short overview be useful?`
-      },
-      {
-        day: 10,
-        title: "Day 10 — Longer-Term Permission Call",
-        email: `Subject: Close the loop?
-
-Hi [Name],
-
-I am closing the loop on my outreach.
-
-If now is not the time, no problem. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead.
-
-What is better?
-
-Best,
-James`,
-        phone: `Hi [Name], James with Basin Ventures. I am closing the loop on my outreach.
-
-If now is not the time, I can leave you alone. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead. What is better?`,
-        linkedin: `Hi [Name] — closing the loop here. If now is not the time, no problem. If you want future educational updates around fund windows or tax-planning topics, I can keep you on the list.`
-      }
+      { day: 1, title: "Research-Based Intro", email: "Hi [Name],\n\nI came across [Signal] and thought your background as [Role] may make this worth a short educational review.\n\nBasin Ventures works with accredited investors on direct, tax-advantaged oil and gas ownership. No guarantees, no tax advice, and your CPA would need to confirm fit.\n\nWould a short overview be worth sending?\n\nBest,\nJames" },
+      { day: 2, title: "Second Attempt / Signal Reminder", email: "Hi [Name],\n\nI wanted to follow up on my note about [Signal]. If this is irrelevant, no problem. If it is worth understanding, I can send a short overview or set a quick director call.\n\nBest,\nJames" },
+      { day: 4, title: "Credibility Angle", email: "Hi [Name],\n\nOne clean follow-up here. Basin has managed over $1.25B since 2014 and focuses on direct energy opportunities for accredited investors. Given [Signal], I thought the structure may be worth understanding.\n\nBest,\nJames" },
+      { day: 6, title: "Final Research-Based Call", email: "Hi [Name],\n\nLast note from me. I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation. Should I close this out, or would a short overview be useful?\n\nBest,\nJames" },
+      { day: 10, title: "Longer-Term Permission", email: "Hi [Name],\n\nI am closing the loop on my outreach. If now is not the time, no problem. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead.\n\nBest,\nJames" }
     ],
     rebuttals: [
       ["Not interested", "Totally fair. I am not asking you to make a decision. Would it be unreasonable to understand the structure first and then decide if it is irrelevant?"],
-      ["Send me information", "Absolutely. I can send a short overview. To make sure I send the right version, is this more for tax planning, diversification, or just general education?"],
+      ["Send me information", "Absolutely. I can send a short overview. To make sure I send the right version, is this more for tax planning, diversification, or general education?"],
       ["Talk to my CPA", "That is exactly what should happen. The director call is educational, and your CPA would need to confirm fit before anything moves forward."],
-      ["Is this risky?", "All investments carry risk, and there are no guaranteed returns. The call is to understand the structure, risk profile, and whether it is even worth reviewing."],
-      ["Minimum?", "The typical minimum is around $100,000. The director can explain the structure and whether it makes sense to review."]
+      ["Is this risky?", "All investments carry risk, and there are no guaranteed returns. The call is to understand the structure, risk profile, and whether it is even worth reviewing."]
     ]
   };
 
@@ -212,7 +107,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     el.classList.toggle("error", isError);
     el.classList.remove("hidden");
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => el.classList.add("hidden"), 3500);
+    showToast.timer = setTimeout(() => el.classList.add("hidden"), 3800);
   }
 
   function setStatus(message, type = "") {
@@ -263,16 +158,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     };
   }
 
-  function detectSource(raw, contacts) {
-    const blob = [raw.sourceType, raw.source, raw.sourceUrl, raw.sourceConfidence, raw.status].join(" ").toLowerCase();
-    if (contacts.some(c => c.type === "email")) return "email";
-    if (contacts.some(c => /linkedin/i.test(`${c.type} ${c.value}`))) return "linkedin";
-    if (/cpa|tax|account/.test(blob)) return "cpa";
-    if (/rss|news/.test(blob)) return "rss";
-    if (/npi|registry/.test(blob)) return "npi";
-    return raw.sourceType || "public";
-  }
-
   function normalizeLead(raw) {
     const contacts = (raw.contactMethods || raw.contacts || [])
       .map(normalizeContact)
@@ -283,10 +168,10 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     const hasLinkedIn = contacts.some(c => /linkedin/i.test(`${c.type} ${c.value}`)) || /linkedin/.test(sourceBlob);
     const hasEmail = contacts.some(c => c.type === "email" || /@/.test(c.value));
     const hasPhone = contacts.some(c => c.type === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(c.value));
-    const sourceType = detectSource(raw, contacts);
-    const isCpa = raw.isCPA === true || /cpa|tax|account/i.test([raw.title, raw.role, raw.specialty, raw.company, raw.signal, raw.summary, raw.sourceType].join(" "));
+    const isCpa = raw.isCPA === true || /cpa|tax|account/i.test([raw.title, raw.company, raw.signal, raw.summary, raw.sourceType].join(" "));
     const score = Number(raw.score || 0);
     const grade = raw.grade || (score >= 88 ? "A" : score >= 72 ? "B" : score >= 58 ? "C" : "D");
+    const sourceType = hasEmail ? "email" : hasLinkedIn ? "linkedin" : isCpa ? "cpa" : raw.sourceType || "public";
 
     const rawReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === "ready" || raw.status === "Ready to Work");
     const isReady = Boolean(rawReady && hasEmail);
@@ -386,7 +271,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     let researchLeads = research.map(normalizeLead).filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
     let skippedLeads = skipped.map(normalizeLead).filter(l => l.skipped);
 
-    // Safety net: if the runner wrote allCandidates but bucket arrays are missing/empty, recover them client-side.
     if (!readyLeads.length && !linkedinLeads.length && !cpaLeads.length && allCandidates.length) {
       const recovered = allCandidates.map(normalizeLead).filter(l => l.name && l.name !== "Unnamed Candidate");
       readyLeads = recovered.filter(l => l.associateReady);
@@ -421,7 +305,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
 
   async function loadRadarData() {
     let lastError = null;
-
     for (const url of RADAR_URLS) {
       try {
         const response = await fetch(`${url}?t=${Date.now()}`, { cache: "no-store" });
@@ -436,7 +319,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
         lastError = error;
       }
     }
-
     setStatus(`Radar load failed: ${lastError?.message || "unknown error"}`, "error");
     throw lastError;
   }
@@ -467,10 +349,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       ["email", `Email ${c.email}`],
       ["A", `A Grade ${c.A}`]
     ];
-
-    $("#queueTabs").innerHTML = tabs.map(([key, label]) => (
-      `<button class="tab ${state.queueFilter === key ? "active" : ""}" data-filter="${key}">${escapeHtml(label)}</button>`
-    )).join("");
+    $("#queueTabs").innerHTML = tabs.map(([key, label]) => `<button class="tab ${state.queueFilter === key ? "active" : ""}" data-filter="${key}">${escapeHtml(label)}</button>`).join("");
   }
 
   function filteredLeads() {
@@ -526,19 +405,14 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
           <button class="btn btn-secondary btn-sm" data-action="printHandoff" data-id="${escapeHtml(lead.id)}">Handoff</button>
           <button class="btn btn-danger btn-sm" data-action="suppress" data-id="${escapeHtml(lead.id)}">Suppress</button>
         </div>
-      </article>
-    `;
+      </article>`;
   }
 
   function renderDashboard() {
     renderKpis();
     renderTabs();
-
     const leads = filteredLeads();
-    $("#actionQueueList").innerHTML = leads.length
-      ? leads.map(leadCard).join("")
-      : `<div class="empty">No active leads in this queue.</div>`;
-
+    $("#actionQueueList").innerHTML = leads.length ? leads.map(leadCard).join("") : `<div class="empty">No active leads in this queue.</div>`;
     renderRadarFeed();
   }
 
@@ -554,30 +428,35 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       ["Brave Configured", String(Boolean(stats.braveConfigured))],
       ["Groq Configured", String(Boolean(stats.groqConfigured))],
       ["Public Searches", stats.publicSearches ?? 0],
-      ["Groq Calls", stats.groqCalls ?? 0]
+      ["Groq Calls", stats.groqCalls ?? 0],
+      ["Groq Failures", stats.groqFailures ?? 0]
     ];
-
-    $("#liveRadarFeed").innerHTML = items.map(([k, v]) => (
-      `<div class="feed-item"><strong>${escapeHtml(k)}</strong>${escapeHtml(v)}</div>`
-    )).join("");
+    $("#liveRadarFeed").innerHTML = items.map(([k, v]) => `<div class="feed-item"><strong>${escapeHtml(k)}</strong>${escapeHtml(v)}</div>`).join("");
   }
 
   function renderSimpleQueue(pageId, title, leads) {
     const page = $(`#page-${pageId}`);
     page.innerHTML = `
       <div class="panel">
-        <div class="panel-head">
-          <div><div class="panel-title">${escapeHtml(title)}</div><div class="panel-sub">${escapeHtml(leads.length)} record(s)</div></div>
-        </div>
+        <div class="panel-head"><div><div class="panel-title">${escapeHtml(title)}</div><div class="panel-sub">${escapeHtml(leads.length)} record(s)</div></div></div>
         <div class="panel-body lead-list">${leads.length ? leads.sort(prioritySort).map(leadCard).join("") : `<div class="empty">No records.</div>`}</div>
-      </div>
-    `;
+      </div>`;
   }
 
   function renderWorkflow() { renderSimpleQueue("workflow", "Action Queue / Workflow", state.store.leads); }
   function renderLinkedIn() { renderSimpleQueue("linkedin", "LinkedIn Verify", state.store.linkedinVerify); }
   function renderCpa() { renderSimpleQueue("cpa", "CPA Verify", state.store.cpaVerify); }
   function renderRadar() { renderSimpleQueue("radar", "Live Radar Active Candidates", activeLeads()); }
+
+  function interpolate(text, lead = {}) {
+    const signal = lead.signal || lead.summary || "your professional background";
+    const role = lead.title || "your role";
+    return String(text)
+      .replaceAll("[Name]", lead.name || "there")
+      .replaceAll("[Signal]", signal)
+      .replaceAll("[Role]", role)
+      .replaceAll("[Role/Signal]", role);
+  }
 
   function scriptPanel(title, body) {
     return `<div class="panel"><div class="panel-head"><div><div class="panel-title">${escapeHtml(title)}</div><div class="panel-sub">Copy, review, and personalize before use.</div></div></div><div class="panel-body code">${escapeHtml(body)}</div></div>`;
@@ -586,12 +465,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   function renderPlaybook() {
     $("#page-playbook").innerHTML = `
       <div class="panel">
-        <div class="panel-head">
-          <div>
-            <div class="panel-title">Master Playbook</div>
-            <div class="panel-sub">Method A, Method B, day cadence, rebuttals, and compliance guardrails.</div>
-          </div>
-        </div>
+        <div class="panel-head"><div><div class="panel-title">Master Playbook</div><div class="panel-sub">Method A, Method B, day cadence, rebuttals, and compliance guardrails.</div></div></div>
         <div class="panel-body">
           <details class="playbook-detail" open>
             <summary>${escapeHtml(PLAYBOOK.methodA.title)} <span>${escapeHtml(PLAYBOOK.methodA.when)}</span></summary>
@@ -601,7 +475,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
               ${scriptPanel("Method A LinkedIn", PLAYBOOK.methodA.linkedin)}
             </div>
           </details>
-
           <details class="playbook-detail" open>
             <summary>${escapeHtml(PLAYBOOK.methodB.title)} <span>${escapeHtml(PLAYBOOK.methodB.when)}</span></summary>
             <div class="terminal-grid" style="margin-top:12px">
@@ -610,34 +483,17 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
               ${scriptPanel("Method B LinkedIn", PLAYBOOK.methodB.linkedin)}
             </div>
           </details>
-
           <details class="playbook-detail" open>
-            <summary>Day 1 through Day 10 Cadence <span>Email/LinkedIn first when available. Calls follow evidence review.</span></summary>
-            ${PLAYBOOK.cadence.map(day => `
-              <div class="panel" style="margin-top:12px">
-                <div class="panel-head"><div><div class="panel-title">Day ${day.day} — ${escapeHtml(day.title)}</div></div></div>
-                <div class="panel-body terminal-grid">
-                  ${scriptPanel("Email", day.email)}
-                  ${scriptPanel("Phone", day.phone)}
-                  ${scriptPanel("LinkedIn", day.linkedin)}
-                </div>
-              </div>
-            `).join("")}
+            <summary>Day Cadence <span>Day 1, 2, 4, 6, and 10 email templates.</span></summary>
+            ${PLAYBOOK.cadence.map(day => scriptPanel(`Day ${day.day} — ${day.title}`, day.email)).join("")}
           </details>
-
           <details class="playbook-detail" open>
-            <summary>Rebuttals <span>Use to keep the conversation educational and optional.</span></summary>
+            <summary>Rebuttals <span>Keep it educational and optional.</span></summary>
             <table class="table"><tbody>${PLAYBOOK.rebuttals.map(([o,r]) => `<tr><td><strong>${escapeHtml(o)}</strong></td><td>${escapeHtml(r)}</td></tr>`).join("")}</tbody></table>
           </details>
-
-          <div class="panel">
-            <div class="panel-body">
-              <strong>Compliance:</strong> No guaranteed returns. No tax advice. Consult CPA/advisor. Accredited investors only. Manual review before every email, LinkedIn touch, text, or call.
-            </div>
-          </div>
+          <div class="panel"><div class="panel-body"><strong>Compliance:</strong> No guaranteed returns. No tax advice. Consult CPA/advisor. Accredited investors only. Manual review before every outreach.</div></div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   function renderNotes() { renderSimpleNotes("notes", "Call Notes", state.store.notes); }
@@ -665,8 +521,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
         ${kpi(c.email, "Emails")}
         ${kpi(c.skipped, "Skipped")}
       </div>
-      <div class="panel"><div class="panel-body code">${escapeHtml(JSON.stringify(state.store.lastRadar?.stats || {}, null, 2))}</div></div>
-    `;
+      <div class="panel"><div class="panel-body code">${escapeHtml(JSON.stringify(state.store.lastRadar?.stats || {}, null, 2))}</div></div>`;
   }
 
   function renderApi() {
@@ -687,8 +542,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
           <button id="clearApiBtn" class="btn btn-danger">Clear Key</button>
           <div class="feed-item" style="margin-top:14px"><strong>Status</strong> Browser Groq: ${state.store.api.groqKey ? "ON" : "OFF"} · Runner Groq: ${state.store.lastRadar?.stats?.groqConfigured ? "ON" : "UNKNOWN"} · Runner Brave: ${state.store.lastRadar?.stats?.braveConfigured ? "ON" : "UNKNOWN"}</div>
         </div>
-      </div>
-    `;
+      </div>`;
     $("#saveApiBtn")?.addEventListener("click", () => {
       state.store.api.groqKey = $("#groqKeyInput").value.trim();
       state.store.api.groqModel = $("#groqModelInput").value;
@@ -712,8 +566,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
           <button id="clearStoreBtn" class="btn btn-danger">Clear Local Browser CRM Data</button>
           <button id="exportStoreBtn" class="btn btn-secondary">Export Local Store</button>
         </div>
-      </div>
-    `;
+      </div>`;
     $("#clearStoreBtn")?.addEventListener("click", () => {
       if (!confirm("Clear local browser CRM data?")) return;
       localStorage.removeItem(STORE_KEY);
@@ -766,10 +619,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     $("#navCount-notes").textContent = c.notes;
     $("#navCount-calendar").textContent = c.followUps;
     $("#apiBadge").textContent = state.store.api.groqKey ? "GROQ" : "OFF";
-
-    $$(".nav-item[data-page]").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.page === state.page);
-    });
+    $$(".nav-item[data-page]").forEach(btn => btn.classList.toggle("active", btn.dataset.page === state.page));
   }
 
   function updateAll() {
@@ -795,7 +645,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     else if (lead.cpaVerify) state.store.cpaVerify.push(lead);
     else if (lead.skipped) state.store.skipped.push(lead);
     else state.store.research.push(lead);
-
     state.store.leads.sort(prioritySort);
     state.store.linkedinVerify.sort(prioritySort);
     state.store.cpaVerify.sort(prioritySort);
@@ -805,8 +654,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
 
   function markReady(leadId) {
     const lead = findLead(leadId);
-    if (!lead) return;
-
+    if (!lead) return null;
     lead.associateReady = true;
     lead.linkedinVerify = false;
     lead.cpaVerify = false;
@@ -817,8 +665,8 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     lead.bestFirstAction = lead.hasEmail
       ? "Day 1: send evidence-based email first."
       : "Day 1: LinkedIn manually verified. Send reviewed LinkedIn touch first.";
-
     upsertLead(lead);
+    saveStore();
     return lead;
   }
 
@@ -836,8 +684,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
         <strong>${escapeHtml(e.source || "Evidence")}</strong><br>
         <a href="${escapeHtml(e.url || "#")}" target="_blank" rel="noopener">${escapeHtml(e.url || "")}</a>
         <div class="lead-line">${escapeHtml(e.whatItProves || "")}</div>
-      </div>
-    `).join("");
+      </div>`).join("");
   }
 
   function openLeadModal(leadId) {
@@ -871,10 +718,6 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       : `<div class="empty">No notes yet.</div>`;
   }
 
-  /**
-   * TASK 4 required function.
-   * Human-in-the-loop LinkedIn verification and Groq script generation.
-   */
   async function verifyAndDraft() {
     const leadId = state.selectedLeadId;
     const lead = findLead(leadId);
@@ -920,7 +763,7 @@ ${linkedinBio}
       const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${groqKey}`,
+          Authorization: `Bearer ${groqKey}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -937,8 +780,7 @@ ${linkedinBio}
       if (!response.ok) throw new Error(`Groq ${response.status}: ${await response.text()}`);
 
       const json = await response.json();
-      const content = json.choices?.[0]?.message?.content || "";
-      const parsed = parseGroqJson(content);
+      const parsed = parseGroqJson(json.choices?.[0]?.message?.content || "");
 
       $("#outputEmail").value = parsed.email || "";
       $("#outputCallNotes").value = parsed.call || "";
@@ -947,7 +789,6 @@ ${linkedinBio}
       lead.generatedEmail = parsed.email || "";
       lead.generatedCall = parsed.call || "";
       lead.hasLinkedIn = true;
-      lead.contacts = lead.contacts || [];
       lead.notes = lead.notes || [];
 
       const note = {
@@ -991,16 +832,7 @@ ${linkedinBio}
     if (!lead) return;
     const text = $("#modalNoteInput").value.trim();
     if (!text) return showToast("Write a note first.", true);
-
-    const note = {
-      id: uid("note"),
-      leadId: lead.id,
-      leadName: lead.name,
-      note: text,
-      disposition: "Manual note",
-      at: new Date().toISOString()
-    };
-
+    const note = { id: uid("note"), leadId: lead.id, leadName: lead.name, note: text, disposition: "Manual note", at: new Date().toISOString() };
     state.store.notes.push(note);
     lead.notes = lead.notes || [];
     lead.notes.push(note);
@@ -1035,8 +867,7 @@ ${linkedinBio}
         <div class="box"><strong>Evidence</strong><br>${lead.evidence.map(e => `${escapeHtml(e.source)} - ${escapeHtml(e.url || "")}`).join("<br>")}</div>
         <div class="box"><strong>Notes</strong><br>${notes.map(n => `${escapeHtml(n.at)} - ${escapeHtml(n.note)}`).join("<br>")}</div>
         <div class="box"><strong>Compliance</strong><br>No guaranteed returns. No tax advice. Consult CPA/advisor. Accredited investors only.</div>
-      </body></html>
-    `;
+      </body></html>`;
     const w = window.open("", "_blank");
     w.document.write(html);
     w.document.close();
@@ -1126,12 +957,5 @@ ${linkedinBio}
   }
 
   document.addEventListener("DOMContentLoaded", init);
-
-  // Expose for debugging without exposing API keys.
-  window.BasinOS = {
-    state,
-    loadRadarData,
-    markReady,
-    verifyAndDraft
-  };
+  window.BasinOS = { state, loadRadarData, markReady, verifyAndDraft };
 })();

@@ -1,41 +1,5 @@
 {
-  "generatedAt": "2026-05-03T15:09:53.806Z",
-  "stats": {
-    "totalFound": 105,
-    "activeVisible": 2,
-    "readyToWork": 0,
-    "linkedinVerify": 0,
-    "cpaVerify": 2,
-    "skipped": 103,
-    "npiCollected": 80,
-    "rssCollected": 25,
-    "linkedinDiscoveryCollected": 0,
-    "cpaCollected": 0,
-    "emailFound": 0,
-    "linkedinCandidatesFound": 0,
-    "phoneFound": 0,
-    "publicSearches": 195,
-    "groqCalls": 0,
-    "braveConfigured": true,
-    "groqConfigured": true,
-    "errors": 0
-  },
-  "samples": {
-    "ready": [],
-    "linkedinVerify": [],
-    "cpaVerify": [
-      {
-        "name": "Imran Akhtar Joins",
-        "score": 67,
-        "contacts": [],
-        "status": "CPA Verify"
-      },
-      {
-        "name": "Nita Ahuja",
-        "score": 67,
-        "contacts": [],
-        "status": "CPA Verify"
-      }
-    ]
-  }
+  "generatedAt": null,
+  "stats": {},
+  "samples": {}
 }
