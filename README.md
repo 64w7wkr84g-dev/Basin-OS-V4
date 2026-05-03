@@ -1,4 +1,4 @@
-# Basin OS V3 — Groq Terminal Rebuild
+# Basin OS V3.1 — Groq Terminal Rebuild
 
 Upload all files in this package. The workflow file must live at:
 
@@ -15,3 +15,11 @@ Frontend browser Groq drafting:
 
 Open:
 https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v3-groq-terminal
+
+
+## V3.1 Action Hotfix
+
+- Workflow now runs Node 24.
+- Adds FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true.
+- Runner prints startup diagnostics.
+- Runner writes valid fallback JSON instead of killing the entire workflow if a source/API throws.

@@ -18,6 +18,11 @@
 const fs = require("fs/promises");
 const path = require("path");
 
+if (typeof fetch !== "function") {
+  console.error("Fatal: global fetch is not available. Use Node 18+ / Node 24 in GitHub Actions.");
+  process.exit(1);
+}
+
 const BRAVE_API_KEY = process.env.BRAVE_API_KEY || "";
 const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
@@ -859,7 +864,80 @@ function routeLead(lead) {
   return lead;
 }
 
+
+async function writeFallbackOutput(error) {
+  const output = {
+    generatedAt: now(),
+    engine: "Basin OS V3.1 fallback output",
+    fatalError: clean(error && (error.stack || error.message || error)),
+    compliance: {
+      linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
+      outreach: "No auto-send. Manual review required before every outreach.",
+      qualification: "Accredited status is never assumed."
+    },
+    routingRules: {
+      ready: "Named person + email + score >= 58.",
+      linkedinVerify: "Named person + LinkedIn URL.",
+      cpaVerify: "CPA/tax/referral candidate.",
+      skipped: "No email, no LinkedIn URL, no CPA/referral path."
+    },
+    stats: {
+      totalFound: 0,
+      activeVisible: 0,
+      readyToWork: 0,
+      linkedinVerify: 0,
+      cpaVerify: 0,
+      skipped: 0,
+      npiCollected: 0,
+      rssCollected: 0,
+      linkedinDiscoveryCollected: 0,
+      cpaCollected: 0,
+      emailFound: 0,
+      linkedinCandidatesFound: 0,
+      phoneFound: 0,
+      publicSearches: 0,
+      groqCalls: 0,
+      braveConfigured: Boolean(BRAVE_API_KEY),
+      groqConfigured: Boolean(GROQ_API_KEY),
+      errors: 1
+    },
+    leads: [],
+    linkedinVerifyCandidates: [],
+    cpaVerifyCandidates: [],
+    researchCandidates: [],
+    skippedCandidates: [],
+    allCandidates: [],
+    errors: [{ source: "fatal", reason: clean(error && (error.message || error)) }]
+  };
+
+  await writeJson("data/radar-leads.json", output);
+  await writeJson("radar-leads.json", output);
+  await writeJson("data/radar-research-candidates.json", { generatedAt: now(), candidates: [] });
+  await writeJson("radar-research-candidates.json", { generatedAt: now(), candidates: [] });
+  await writeJson("data/radar-rejected.json", { generatedAt: now(), skipped: 0, errors: output.errors });
+  await writeJson("radar-rejected.json", { generatedAt: now(), skipped: 0, errors: output.errors });
+  await writeJson("data/radar-run-log.json", { generatedAt: now(), fatalError: output.fatalError, stats: output.stats });
+  await writeJson(STATE_PATH, { seen: {}, suppressed: {} });
+
+  console.error("Basin Radar wrote fallback JSON after fatal error:");
+  console.error(output.fatalError);
+}
+
 async function main() {
+  console.log("Basin Radar starting");
+  console.log(JSON.stringify({
+    node: process.version,
+    braveConfigured: Boolean(BRAVE_API_KEY),
+    groqConfigured: Boolean(GROQ_API_KEY),
+    groqModel: GROQ_MODEL,
+    maxNpi: MAX_NPI,
+    maxRss: MAX_RSS,
+    maxLinkedinDiscovery: MAX_LINKEDIN_DISCOVERY,
+    maxCpaDiscovery: MAX_CPA_DISCOVERY,
+    maxPublicSearches: MAX_PUBLIC_SEARCHES,
+    maxGroqCalls: MAX_GROQ_CALLS
+  }, null, 2));
+
   const state = await readJson(STATE_PATH, { seen: {}, suppressed: {} });
   const errors = [];
   const braveBudget = { remaining: MAX_PUBLIC_SEARCHES, used: 0 };
@@ -922,7 +1000,7 @@ async function main() {
 
   const output = {
     generatedAt: now(),
-    engine: "Basin OS V3 Groq Parsed Radar Runner",
+    engine: "Basin OS V3.1 Groq Parsed Radar Runner",
     compliance: {
       linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
       outreach: "No auto-send. Manual review required before every email, LinkedIn touch, SMS, or call.",
@@ -988,7 +1066,15 @@ async function main() {
   console.log(JSON.stringify(output.stats, null, 2));
 }
 
-main().catch(error => {
-  console.error(error);
-  process.exit(1);
+main().catch(async error => {
+  try {
+    await writeFallbackOutput(error);
+    // Do not fail the whole workflow after fallback JSON is written.
+    // The UI will show the fatal error in radar-run-log/radar-leads.json.
+    process.exit(0);
+  } catch (fallbackError) {
+    console.error("Fallback writer also failed:", fallbackError);
+    console.error("Original error:", error);
+    process.exit(1);
+  }
 });
