@@ -6,13 +6,23 @@
   },
   {
     "path": ".github/workflows/radar.yml",
-    "bytes": 1443,
-    "sha256": "f6963412108831cbfdf3aada993ccb0d3d7ed4d80601363d4b1694251b2e64ae"
+    "bytes": 1445,
+    "sha256": "a4b586a44d4b8815d806529cce0bbd0a81b362c642360077d6db69ae263bd8df"
+  },
+  {
+    "path": "BUILD_MANIFEST.json",
+    "bytes": 6991,
+    "sha256": "4be01341ff28c6d0d6482eee40915e02c5ea3dd86a3849a3c53ab34479df5541"
+  },
+  {
+    "path": "DELETE_OLD_FILES_BEFORE_UPLOAD.md",
+    "bytes": 541,
+    "sha256": "1b50cd3c3455c31376b261f8abf074ba22d99678ab0a9905785d685ae5079f0c"
   },
   {
     "path": "README.md",
-    "bytes": 1364,
-    "sha256": "24b5b53708c1dc041fc9f35222f4d29b64dd4618f08db6721604c0db52be877f"
+    "bytes": 2096,
+    "sha256": "398d4400e00293b33350dab5a7305868ad93fe0f9a64910cf37e1da64b987835"
   },
   {
     "path": "app/analytics/page.tsx",
@@ -116,13 +126,13 @@
   },
   {
     "path": "basin-radar-runner.js",
-    "bytes": 27792,
-    "sha256": "87d479e0287e2ebcf82a26bf598d261d0818f27410f6fa5dec2e605157d7b4a3"
+    "bytes": 29354,
+    "sha256": "f9497fdcddd99f99d6ccf9abf8c3abe39dbc15280858e6463727bea5ce62ff02"
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 54422,
-    "sha256": "e5f4a2673eece84cfbdc0ed80e4a06e7bab57e01c14e31f53c52ffc177dcd0c5"
+    "bytes": 54421,
+    "sha256": "c3e512d2108e1c0a81244d7b167d2f7613e344ab0dac63f3e8da976ae3e01297"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -171,8 +181,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1153,
-    "sha256": "bc52d5029a3e5e0f66547cad0891cd29f00211f10782a990d0c8dfb080b526c6"
+    "bytes": 1150,
+    "sha256": "c38131c2823def4689b36bd4db659b508fe5de71c397e22041f2380663fb6495"
   },
   {
     "path": "postcss.config.mjs",
@@ -221,8 +231,8 @@
   },
   {
     "path": "radar.yml",
-    "bytes": 1443,
-    "sha256": "f6963412108831cbfdf3aada993ccb0d3d7ed4d80601363d4b1694251b2e64ae"
+    "bytes": 1445,
+    "sha256": "a4b586a44d4b8815d806529cce0bbd0a81b362c642360077d6db69ae263bd8df"
   },
   {
     "path": "tailwind.config.ts",

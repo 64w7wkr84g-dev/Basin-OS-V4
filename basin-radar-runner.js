@@ -21,12 +21,13 @@ const BRAVE_API_KEY = process.env.BRAVE_API_KEY || "";
 const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-const MAX_PUBLIC_SEARCHES = Number(process.env.MAX_PUBLIC_SEARCHES || 300);
-const MAX_GROQ_CALLS = Number(process.env.MAX_GROQ_CALLS || 80);
-const MAX_NPI = Number(process.env.MAX_NPI || 80);
-const MAX_RSS = Number(process.env.MAX_RSS || 80);
-const MAX_LINKEDIN_DISCOVERY = Number(process.env.MAX_LINKEDIN_DISCOVERY || 120);
-const MAX_CPA_DISCOVERY = Number(process.env.MAX_CPA_DISCOVERY || 60);
+const MAX_PUBLIC_SEARCHES = Number(process.env.MAX_PUBLIC_SEARCHES || 450);
+const MAX_GROQ_CALLS = Number(process.env.MAX_GROQ_CALLS || 120);
+// NPI is only a seed source, not the main lead source.
+const MAX_NPI = Number(process.env.MAX_NPI || 35);
+const MAX_RSS = Number(process.env.MAX_RSS || 140);
+const MAX_LINKEDIN_DISCOVERY = Number(process.env.MAX_LINKEDIN_DISCOVERY || 180);
+const MAX_CPA_DISCOVERY = Number(process.env.MAX_CPA_DISCOVERY || 90);
 
 const STATE_PATH = path.join("public", "data", "radar-state.json");
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -239,15 +240,38 @@ function dedupeLeads(leads) {
   }
   return Array.from(map.values());
 }
+function isNamedPerson(lead) {
+  const name = clean(lead.name || "");
+  if (!name || name.length < 4) return false;
+  if (!/\s/.test(name)) return false;
+  if (/\b(inc|llc|pllc|corp|clinic|center|hospital|university|department|group|associates|advisors|capital|partners)\b/i.test(name)) return false;
+  return lead.isPerson === true;
+}
+
+function evidenceCount(lead) {
+  return Array.isArray(lead.evidenceTrail) ? lead.evidenceTrail.filter(e => clean(e.url || e.whatItProves || "")).length : 0;
+}
+
 function routeLead(lead) {
-  const isPerson = lead.isPerson === true;
+  const isPerson = isNamedPerson(lead);
   const isCPA = lead.isCPA === true;
   const score = Math.max(0, Math.min(100, Number(lead.score || 0)));
-  const hasEmail = hasContact(lead, "email");
-  const hasLinkedIn = hasContact(lead, "linkedin");
-  const ready = Boolean(isPerson && hasEmail && score >= 58);
-  const linkedinVerify = Boolean(isPerson && !ready && hasLinkedIn);
+  const email = hasContact(lead, "email");
+  const phone = hasContact(lead, "phone");
+  const linkedIn = hasContact(lead, "linkedin");
+  const enriched = evidenceCount(lead) >= 2 || linkedIn || email;
+
+  // Closed-loop rules:
+  // READY = real named person + email + phone + enriched/public evidence + score threshold.
+  // LINKEDIN VERIFY = LinkedIn URL exists but contact/profile info still needs manual verification.
+  // CPA VERIFY = CPA/referral candidate that must be reviewed before outreach.
+  // RESEARCH = partial route; not associate-ready.
+  // SKIPPED = no usable route; do not waste associate time.
+  const ready = Boolean(isPerson && email && phone && enriched && score >= 58);
+  const linkedinVerify = Boolean(isPerson && !ready && linkedIn);
   const cpaVerify = Boolean(isPerson && !ready && !linkedinVerify && isCPA);
+  const research = Boolean(isPerson && !ready && !linkedinVerify && !cpaVerify && (email || phone || score >= 72));
+
   lead.score = score;
   lead.grade = gradeFromScore(score);
   lead.isPerson = isPerson;
@@ -255,17 +279,27 @@ function routeLead(lead) {
   lead.associateReady = ready;
   lead.linkedinVerify = linkedinVerify;
   lead.cpaVerify = cpaVerify;
-  lead.skipped = Boolean(!ready && !linkedinVerify && !cpaVerify);
-  lead.bucket = ready ? "ready" : linkedinVerify ? "linkedinVerify" : cpaVerify ? "cpaVerify" : "skipped";
-  lead.status = ready ? "Ready to Work" : linkedinVerify ? "LinkedIn Verify" : cpaVerify ? "CPA Verify" : "Skipped / No Warm Route";
+  lead.needsResearch = research;
+  lead.skipped = Boolean(!ready && !linkedinVerify && !cpaVerify && !research);
+  lead.bucket = ready ? "ready" : linkedinVerify ? "linkedinVerify" : cpaVerify ? "cpaVerify" : research ? "research" : "skipped";
+  lead.status = ready ? "Ready to Work" : linkedinVerify ? "LinkedIn Verify" : cpaVerify ? "CPA Verify" : research ? "Research / Enrich" : "Skipped / No Warm Route";
   lead.queue = lead.status;
   lead.workflowDay = ready ? 1 : 0;
   lead.type = isCPA ? "cpa" : "investor";
-  lead.priorityRank = ready ? 1 : linkedinVerify ? 2 : cpaVerify ? 3 : 9;
-  if (ready) lead.bestFirstAction = "Day 1: send evidence-based email first. Phone follow-up only after reviewing the evidence trail.";
-  else if (linkedinVerify) lead.bestFirstAction = "Open LinkedIn manually, verify the person, paste the bio, then generate compliant outreach.";
-  else if (cpaVerify) lead.bestFirstAction = "Review CPA/referral relevance and manually promote if useful.";
-  else lead.bestFirstAction = "Skipped: no email, no LinkedIn URL, and no CPA/referral route.";
+  lead.priorityRank = ready ? 1 : linkedinVerify ? 2 : cpaVerify ? 3 : research ? 6 : 9;
+
+  if (ready) {
+    lead.bestFirstAction = "Ready: email + phone + evidence exist. Start Day 1 with email or LinkedIn touch, then call only after review.";
+  } else if (linkedinVerify) {
+    lead.bestFirstAction = "LinkedIn Verify: open the profile manually, confirm identity, paste bio/contact context, then move to Ready.";
+  } else if (cpaVerify) {
+    lead.bestFirstAction = "CPA Verify: review referral/tax-professional relevance before outreach.";
+  } else if (research) {
+    lead.bestFirstAction = "Research: incomplete route. Needs enrichment before associate workflow.";
+  } else {
+    lead.bestFirstAction = "Skipped: no email + phone + LinkedIn/manual verification route.";
+  }
+
   return lead;
 }
 async function fetchBraveQueryLeads(query, count, sourceContext) {
@@ -426,8 +460,9 @@ async function main() {
   const ready = all.filter(lead => lead.associateReady);
   const linkedinVerify = all.filter(lead => lead.linkedinVerify);
   const cpaVerify = all.filter(lead => lead.cpaVerify);
+  const research = all.filter(lead => lead.bucket === "research");
   const skipped = all.filter(lead => lead.skipped);
-  const active = [...ready, ...linkedinVerify, ...cpaVerify, ...all.filter(l => l.bucket === "research")];
+  const active = [...ready, ...linkedinVerify, ...cpaVerify, ...research];
   const output = {
     generatedAt: now(),
     engine: "Basin OS V4.1 Full Migration Radar Runner",
@@ -437,7 +472,7 @@ async function main() {
     leads: ready,
     linkedinVerifyCandidates: linkedinVerify,
     cpaVerifyCandidates: cpaVerify,
-    researchCandidates: [],
+    researchCandidates: research,
     skippedCandidates: skipped,
     allCandidates: active,
     errors

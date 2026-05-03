@@ -377,7 +377,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.1 Full Migration</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.2 Closed Loop</div>
         </aside>
 
         <main className="min-w-0">
@@ -385,7 +385,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div>
               <div className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-basin-gold">Basin Ventures Command Center</div>
               <h1 className="mt-1 text-3xl font-black tracking-tight">{activePage.label}</h1>
-              <p className="mt-1 max-w-4xl text-sm text-basin-muted">Secure V4 CRM: Radar, LinkedIn verification, playbook, notes, handoffs, follow-ups, API status, and compliant outreach.</p>
+              <p className="mt-1 max-w-4xl text-sm text-basin-muted">Closed-loop CRM: RSS/NPI/CPA/LinkedIn discovery → Brave enrichment → LinkedIn Verify or Ready → associate workflow.</p>
             </div>
             <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto]">
               <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search leads, companies, signals, notes, contact methods..." />

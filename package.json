@@ -1,6 +1,6 @@
 {
-  "name": "basin-os-v4-1-full-migration",
-  "version": "4.1.0",
+  "name": "basin-os-v4-2-closed-loop",
+  "version": "4.2.0",
   "private": true,
   "description": "Basin OS V4.1 full migration build: Next.js secure CRM with radar, playbook, LinkedIn verify, sequences, notes, handoffs, and analytics.",
   "scripts": {

@@ -1,31 +1,57 @@
-# Basin OS V4.1 — Full Migration Build
+# Basin OS V4.2 — Closed-Loop Full CRM Rebuild
 
-This is the complete V4.1 migration build for the secure Next.js version of Basin OS.
+This build corrects the lead-routing philosophy and removes the old V4 shell files.
 
-## Included modules
+## Correct lead flow
 
-- Dashboard
-- Lead Radar
-- Leads Workflow
-- LinkedIn Builder / Verify
-- RSS Signal Monitor
-- Investor Profiler
-- CPA Profiler
-- 7-Channel Sequence Builder
-- Call Coach
-- Call Notes attached to lead cards
-- Director Handoff Sheets
-- Follow-Up Calendar
-- Analytics
-- Master Playbook with Method A, Method B, cadence, rebuttals
-- API Command Center
-- Settings / Backup
-- Secure server-side Groq proxy
-- GitHub Actions radar runner
+1. Discovery sources:
+   - RSS/Public News
+   - NPI seed records
+   - CPA/tax-public searches
+   - Brave public search
+   - LinkedIn profile URLs found through Brave public search only
 
-## Important
+2. Brave enrichment:
+   - email
+   - phone
+   - LinkedIn URL
+   - public evidence trail
 
-GitHub Pages cannot run this. Deploy to Vercel or another Next.js host.
+3. Routing:
+   - Ready = real named person + email + phone + evidence/enrichment + score >= 58
+   - LinkedIn Verify = LinkedIn URL exists but manual identity/contact verification is still needed
+   - CPA Verify = CPA/referral path that needs review
+   - Research / Enrich = partial route, not yet associate-ready
+   - Skipped = no usable route
+
+4. LinkedIn handling:
+   - No LinkedIn page scraping.
+   - The OS may store a public LinkedIn URL found through Brave/public search.
+   - You open the URL manually, verify the person, paste the bio/context, and then generate compliant outreach through server-side Groq.
+
+5. Playbook restored:
+   - Method A
+   - Method B
+   - Day 1 through Day 10 cadence
+   - Call coach
+   - Rebuttals
+   - 7-channel sequence builder
+
+## Critical install rule
+
+Delete old V4/V4.1 files before uploading this build. Old leftover files are why the wrong 4-button sidebar and missing playbook kept appearing.
+
+Delete these old files if present:
+
+components/AppShell.tsx
+components/LeadVerificationBoard.tsx
+components/LeadVerificationModal.tsx
+components/KpiCard.tsx
+components/ThemeToggle.tsx
+
+The full CRM shell is now:
+
+components/BasinOSApp.tsx
 
 ## Required Vercel environment variables
 
@@ -38,35 +64,14 @@ GROQ_MODEL=llama-3.3-70b-versatile
 BRAVE_API_KEY
 GROQ_API_KEY
 
-## Install locally
+## Workflow path
 
-```bash
-npm install
-npm run typecheck
-npm run build
-npm run dev
-```
+.github/workflows/radar.yml
 
-## Populate leads
+## After upload
 
-In GitHub:
-
-Actions -> Basin Radar Daily -> Run workflow
-
-The workflow writes:
-
-public/data/radar-leads.json
-radar-leads.json
-
-Then redeploy/refresh Vercel.
-
-## Fresh install on Vercel
-
-1. Delete old Vercel project or disconnect it if needed.
-2. Upload this complete repo to GitHub.
-3. Import the repo into Vercel.
-4. Add environment variables.
-5. Deploy.
-6. Test `/api/health`.
-7. Run GitHub Action.
-8. Refresh the CRM.
+1. Vercel should auto-deploy.
+2. Open /api/health and confirm Groq + Brave true.
+3. Run GitHub Action: Basin Radar Daily.
+4. Confirm public/data/radar-leads.json has nonzero ready/linkedinVerify/cpaVerify/research.
+5. Refresh Vercel and click Load Radar.
