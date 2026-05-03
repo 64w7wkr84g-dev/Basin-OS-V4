@@ -1,7 +1,7 @@
 {
   "name": "basin-os-v3-groq-terminal",
-  "version": "3.1.0",
-  "description": "Basin OS V3.1 Groq Terminal Action Hotfix",
+  "version": "3.2.0",
+  "description": "Basin OS V3.2 Lead Load and Playbook Fix",
   "private": true,
   "scripts": {
     "radar": "node basin-radar-runner.js",

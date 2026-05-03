@@ -1,7 +1,6 @@
 {
-  "generatedAt": "2026-05-03T14:53:52.647Z",
-  "engine": "Basin OS V3.1 fallback output",
-  "fatalError": "ReferenceError: hasContact is not defined at main (/home/runner/work/Basin-OS-V4/Basin-OS-V4/basin-radar-runner.js:975:29)",
+  "generatedAt": null,
+  "engine": "Basin OS V3.2 starter \u2014 run GitHub Actions to populate",
   "compliance": {
     "linkedin": "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
     "outreach": "No auto-send. Manual review required before every outreach.",
@@ -29,9 +28,9 @@
     "phoneFound": 0,
     "publicSearches": 0,
     "groqCalls": 0,
-    "braveConfigured": true,
-    "groqConfigured": true,
-    "errors": 1
+    "braveConfigured": false,
+    "groqConfigured": false,
+    "errors": 0
   },
   "leads": [],
   "linkedinVerifyCandidates": [],
@@ -39,10 +38,5 @@
   "researchCandidates": [],
   "skippedCandidates": [],
   "allCandidates": [],
-  "errors": [
-    {
-      "source": "fatal",
-      "reason": "hasContact is not defined"
-    }
-  ]
+  "errors": []
 }

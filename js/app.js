@@ -31,7 +31,10 @@
   };
 
   const PLAYBOOK = {
-    methodAEmail: `Subject: Basin Ventures resource for [Role/Signal]
+    methodA: {
+      title: "Method A — Warm Evidence-Based Outreach",
+      when: "Use when the lead has email, LinkedIn, RSS/public evidence, or a strong signal.",
+      email: `Subject: Basin Ventures resource for [Role/Signal]
 
 Hi [Name],
 
@@ -43,17 +46,149 @@ Would it be worth sending a brief overview, or should I close the loop?
 
 Best,
 James`,
-    methodAPhone: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
+      phone: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
 
 Basin works with accredited investors on direct, tax-advantaged oil and gas ownership. I am not calling to force a decision. The only goal is a short director call so you can understand the structure and decide whether it is even worth reviewing.
 
 Would this week or next week be better?`,
-    methodALinkedIn: `Hi [Name] — I came across your background around [Signal/Role]. I work with Basin Ventures in Southlake. We share educational information on direct, tax-advantaged energy ownership for accredited investors. No pitch here; I wanted to see if a short overview would be relevant.`,
+      linkedin: `Hi [Name] — I came across your background around [Signal/Role]. I work with Basin Ventures in Southlake. We share educational information on direct, tax-advantaged energy ownership for accredited investors. No pitch here; I wanted to see if a short overview would be relevant.`
+    },
+    methodB: {
+      title: "Method B — Direct / Cold Professional Intro",
+      when: "Use only when no warm public signal exists, but the lead is manually approved and has a compliant contact route.",
+      email: `Subject: Quick educational intro from Basin Ventures
+
+Hi [Name],
+
+We have not spoken before, so I will keep this short.
+
+I am with Basin Ventures in Southlake. We work with accredited investors who want to understand direct energy ownership and tax-advantaged structures. This is educational only and would need to be reviewed with your CPA or advisor.
+
+Would you be open to a short overview, or should I close the loop?
+
+Best,
+James`,
+      phone: `Hi [Name], this is James with Basin Ventures in Southlake. We have not spoken before, so I will be brief.
+
+Basin works with accredited investors who want to understand direct energy ownership and the related tax-advantaged structure. I am not calling with a guarantee or asking you to make a decision today.
+
+The only question is whether a short educational director call would be worth your time. Should I send a brief overview, or is this not relevant?`,
+      linkedin: `Hi [Name] — I am with Basin Ventures in Southlake. We share educational material for accredited investors around direct energy ownership and tax-advantaged structures. Would a short overview be relevant, or should I close the loop?`
+    },
+    cadence: [
+      {
+        day: 1,
+        title: "Day 1 — Research-Based Intro",
+        email: `Subject: Quick note after seeing [Signal]
+
+Hi [Name],
+
+I came across [Signal] and thought your background as [Role] may make this worth a short educational review.
+
+Basin Ventures works with accredited investors on direct, tax-advantaged oil and gas ownership. No guarantees, no tax advice, and your CPA would need to confirm fit.
+
+Would a short overview be worth sending?
+
+Best,
+James`,
+        phone: `Hi [Name], this is James with Basin Ventures in Southlake. I know this is out of the blue. I came across [Signal], and based on your background as [Role], I thought a short intro may be relevant. Do you have 30 seconds?
+
+Basin works with accredited investors on direct, tax-advantaged oil and gas ownership. I am not calling to force a decision. The only goal is a short director call so you can understand the structure and decide whether it is even worth reviewing.
+
+Would this week or next week be better?`,
+        linkedin: `Hi [Name] — I came across [Signal] and thought your background as [Role] may make a short Basin Ventures intro relevant. We share educational info on direct energy ownership for accredited investors. Worth a quick overview?`
+      },
+      {
+        day: 2,
+        title: "Day 2 — Second Attempt / Signal Reminder",
+        email: `Subject: Worth closing the loop?
+
+Hi [Name],
+
+I wanted to follow up on my note about [Signal].
+
+If this is irrelevant, no problem. If it is worth understanding, I can send a short overview or set a quick director call.
+
+Your CPA or advisor would need to confirm whether the structure fits.
+
+Best,
+James`,
+        phone: `Hi [Name], James with Basin Ventures. I reached out because of [Signal], and I wanted to try you once more.
+
+The reason I thought it might fit is that high-income professionals and business owners often want to understand tax-advantaged direct energy ownership, especially when income or liquidity events are in play. Your CPA would need to confirm fit.
+
+Should I send a brief overview or just get you directly to a 20-minute director call?`,
+        linkedin: `Hi [Name] — quick follow-up on my note around [Signal]. If a short educational overview from Basin would be relevant, I can send it over. If not, no problem.`
+      },
+      {
+        day: 4,
+        title: "Day 4 — Credibility Angle",
+        email: `Subject: One clean follow-up
+
+Hi [Name],
+
+One clean follow-up here.
+
+Basin has managed over $1.25B since 2014 and focuses on direct energy opportunities for accredited investors. Given [Signal], I thought the structure may be worth understanding.
+
+If not relevant, no problem. If it is worth a short director call, I can help coordinate.
+
+Best,
+James`,
+        phone: `Hi [Name], James from Basin Ventures. I know we have not spoken before. Basin has managed over $1.25B since 2014, and we focus on direct energy opportunities for accredited investors.
+
+Given [Signal], I thought it was worth making one clean introduction. If it is irrelevant, no problem. If it is worth understanding, I can schedule a short director call.
+
+Does this deserve 20 minutes, or should I close the loop?`,
+        linkedin: `Hi [Name] — one clean follow-up. Basin has managed over $1.25B since 2014 and focuses on direct energy opportunities for accredited investors. Worth a short educational intro, or should I close the loop?`
+      },
+      {
+        day: 6,
+        title: "Day 6 — Final Research-Based Call",
+        email: `Subject: Should I close this out?
+
+Hi [Name],
+
+Last note from me.
+
+I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation. I do not want to chase you.
+
+Should I close this out, or would a short overview be useful?
+
+Best,
+James`,
+        phone: `Hi [Name], last attempt from James at Basin Ventures. I reached out because [Signal] made your profile look potentially relevant for a direct energy conversation.
+
+I do not want to chase you. Should I mark this as not a fit, or would you like one short overview call before I close it out?`,
+        linkedin: `Hi [Name] — last note from me. I reached out because [Signal] looked potentially relevant. Should I close the loop, or would a short overview be useful?`
+      },
+      {
+        day: 10,
+        title: "Day 10 — Longer-Term Permission Call",
+        email: `Subject: Close the loop?
+
+Hi [Name],
+
+I am closing the loop on my outreach.
+
+If now is not the time, no problem. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead.
+
+What is better?
+
+Best,
+James`,
+        phone: `Hi [Name], James with Basin Ventures. I am closing the loop on my outreach.
+
+If now is not the time, I can leave you alone. If you want to be kept on the list for future fund windows or tax-planning updates, I can do that instead. What is better?`,
+        linkedin: `Hi [Name] — closing the loop here. If now is not the time, no problem. If you want future educational updates around fund windows or tax-planning topics, I can keep you on the list.`
+      }
+    ],
     rebuttals: [
       ["Not interested", "Totally fair. I am not asking you to make a decision. Would it be unreasonable to understand the structure first and then decide if it is irrelevant?"],
       ["Send me information", "Absolutely. I can send a short overview. To make sure I send the right version, is this more for tax planning, diversification, or just general education?"],
       ["Talk to my CPA", "That is exactly what should happen. The director call is educational, and your CPA would need to confirm fit before anything moves forward."],
-      ["Is this risky?", "All investments carry risk, and there are no guaranteed returns. The call is to understand the structure, risk profile, and whether it is even worth reviewing."]
+      ["Is this risky?", "All investments carry risk, and there are no guaranteed returns. The call is to understand the structure, risk profile, and whether it is even worth reviewing."],
+      ["Minimum?", "The typical minimum is around $100,000. The director can explain the structure and whether it makes sense to review."]
     ]
   };
 
@@ -243,12 +378,23 @@ Would this week or next week be better?`,
     const cpaVerify = Array.isArray(raw.cpaVerifyCandidates) ? raw.cpaVerifyCandidates : [];
     const research = Array.isArray(raw.researchCandidates) ? raw.researchCandidates : [];
     const skipped = Array.isArray(raw.skippedCandidates) ? raw.skippedCandidates : [];
+    const allCandidates = Array.isArray(raw.allCandidates) ? raw.allCandidates : [];
 
-    const readyLeads = ready.map(normalizeLead).filter(l => l.associateReady);
-    const linkedinLeads = linkedinVerify.map(normalizeLead).filter(l => l.linkedinVerify);
-    const cpaLeads = cpaVerify.map(normalizeLead).filter(l => l.cpaVerify);
-    const researchLeads = research.map(normalizeLead).filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
-    const skippedLeads = skipped.map(normalizeLead).filter(l => l.skipped);
+    let readyLeads = ready.map(normalizeLead).filter(l => l.associateReady);
+    let linkedinLeads = linkedinVerify.map(normalizeLead).filter(l => l.linkedinVerify);
+    let cpaLeads = cpaVerify.map(normalizeLead).filter(l => l.cpaVerify);
+    let researchLeads = research.map(normalizeLead).filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
+    let skippedLeads = skipped.map(normalizeLead).filter(l => l.skipped);
+
+    // Safety net: if the runner wrote allCandidates but bucket arrays are missing/empty, recover them client-side.
+    if (!readyLeads.length && !linkedinLeads.length && !cpaLeads.length && allCandidates.length) {
+      const recovered = allCandidates.map(normalizeLead).filter(l => l.name && l.name !== "Unnamed Candidate");
+      readyLeads = recovered.filter(l => l.associateReady);
+      linkedinLeads = recovered.filter(l => l.linkedinVerify);
+      cpaLeads = recovered.filter(l => l.cpaVerify);
+      researchLeads = recovered.filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
+      skippedLeads = recovered.filter(l => l.skipped);
+    }
 
     const manualReady = state.store.leads.filter(l => l.sourceType === "manual" || l.manual);
     state.store.leads = mergeManualWithRadar(manualReady, readyLeads);
@@ -433,14 +579,62 @@ Would this week or next week be better?`,
   function renderCpa() { renderSimpleQueue("cpa", "CPA Verify", state.store.cpaVerify); }
   function renderRadar() { renderSimpleQueue("radar", "Live Radar Active Candidates", activeLeads()); }
 
+  function scriptPanel(title, body) {
+    return `<div class="panel"><div class="panel-head"><div><div class="panel-title">${escapeHtml(title)}</div><div class="panel-sub">Copy, review, and personalize before use.</div></div></div><div class="panel-body code">${escapeHtml(body)}</div></div>`;
+  }
+
   function renderPlaybook() {
     $("#page-playbook").innerHTML = `
       <div class="panel">
-        <div class="panel-head"><div><div class="panel-title">Master Playbook</div><div class="panel-sub">Method A/B, scripts, rebuttals, and compliance guardrails.</div></div></div>
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Master Playbook</div>
+            <div class="panel-sub">Method A, Method B, day cadence, rebuttals, and compliance guardrails.</div>
+          </div>
+        </div>
         <div class="panel-body">
-          <details class="playbook-detail" open><summary>Method A — Warm Evidence-Based Outreach <span>Use for email, LinkedIn, RSS, or public evidence-route leads.</span></summary><div class="code">${escapeHtml(PLAYBOOK.methodAEmail)}</div><br><div class="code">${escapeHtml(PLAYBOOK.methodAPhone)}</div><br><div class="code">${escapeHtml(PLAYBOOK.methodALinkedIn)}</div></details>
-          <details class="playbook-detail" open><summary>Rebuttals <span>Use to move toward an educational director call.</span></summary><table class="table"><tbody>${PLAYBOOK.rebuttals.map(([o,r]) => `<tr><td><strong>${escapeHtml(o)}</strong></td><td>${escapeHtml(r)}</td></tr>`).join("")}</tbody></table></details>
-          <div class="panel"><div class="panel-body"><strong>Compliance:</strong> No guaranteed returns. No tax advice. Consult CPA/advisor. Accredited investors only. Manual review before outreach.</div></div>
+          <details class="playbook-detail" open>
+            <summary>${escapeHtml(PLAYBOOK.methodA.title)} <span>${escapeHtml(PLAYBOOK.methodA.when)}</span></summary>
+            <div class="terminal-grid" style="margin-top:12px">
+              ${scriptPanel("Method A Email", PLAYBOOK.methodA.email)}
+              ${scriptPanel("Method A Phone", PLAYBOOK.methodA.phone)}
+              ${scriptPanel("Method A LinkedIn", PLAYBOOK.methodA.linkedin)}
+            </div>
+          </details>
+
+          <details class="playbook-detail" open>
+            <summary>${escapeHtml(PLAYBOOK.methodB.title)} <span>${escapeHtml(PLAYBOOK.methodB.when)}</span></summary>
+            <div class="terminal-grid" style="margin-top:12px">
+              ${scriptPanel("Method B Email", PLAYBOOK.methodB.email)}
+              ${scriptPanel("Method B Phone", PLAYBOOK.methodB.phone)}
+              ${scriptPanel("Method B LinkedIn", PLAYBOOK.methodB.linkedin)}
+            </div>
+          </details>
+
+          <details class="playbook-detail" open>
+            <summary>Day 1 through Day 10 Cadence <span>Email/LinkedIn first when available. Calls follow evidence review.</span></summary>
+            ${PLAYBOOK.cadence.map(day => `
+              <div class="panel" style="margin-top:12px">
+                <div class="panel-head"><div><div class="panel-title">Day ${day.day} — ${escapeHtml(day.title)}</div></div></div>
+                <div class="panel-body terminal-grid">
+                  ${scriptPanel("Email", day.email)}
+                  ${scriptPanel("Phone", day.phone)}
+                  ${scriptPanel("LinkedIn", day.linkedin)}
+                </div>
+              </div>
+            `).join("")}
+          </details>
+
+          <details class="playbook-detail" open>
+            <summary>Rebuttals <span>Use to keep the conversation educational and optional.</span></summary>
+            <table class="table"><tbody>${PLAYBOOK.rebuttals.map(([o,r]) => `<tr><td><strong>${escapeHtml(o)}</strong></td><td>${escapeHtml(r)}</td></tr>`).join("")}</tbody></table>
+          </details>
+
+          <div class="panel">
+            <div class="panel-body">
+              <strong>Compliance:</strong> No guaranteed returns. No tax advice. Consult CPA/advisor. Accredited investors only. Manual review before every email, LinkedIn touch, text, or call.
+            </div>
+          </div>
         </div>
       </div>
     `;

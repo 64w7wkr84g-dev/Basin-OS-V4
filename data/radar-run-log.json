@@ -1,24 +1,5 @@
 {
-  "generatedAt": "2026-05-03T14:53:52.650Z",
-  "fatalError": "ReferenceError: hasContact is not defined at main (/home/runner/work/Basin-OS-V4/Basin-OS-V4/basin-radar-runner.js:975:29)",
-  "stats": {
-    "totalFound": 0,
-    "activeVisible": 0,
-    "readyToWork": 0,
-    "linkedinVerify": 0,
-    "cpaVerify": 0,
-    "skipped": 0,
-    "npiCollected": 0,
-    "rssCollected": 0,
-    "linkedinDiscoveryCollected": 0,
-    "cpaCollected": 0,
-    "emailFound": 0,
-    "linkedinCandidatesFound": 0,
-    "phoneFound": 0,
-    "publicSearches": 0,
-    "groqCalls": 0,
-    "braveConfigured": true,
-    "groqConfigured": true,
-    "errors": 1
-  }
+  "generatedAt": null,
+  "stats": {},
+  "samples": {}
 }

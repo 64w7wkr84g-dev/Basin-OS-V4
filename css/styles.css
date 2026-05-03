@@ -145,3 +145,6 @@ textarea.input{min-height:140px;resize:vertical}
   .lead-card{grid-template-columns:1fr}
   .actions{flex-direction:row;flex-wrap:wrap}
 }
+
+.playbook-detail .terminal-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.playbook-detail .panel{box-shadow:none}

@@ -187,6 +187,22 @@ function extractPhone(text) {
   return match ? match[0] : "";
 }
 
+function hasContact(lead, type) {
+  const contacts = Array.isArray(lead?.contactMethods) ? lead.contactMethods : [];
+  return contacts.some(contact => {
+    const contactType = clean(contact.type).toLowerCase();
+    const value = clean(contact.value);
+    const blob = `${contactType} ${value}`.toLowerCase();
+
+    if (!type) return Boolean(value);
+    if (type === "email") return contactType === "email" || /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(value);
+    if (type === "linkedin") return contactType === "linkedin" || /linkedin\.com\/(in|pub)\//i.test(value);
+    if (type === "phone") return contactType === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(value);
+    return blob.includes(String(type).toLowerCase());
+  });
+}
+
+
 function fallbackName(text) {
   const t = clean(text);
   const patterns = [
@@ -868,7 +884,7 @@ function routeLead(lead) {
 async function writeFallbackOutput(error) {
   const output = {
     generatedAt: now(),
-    engine: "Basin OS V3.1 fallback output",
+    engine: "Basin OS V3.2 fallback output",
     fatalError: clean(error && (error.stack || error.message || error)),
     compliance: {
       linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
@@ -910,14 +926,16 @@ async function writeFallbackOutput(error) {
     errors: [{ source: "fatal", reason: clean(error && (error.message || error)) }]
   };
 
-  await writeJson("data/radar-leads.json", output);
-  await writeJson("radar-leads.json", output);
-  await writeJson("data/radar-research-candidates.json", { generatedAt: now(), candidates: [] });
-  await writeJson("radar-research-candidates.json", { generatedAt: now(), candidates: [] });
+  // Do not overwrite the last good radar-leads.json with empty output if a fatal error happens.
+  // Keep prior usable data visible on the website and write the failure to diagnostics.
+  const existing = await readJson("data/radar-leads.json", null);
+  if (!existing || !Array.isArray(existing.allCandidates)) {
+    await writeJson("data/radar-leads.json", output);
+    await writeJson("radar-leads.json", output);
+  }
   await writeJson("data/radar-rejected.json", { generatedAt: now(), skipped: 0, errors: output.errors });
   await writeJson("radar-rejected.json", { generatedAt: now(), skipped: 0, errors: output.errors });
   await writeJson("data/radar-run-log.json", { generatedAt: now(), fatalError: output.fatalError, stats: output.stats });
-  await writeJson(STATE_PATH, { seen: {}, suppressed: {} });
 
   console.error("Basin Radar wrote fallback JSON after fatal error:");
   console.error(output.fatalError);
@@ -1000,7 +1018,7 @@ async function main() {
 
   const output = {
     generatedAt: now(),
-    engine: "Basin OS V3.1 Groq Parsed Radar Runner",
+    engine: "Basin OS V3.2 Groq Parsed Radar Runner",
     compliance: {
       linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.",
       outreach: "No auto-send. Manual review required before every email, LinkedIn touch, SMS, or call.",
