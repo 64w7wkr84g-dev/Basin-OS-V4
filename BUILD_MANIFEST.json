@@ -11,8 +11,8 @@
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 8246,
-    "sha256": "92dcdd5f843953142a99cb5c371042ab1f54ac926f80bd3cfad823180f6b6330"
+    "bytes": 8415,
+    "sha256": "45f3d295158d7dfbe29f38cf854029eb377fac967a8d2c10b3234c878cefc124"
   },
   {
     "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
@@ -166,8 +166,8 @@
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 87081,
-    "sha256": "a1fe8596d06bd701d86eb636849c6837c32d04a2705ea9a7e517f083034a3402"
+    "bytes": 87079,
+    "sha256": "693889e106779c34d4446eb1801cacf62e7c09981eeedd331b411f001e834fa7"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -216,8 +216,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1144,
-    "sha256": "bd21871fadcc802a0f4ec236bf07482e666792a9ff5e94ff29759556b3abe00c"
+    "bytes": 1125,
+    "sha256": "efdb306dfa8156be855197b16170f0e7260391ee4d32dc544258b8ecaa3206f2"
   },
   {
     "path": "postcss.config.mjs",

@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-3-6-workflow-tabs-card-summary-fix",
-  "version": "4.3.6",
+  "name": "basin-os-v4-3-6-buildfix",
+  "version": "4.3.6-buildfix",
   "private": true,
-  "description": "Basin OS V4.3.6: fixes Leads Workflow source filters and adds visible contact/qualification summary on cards.",
+  "description": "Basin OS V4.3.6 build fix: removes extra brace in BasinOSApp and keeps workflow tab/card summary fixes.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -1211,7 +1211,6 @@ GROQ_MODEL=llama-3.3-70b-versatile`}</pre>
     );
   }
 }
-}
 
 function empty(text: string) {
   return <div className="grid min-h-40 place-items-center rounded-2xl border border-dashed border-white/10 p-8 text-center text-sm text-basin-muted">{text}</div>;
