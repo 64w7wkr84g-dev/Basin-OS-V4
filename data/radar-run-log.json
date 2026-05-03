@@ -1,16 +1,16 @@
 {
-  "lastRunAt": "2026-05-03T09:51:42.233Z",
+  "lastRunAt": "2026-05-03T10:40:52.226Z",
   "status": "complete",
   "associateReady": 350,
   "emailFirst": 0,
   "linkedinFirst": 0,
   "linkedinVerify": 0,
-  "callFirstVerify": 350,
+  "readyPhone": 350,
   "research": 70,
   "npiCollected": 1093,
   "rssReady": 0,
   "publicSearches": 80,
   "aiCalls": 80,
-  "aiErrors": 49,
-  "message": "V6.3 created 350 associate-ready leads."
+  "aiErrors": 53,
+  "message": "V6.7 created 350 associate-ready leads."
 }
