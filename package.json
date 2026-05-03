@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-3-5-enrichment-ladder-ready-fix",
-  "version": "4.3.5",
+  "name": "basin-os-v4-3-6-workflow-tabs-card-summary-fix",
+  "version": "4.3.6",
   "private": true,
-  "description": "Basin OS V4.3.5: enrichment ladder, website/contact extraction, channel-based Ready for Associate, single-lead enrich API.",
+  "description": "Basin OS V4.3.6: fixes Leads Workflow source filters and adds visible contact/qualification summary on cards.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

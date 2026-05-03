@@ -420,6 +420,49 @@ function createDefaultRadar(): RadarFile {
   };
 }
 
+function contactValue(lead: Lead, type: "email" | "phone" | "linkedin") {
+  const list = contacts(lead);
+  if (type === "email") {
+    return list.find((c) => c.type === "email" || (c.type !== "possible_email" && /@/.test(c.value)))?.value || "";
+  }
+  if (type === "phone") {
+    return list.find((c) => c.type === "phone" || /\d{3}.*\d{3}.*\d{4}/.test(c.value))?.value || "";
+  }
+  return list.find((c) => /linkedin/i.test(`${c.type} ${c.value}`))?.value || "";
+}
+
+function qualificationReason(lead: Lead) {
+  const pieces = [
+    lead.readyChannel ? `Ready channel: ${lead.readyChannel}` : "",
+    lead.fitReason || "",
+    lead.bestFirstAction || "",
+    evidence(lead)[0]?.whatItProves ? `Evidence: ${evidence(lead)[0]?.whatItProves}` : "",
+    lead.accreditedLikelyReason || ""
+  ].filter(Boolean);
+
+  return pieces[0] || "Manual review required. Open the lead card for full evidence and next action.";
+}
+
+function sourceMatches(lead: Lead, filter: string) {
+  if (filter === "all") return true;
+  if (filter === "ready") return lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready";
+  if (filter === "linkedinVerify") return lead.linkedinVerify || lead.bucket === "linkedinVerify";
+  if (filter === "linkedinVerified") return lead.linkedinVerified || ((lead.readyForAssociate || lead.associateReady) && hasLinkedIn(lead));
+  if (filter === "cpa") return lead.isCPA || lead.type === "cpa" || (lead.tags || []).includes("CPA");
+  if (filter === "cpaVerify") return lead.cpaVerify || lead.bucket === "cpaVerify";
+  if (filter === "rss") return /rss|news|public/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("RSS/Public");
+  if (filter === "npi") return /npi|mpi/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("NPI/MPI");
+  if (filter === "email") return hasEmail(lead);
+  if (filter === "phone") return hasPhone(lead);
+  if (filter === "research") return lead.bucket === "research" || lead.needsResearch;
+  if (filter === "A") return lead.grade === "A";
+  if (filter === "B") return lead.grade === "B";
+  if (filter === "C") return lead.grade === "C";
+  return true;
+}
+
+
+
 function interpolate(template: string, lead?: Lead) {
   return template
     .replaceAll("[Name]", lead?.name || "there")
@@ -566,20 +609,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
         const blob = [lead.name, lead.company, lead.title, lead.signal, lead.summary, contacts(lead).map((c) => c.value).join(" ")].join(" ").toLowerCase();
         if (!blob.includes(q)) return false;
       }
-      if (filter === "ready") return lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready";
-      if (filter === "linkedinVerify") return lead.linkedinVerify || lead.bucket === "linkedinVerify";
-      if (filter === "linkedinVerified") return lead.linkedinVerified || ((lead.readyForAssociate || lead.associateReady) && hasLinkedIn(lead));
-      if (filter === "cpa") return lead.isCPA || lead.type === "cpa" || (lead.tags || []).includes("CPA");
-      if (filter === "cpaVerify") return lead.cpaVerify || lead.bucket === "cpaVerify";
-      if (filter === "rss") return /rss|news|public/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("RSS/Public");
-      if (filter === "npi") return /npi|mpi/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("NPI/MPI");
-      if (filter === "email") return hasEmail(lead);
-      if (filter === "phone") return hasPhone(lead);
-      if (filter === "research") return lead.bucket === "research" || lead.needsResearch;
-      if (filter === "A") return lead.grade === "A";
-      if (filter === "B") return lead.grade === "B";
-      if (filter === "C") return lead.grade === "C";
-      return true;
+      return sourceMatches(lead, filter);
     }).sort(prioritySort);
   }, [leads, search, filter]);
 
@@ -632,7 +662,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.5 Enrichment Ladder</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3.6 Workflow Tabs</div>
         </aside>
 
         <main className="min-w-0">
@@ -832,14 +862,33 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
 
   function renderWorkflow() {
     const ready = filteredLeads.filter((l) => l.readyForAssociate || l.associateReady || l.bucket === "readyForAssociate" || l.bucket === "ready");
+    const selectedLabel = sourceFilters.find(([key]) => key === filter)?.[1] || "All Active";
+    const showingReadyCadence = filter === "ready" || filter === "all";
+
     return (
       <div className="space-y-5">
         <div className="rounded-2xl border border-basin-gold/40 bg-basin-gold/10 p-4 text-sm text-basin-muted">
-          <strong className="text-basin-gold2">Required execution:</strong> every ready lead keeps grade, score, contact method, qualification status, evidence trail, notes, follow-up, and handoff history. Day 1 starts with email or LinkedIn when available.
+          <strong className="text-basin-gold2">Required execution:</strong> Ready for Associate leads are shown in the Day 1-10 cadence. Source tabs such as RSS, NPI/MPI, CPA, LinkedIn Verify, Email, Phone, and Research show their full matching queue even when those leads are not ready yet.
         </div>
         {renderKpis()}
         {renderFilters()}
-        {[1,2,3,4,5,6,7,8,9,10].map((day) => {
+
+        {!showingReadyCadence ? (
+          <Card>
+            <CardHeader>
+              <div>
+                <CardTitle>{selectedLabel} Queue</CardTitle>
+                <CardDescription>{filteredLeads.length} matching lead(s). These are source/filter results, not just Ready for Associate cadence leads.</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {filteredLeads.map(renderLeadCard)}
+              {filteredLeads.length === 0 ? empty(`No leads matched ${selectedLabel}.`) : null}
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {showingReadyCadence ? [1,2,3,4,5,6,7,8,9,10].map((day) => {
           const dayLeads = ready.filter((l) => (l.workflowDay || 1) === day);
           return (
             <Card key={day}>
@@ -847,7 +896,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
               <CardContent className="space-y-3">{dayLeads.map(renderLeadCard)}{dayLeads.length === 0 ? empty(`No ready leads in Day ${day}.`) : null}</CardContent>
             </Card>
           );
-        })}
+        }) : null}
       </div>
     );
   }
@@ -1109,7 +1158,11 @@ GROQ_MODEL=llama-3.3-70b-versatile`}</pre>
   }
 
   function renderLeadCard(lead: Lead) {
-    const linkedinUrl = contacts(lead).find((c) => /linkedin/i.test(`${c.type} ${c.value}`))?.value;
+    const linkedinUrl = contactValue(lead, "linkedin");
+    const emailValue = contactValue(lead, "email");
+    const phoneValue = contactValue(lead, "phone");
+    const qualifiedReason = qualificationReason(lead);
+
     return (
       <article key={lead.id} className="grid gap-3 rounded-2xl border border-white/10 bg-[#0c141d] p-4 transition hover:border-basin-gold/40 md:grid-cols-[auto_1fr_auto]">
         <div className={`grid h-12 w-12 place-items-center rounded-full border-2 text-xl font-black ${lead.grade === "A" ? "border-emerald-400 text-emerald-300" : lead.grade === "B" ? "border-blue-400 text-blue-300" : lead.grade === "C" ? "border-amber-400 text-amber-300" : "border-rose-400 text-rose-300"}`}>{lead.grade}</div>
@@ -1120,23 +1173,44 @@ GROQ_MODEL=llama-3.3-70b-versatile`}</pre>
             <Badge className={statusColor(lead)}>{leadStatus(lead)}</Badge>
             <Badge className={gradeColor(lead.grade)}>Grade {lead.grade}</Badge>
             <Badge className="border-basin-gold/40 bg-basin-gold/10 text-basin-gold2">Score {lead.score}</Badge>
+            {lead.readyChannel ? <Badge className="border-basin-green/40 bg-basin-green/10 text-basin-green">Ready — {lead.readyChannel}</Badge> : null}
             {hasEmail(lead) ? <Badge className="border-basin-green/40 bg-basin-green/10 text-basin-green">Email</Badge> : null}
             {hasLinkedIn(lead) ? <Badge className="border-basin-blue/40 bg-basin-blue/10 text-basin-blue">LinkedIn</Badge> : null}
             {hasPhone(lead) ? <Badge className="border-basin-teal/40 bg-basin-teal/10 text-basin-teal">Phone</Badge> : null}
             {lead.isCPA ? <Badge className="border-amber-400/40 bg-amber-500/15 text-amber-300">CPA</Badge> : null}
             {(lead.tags || []).filter((tag) => !["Ready for Associate","LinkedIn Verify","CPA Verify","Research / Enrich","Skipped",`${lead.grade} Grade`].includes(tag)).slice(0, 6).map((tag) => <Badge key={tag} className="border-white/15 bg-white/5 text-basin-muted">{tag}</Badge>)}
           </div>
-          <p className="mt-3 line-clamp-4 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">fitReason:</span> {lead.fitReason}</p>
+
+          <div className="mt-3 grid gap-2 rounded-2xl border border-white/10 bg-black/20 p-3 text-xs md:grid-cols-3">
+            <div>
+              <div className="font-black text-basin-text">Email</div>
+              {emailValue ? <a className="break-all text-basin-green" href={`mailto:${emailValue}`}>{emailValue}</a> : <span className="text-basin-muted">Not found</span>}
+            </div>
+            <div>
+              <div className="font-black text-basin-text">Phone</div>
+              {phoneValue ? <a className="text-basin-teal" href={`tel:${phoneValue}`}>{phoneValue}</a> : <span className="text-basin-muted">Not found</span>}
+            </div>
+            <div>
+              <div className="font-black text-basin-text">LinkedIn</div>
+              {linkedinUrl ? <a className="break-all text-basin-blue" href={linkedinUrl} target="_blank">{linkedinUrl}</a> : <span className="text-basin-muted">Not found</span>}
+            </div>
+          </div>
+
+          <p className="mt-3 line-clamp-4 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">Why qualified / routed:</span> {qualifiedReason}</p>
+          <p className="mt-1 line-clamp-4 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">fitReason:</span> {lead.fitReason || "No fit reason captured yet."}</p>
           <p className="mt-1 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">Next:</span> {lead.bestFirstAction || "Manual review required."}</p>
         </div>
         <div className="flex flex-col gap-2 md:min-w-40">
           <Button variant="primary" onClick={() => setSelectedLead(lead)}><ShieldCheck className="h-4 w-4" />Open Lead Card</Button>
           {linkedinUrl ? <Button variant="secondary" onClick={() => window.open(linkedinUrl, "_blank", "noopener")}><ExternalLink className="h-4 w-4" />Open LinkedIn</Button> : null}
+          {emailValue ? <Button variant="secondary" onClick={() => window.location.href = `mailto:${emailValue}`}><Mail className="h-4 w-4" />Email</Button> : null}
+          {phoneValue ? <Button variant="secondary" onClick={() => window.location.href = `tel:${phoneValue}`}><Phone className="h-4 w-4" />Call</Button> : null}
           <Button variant="danger" onClick={() => suppressLead(lead)}><Trash2 className="h-4 w-4" />Suppress</Button>
         </div>
       </article>
     );
   }
+}
 }
 
 function empty(text: string) {

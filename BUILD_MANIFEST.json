@@ -11,8 +11,8 @@
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 7930,
-    "sha256": "2065b84a217d3a615604a729b08d6b59a796f3e8ae27e0d06fe310f33a2e6136"
+    "bytes": 8246,
+    "sha256": "92dcdd5f843953142a99cb5c371042ab1f54ac926f80bd3cfad823180f6b6330"
   },
   {
     "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
@@ -48,6 +48,11 @@
     "path": "README_V435_ENRICHMENT_LADDER_READY_FIX.md",
     "bytes": 1726,
     "sha256": "6fbdcdb9c8ba7a8abc1351ba1561928e9fb3b26fd4007680e15eef05676991b7"
+  },
+  {
+    "path": "README_V436_WORKFLOW_TABS_CARD_SUMMARY_FIX.md",
+    "bytes": 664,
+    "sha256": "a2858b9f7cf5edc8dae43aff3a2b34bd56b44e880e32d27f3bd767e2da773bbc"
   },
   {
     "path": "app/analytics/page.tsx",
@@ -161,8 +166,8 @@
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 83454,
-    "sha256": "a19c0b741c829a7d9af793a369a0768187f3d67068b7adb388fb3c112007a751"
+    "bytes": 87081,
+    "sha256": "a1fe8596d06bd701d86eb636849c6837c32d04a2705ea9a7e517f083034a3402"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -211,8 +216,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1154,
-    "sha256": "6da33d007c0025ffc4e559286dd691c8c85ab778c2406e05edf2578d89fdd71f"
+    "bytes": 1144,
+    "sha256": "bd21871fadcc802a0f4ec236bf07482e666792a9ff5e94ff29759556b3abe00c"
   },
   {
     "path": "postcss.config.mjs",
