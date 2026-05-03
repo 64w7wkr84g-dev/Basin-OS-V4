@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Basin OS V2.1 Warm Route Radar Runner
+ * Basin OS V2.2 Closed Circuit Radar Runner
  *
  * Automated enrichment routing:
  * - NPI, RSS/public news, Brave public search, and LinkedIn URL discovery.
@@ -168,23 +168,28 @@ function routeLead(lead) {
   const namedPerson = isPersonName(lead.name);
   const hasEmail = hasContact(lead, 'email');
   const hasLinkedIn = hasContact(lead, 'linkedin');
-  const hasPhone = hasContact(lead, 'phone');
+  const isCpa = /cpa|tax|account/i.test([lead.title, lead.company, lead.signal, lead.summary, lead.sourceType].join(' '));
 
-  // Basin Day 1 should start with an email or LinkedIn touch whenever possible.
-  // Therefore phone-only NPI records are NOT true associate-ready leads.
-  const warmRoute = hasEmail || hasLinkedIn;
-  const ready = Boolean(namedPerson && warmRoute && lead.score >= 58);
+  // Closed-circuit rule:
+  // Ready = email found. LinkedIn = verify first. CPA = CPA verify. Everything else is skipped.
+  const ready = Boolean(namedPerson && hasEmail && lead.score >= 58);
+  const linkedinVerify = Boolean(namedPerson && !ready && hasLinkedIn);
+  const cpaVerify = Boolean(namedPerson && !ready && !linkedinVerify && isCpa && (lead.sourceUrl || (lead.evidenceTrail || []).length));
 
   lead.associateReady = ready;
-  lead.status = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : (hasPhone ? 'Phone-Only / Warm Route Needed' : 'Research Needed'));
-  lead.queue = ready ? 'Ready to Work' : (hasLinkedIn ? 'LinkedIn Verify' : (hasPhone ? 'Phone-Only / Find Email or LinkedIn' : 'Contact Route Needed'));
-  lead.bucket = ready ? 'ready' : (hasLinkedIn ? 'linkedin-verify' : (hasPhone ? 'phone-research' : 'research'));
+  lead.linkedinVerify = linkedinVerify;
+  lead.cpaVerify = cpaVerify;
+  lead.skipped = Boolean(!ready && !linkedinVerify && !cpaVerify);
+
+  lead.status = ready ? 'Ready to Work' : (linkedinVerify ? 'LinkedIn Verify' : (cpaVerify ? 'CPA Verify' : 'Skipped / No Warm Route'));
+  lead.queue = ready ? 'Ready to Work' : (linkedinVerify ? 'LinkedIn Verify' : (cpaVerify ? 'CPA Verify' : 'Skipped'));
+  lead.bucket = ready ? 'ready' : (linkedinVerify ? 'linkedin-verify' : (cpaVerify ? 'cpa-verify' : 'skipped'));
   lead.workflowDay = ready ? 1 : 0;
 
-  if (ready && hasEmail) lead.bestFirstAction = 'Day 1: send evidence-based email first, then call if appropriate.';
-  else if (ready && hasLinkedIn) lead.bestFirstAction = 'Day 1: manually open LinkedIn URL, confirm identity, then send reviewed LinkedIn touch.';
-  else if (hasPhone) lead.bestFirstAction = 'Phone-only record. Do not treat as warm Day 1. Use Brave/public evidence to find email or LinkedIn; manually promote only if you choose to work a cold phone route.';
-  else lead.bestFirstAction = 'Research needed: confirm email, direct LinkedIn URL, phone, or second public evidence source before associate cadence.';
+  if (ready) lead.bestFirstAction = 'Day 1: send evidence-based email first, then call if appropriate.';
+  else if (linkedinVerify) lead.bestFirstAction = 'Open LinkedIn URL manually, confirm identity, then click Confirm Verified to move to Ready.';
+  else if (cpaVerify) lead.bestFirstAction = 'Review CPA/referral evidence and manually promote only if useful.';
+  else lead.bestFirstAction = 'Skipped from associate workflow: no email, no LinkedIn URL, and no CPA/referral path.';
 
   lead.priorityRank = sourceRank(lead);
   return lead;
@@ -504,6 +509,55 @@ function extractCompany(title) {
   return parts.length > 1 ? parts[parts.length - 1].slice(0, 80) : '';
 }
 
+
+async function fetchCpaDiscovery(limit = 80) {
+  if (!BRAVE_API_KEY) return [];
+  const queries = [
+    'site:linkedin.com/in CPA tax partner high net worth Texas',
+    'site:linkedin.com/in CPA oil gas tax deduction Texas',
+    'site:linkedin.com/in tax partner accredited investor CPA',
+    '"CPA" "oil and gas" "tax planning" "Texas"',
+    '"CPA firm" "oil and gas" "tax deductions"',
+    '"tax partner" "high net worth" "CPA" "Texas"',
+    '"CPA" "investment tax planning" "business owners"'
+  ];
+  const out = [];
+
+  for (const q of queries) {
+    if (out.length >= limit) break;
+    const res = await braveSearch(q, 10);
+    for (const r of res.results) {
+      const name = /linkedin\.com\/(in|pub)\//i.test(r.url) ? extractLinkedInName(r.title) : extractLikelyName(`${r.title} ${r.description}`);
+      if (!isPersonName(name)) continue;
+      const lead = {
+        id: `cpa_${slug(name + r.url)}`,
+        name,
+        title: 'CPA / Tax Professional',
+        company: extractCompany(r.title),
+        location: 'USA',
+        sourceType: /linkedin\.com\/(in|pub)\//i.test(r.url) ? 'linkedin' : 'cpa',
+        source: 'CPA public search',
+        sourceUrl: r.url,
+        signal: r.title,
+        summary: r.description,
+        fitReason: 'CPA/tax professional may be useful as referral partner or education source for tax-aware investors.',
+        accreditedLikelyReason: 'CPA route is referral-focused; do not treat as investor qualification without confirmation.',
+        contactMethods: /linkedin\.com\/(in|pub)\//i.test(r.url) ? [{ type: 'linkedin', value: r.url, source: 'Brave public search' }] : [],
+        evidenceTrail: [{ source: 'CPA public search', url: r.url, whatItProves: r.description || r.title }],
+        score: /linkedin\.com\/(in|pub)\//i.test(r.url) ? 72 : 62,
+        type: 'cpa',
+        foundAt: now()
+      };
+      processSearchResultIntoLead(lead, r);
+      out.push(lead);
+      if (out.length >= limit) break;
+    }
+    await sleep(150);
+  }
+
+  return dedupe(out);
+}
+
 async function main() {
   const state = await readJson(STATE_PATH, { seen: {}, suppressed: {} });
   const errors = [];
@@ -512,6 +566,7 @@ async function main() {
   let npi = [];
   let rss = [];
   let linkedin = [];
+  let cpa = [];
 
   try { npi = await fetchNpiSeeds(MAX_NPI); } catch (err) { errors.push({ source: 'npi', reason: err.message }); }
   try { rss = await fetchRssSeeds(MAX_RSS); } catch (err) { errors.push({ source: 'rss', reason: err.message }); }
@@ -522,8 +577,15 @@ async function main() {
   } catch (err) {
     errors.push({ source: 'linkedin-discovery', reason: err.message });
   }
+  try {
+    cpa = await fetchCpaDiscovery(80);
+    searchBudget.used += cpa.length ? Math.ceil(cpa.length / 10) : 0;
+    searchBudget.remaining = Math.max(0, searchBudget.remaining - Math.ceil(cpa.length / 10));
+  } catch (err) {
+    errors.push({ source: 'cpa-discovery', reason: err.message });
+  }
 
-  let all = dedupe([...rss, ...linkedin, ...npi]).filter(l => !state.suppressed?.[leadKey(l)]);
+  let all = dedupe([...rss, ...linkedin, ...cpa, ...npi]).filter(l => !state.suppressed?.[leadKey(l)]);
 
   const enriched = [];
   for (const lead of all) {
@@ -546,14 +608,18 @@ async function main() {
     .sort((a, b) => (a.priorityRank || 9) - (b.priorityRank || 9) || (b.associateReady - a.associateReady) || (b.score - a.score) || a.name.localeCompare(b.name));
 
   const ready = all.filter(l => l.associateReady);
-  const research = all.filter(l => !l.associateReady);
-  const linkedinCount = all.filter(l => hasContact(l, 'linkedin') || l.sourceType === 'linkedin').length;
-  const emailCount = all.filter(l => hasContact(l, 'email')).length;
-  const phoneCount = all.filter(l => hasContact(l, 'phone')).length;
+  const linkedinVerify = all.filter(l => l.linkedinVerify);
+  const cpaVerify = all.filter(l => l.cpaVerify);
+  const research = all.filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
+  const skipped = all.filter(l => l.skipped);
+  const active = [...ready, ...linkedinVerify, ...cpaVerify, ...research];
+  const linkedinCount = active.filter(l => hasContact(l, 'linkedin') || l.sourceType === 'linkedin').length;
+  const emailCount = active.filter(l => hasContact(l, 'email')).length;
+  const phoneCount = active.filter(l => hasContact(l, 'phone')).length;
 
   const output = {
     generatedAt: now(),
-    engine: 'Basin OS V2.1 Warm Route Radar Runner automated enrichment',
+    engine: 'Basin OS V2.2 Closed Circuit Radar Runner automated enrichment',
     compliance: {
       linkedin: 'Does not scrape LinkedIn pages. Stores possible profile URLs from Brave public search only; manual verification recommended.',
       outreach: 'No auto-send. Manual review required before email, LinkedIn, SMS, or phone outreach.',
@@ -567,9 +633,13 @@ async function main() {
     stats: {
       totalFound: all.length,
       readyToWork: ready.length,
+      linkedinVerify: linkedinVerify.length,
+      cpaVerify: cpaVerify.length,
       research: research.length,
+      skipped: skipped.length,
       npiCollected: npi.length,
       rssCollected: rss.length,
+      cpaCollected: cpa.length,
       linkedinDiscoveryCollected: linkedin.length,
       linkedinCandidatesFound: linkedinCount,
       emailFound: emailCount,
@@ -580,8 +650,11 @@ async function main() {
       errors: errors.length
     },
     leads: ready,
+    linkedinVerifyCandidates: linkedinVerify,
+    cpaVerifyCandidates: cpaVerify,
     researchCandidates: research,
-    allCandidates: all,
+    skippedCandidates: skipped,
+    allCandidates: active,
     errors
   };
 
@@ -599,7 +672,9 @@ async function main() {
     generatedAt: now(),
     stats: output.stats,
     sampleReady: ready.slice(0, 8).map(l => ({ name: l.name, score: l.score, status: l.status, contacts: l.contactMethods.map(c => c.type) })),
-    sampleResearch: research.slice(0, 8).map(l => ({ name: l.name, score: l.score, status: l.status, contacts: l.contactMethods.map(c => c.type) }))
+    sampleLinkedInVerify: linkedinVerify.slice(0, 8).map(l => ({ name: l.name, score: l.score, status: l.status, contacts: l.contactMethods.map(c => c.type) })),
+    sampleCpaVerify: cpaVerify.slice(0, 8).map(l => ({ name: l.name, score: l.score, status: l.status, contacts: l.contactMethods.map(c => c.type) })),
+    sampleSkipped: skipped.slice(0, 8).map(l => ({ name: l.name, score: l.score, status: l.status, contacts: l.contactMethods.map(c => c.type) }))
   });
   await writeJson(STATE_PATH, state);
 

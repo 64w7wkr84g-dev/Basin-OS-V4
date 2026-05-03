@@ -68,6 +68,9 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   const DEFAULT_STORE = {
     leads: [],
     research: [],
+    linkedinVerify: [],
+    cpaVerify: [],
+    skipped: [],
     notes: [],
     followUps: [],
     meetings: [],
@@ -208,16 +211,17 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     const contacts = Array.isArray(raw.contactMethods) ? raw.contactMethods.map(normalizeContact).filter(Boolean) : [];
     const evidence = Array.isArray(raw.evidenceTrail) ? raw.evidenceTrail : [];
     const score = Number(raw.score || 50);
-    const sourceBlob = [raw.source, raw.sourceType, raw.sourceUrl, raw.queue, raw.status, raw.sourceConfidence].join(' ').toLowerCase();
+    const sourceBlob = [raw.source, raw.sourceType, raw.sourceUrl, raw.queue, raw.status, raw.bucket, raw.sourceConfidence].join(' ').toLowerCase();
     const hasLinkedIn = contacts.some(c => /linkedin/.test(`${c.type} ${c.value}`.toLowerCase())) || /linkedin/.test(sourceBlob);
     const hasEmail = contacts.some(c => c.type === 'email' || /@/.test(c.value));
     const hasPhone = contacts.some(c => c.type === 'phone' || /\d{3}.*\d{3}.*\d{4}/.test(c.value));
-    const hasWarmRoute = hasLinkedIn || hasEmail;
-    const phoneOnly = hasPhone && !hasWarmRoute;
-    const rawReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === 'ready' || raw.status === 'Ready to Work' || raw.queue === 'Ready to Work');
-    const isReady = Boolean((rawReady && !phoneOnly) || (hasWarmRoute && score >= 58));
-
     const sourceType = detectSource(raw, contacts);
+    const isCpa = /cpa|tax|account/i.test([raw.title, raw.role, raw.specialty, raw.company, raw.signal, raw.summary, raw.sourceType].join(' '));
+    const rawReady = Boolean(raw.associateReady || raw.readyToWork || raw.bucket === 'ready' || raw.status === 'Ready to Work' || raw.queue === 'Ready to Work');
+    const isReady = Boolean(hasEmail && (rawReady || score >= 58));
+    const isLinkedInVerify = Boolean(!isReady && hasLinkedIn);
+    const isCpaVerify = Boolean(!isReady && !isLinkedInVerify && isCpa && (raw.sourceUrl || evidence.length));
+    const isSkipped = Boolean(!isReady && !isLinkedInVerify && !isCpaVerify);
     const quality = computeQuality({ raw, score, hasLinkedIn, hasEmail, hasPhone, evidence, sourceType, isReady });
 
     return {
@@ -226,6 +230,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       title: text(raw.title || raw.role || raw.specialty || raw.profession || 'Prospect'),
       company: text(raw.company || raw.practice || raw.organization || ''),
       location: text(raw.location || raw.practiceLocation || raw.city || ''),
+      type: isCpa ? 'cpa' : 'investor',
       source: text(raw.source || raw.sourceType || sourceType || 'Radar'),
       sourceType,
       sourceUrl: text(raw.sourceUrl || raw.url || ''),
@@ -244,9 +249,12 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       hasPhone,
       hasWarmRoute,
       associateReady: isReady,
-      bucket: isReady ? 'ready' : 'research',
+      linkedinVerify: isLinkedInVerify,
+      cpaVerify: isCpaVerify,
+      skipped: isSkipped,
+      bucket: isReady ? 'ready' : (isLinkedInVerify ? 'linkedin-verify' : (isCpaVerify ? 'cpa-verify' : 'skipped')),
       workflowDay: Number(raw.workflowDay || raw.day || (isReady ? 1 : 0)),
-      status: text(raw.status || raw.queue || (isReady ? 'Ready to Work' : 'Research Needed')),
+      status: text(raw.status || raw.queue || (isReady ? 'Ready to Work' : (isLinkedInVerify ? 'LinkedIn Verify' : (isCpaVerify ? 'CPA Verify' : 'Skipped / No Warm Route')))),
       bestFirstAction: firstAction({ hasLinkedIn, hasEmail, hasPhone, isReady }),
       nextAction: text(raw.nextAction || ''),
       lastUpdated: new Date().toISOString()
@@ -307,7 +315,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     if (!isReady) return 'Research needed: find or confirm email, direct LinkedIn URL, phone, or second public evidence source before associate cadence.';
     if (hasEmail) return 'Day 1: send evidence-based email first, then call if phone is available.';
     if (hasLinkedIn) return 'Day 1: manually open LinkedIn URL, confirm identity, then send reviewed LinkedIn connection/note.';
-    if (hasPhone) return 'Phone-only: not Day 1 ready for warm cadence. Use research links to find email or LinkedIn first; call only if you choose to work a cold phone route.';
+    if (hasPhone) return 'Skipped from workflow unless manually promoted: phone-only is not the Day 1 warm route. Find email or LinkedIn first.';
     return 'Do not work yet. Confirm contact route first.';
   }
 
@@ -355,23 +363,32 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
 
   function ingestRadar(raw) {
     const ready = Array.isArray(raw.leads) ? raw.leads : [];
+    const linkedinVerify = Array.isArray(raw.linkedinVerifyCandidates) ? raw.linkedinVerifyCandidates : [];
+    const cpaVerify = Array.isArray(raw.cpaVerifyCandidates) ? raw.cpaVerifyCandidates : [];
     const research = Array.isArray(raw.researchCandidates) ? raw.researchCandidates : [];
-    const allCandidates = Array.isArray(raw.allCandidates) ? raw.allCandidates : [];
-    const combined = [...ready, ...research, ...allCandidates];
+    const skipped = Array.isArray(raw.skippedCandidates) ? raw.skippedCandidates : [];
 
+    const combined = [...ready, ...linkedinVerify, ...cpaVerify, ...research, ...skipped];
     const normalized = combined.map(item => normalizeLead(item)).filter(l => l.name && l.name !== 'Unnamed Candidate');
+
     const readyLeads = normalized.filter(l => l.associateReady);
-    const researchLeads = normalized.filter(l => !l.associateReady);
+    const linkedinLeads = normalized.filter(l => l.linkedinVerify);
+    const cpaLeads = normalized.filter(l => l.cpaVerify);
+    const researchLeads = normalized.filter(l => !l.associateReady && !l.linkedinVerify && !l.cpaVerify && !l.skipped);
+    const skippedLeads = normalized.filter(l => l.skipped);
 
     state.store.leads = mergeLeadArrays(state.store.leads, readyLeads);
+    state.store.linkedinVerify = mergeLeadArrays(state.store.linkedinVerify || [], linkedinLeads);
+    state.store.cpaVerify = mergeLeadArrays(state.store.cpaVerify || [], cpaLeads);
     state.store.research = mergeLeadArrays(state.store.research, researchLeads);
+    state.store.skipped = mergeLeadArrays(state.store.skipped || [], skippedLeads);
     state.store.lastRadar = raw;
     state.store.lastLoadedFrom = raw.__loadedFrom || state.store.lastLoadedFrom;
     state.store.lastLoadedAt = new Date().toISOString();
 
     saveStore();
     updateAll();
-    return { ready: readyLeads.length, research: researchLeads.length, total: normalized.length };
+    return { ready: readyLeads.length, linkedin: linkedinLeads.length, cpa: cpaLeads.length, research: researchLeads.length, skipped: skippedLeads.length, total: normalized.length };
   }
 
   async function loadSharedRadar(force=true) {
@@ -380,7 +397,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       const raw = await loadRadarData(force);
       const counts = ingestRadar(raw);
       const st = radarStats(raw);
-      setStatus(`Loaded ${counts.total} candidates from ${raw.__loadedFrom || 'radar JSON'} · Ready ${counts.ready} · Research ${counts.research} · Brave/Public searches ${st.searches}`, counts.total ? '' : 'warn');
+      setStatus(`Loaded ${counts.total} candidates from ${raw.__loadedFrom || 'radar JSON'} · Ready ${counts.ready} · LinkedIn Verify ${counts.linkedin || 0} · CPA Verify ${counts.cpa || 0} · Skipped ${counts.skipped || 0} · Brave/Public searches ${st.searches}`, counts.total ? '' : 'warn');
       showToast(`Radar loaded: ${counts.total} candidates`);
     } catch (err) {
       setStatus(`Radar load failed: ${err.message}`, 'error');
@@ -404,7 +421,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   }
 
   function allVisibleLeads() {
-    return [...state.store.leads, ...state.store.research]
+    return [...state.store.leads, ...(state.store.linkedinVerify || []), ...(state.store.cpaVerify || []), ...state.store.research]
       .filter(l => {
         const q = state.query.toLowerCase();
         if (!q) return true;
@@ -415,23 +432,25 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   }
 
   function prioritySort(a, b) {
-    const rank = l => {
-      if (l.associateReady && l.hasEmail) return 1;
-      if (l.associateReady && l.hasLinkedIn) return 2;
-      if (l.associateReady && l.hasPhone) return 3;
-      if (l.hasLinkedIn) return 4;
+    const gradeRank = l => ({ A: 1, B: 2, C: 3, D: 4 }[l.grade] || 5);
+    const routeRank = l => {
+      if (l.associateReady && l.hasEmail && l.hasLinkedIn) return 1;
+      if (l.associateReady && l.hasEmail) return 2;
+      if (l.linkedinVerify) return 3;
+      if (l.cpaVerify) return 4;
       if (l.sourceType === 'rss') return 5;
-      if (l.sourceType === 'npi') return 7;
-      return 6;
+      return 9;
     };
-    return rank(a) - rank(b) || (b.score || 0) - (a.score || 0) || a.name.localeCompare(b.name);
+    return routeRank(a) - routeRank(b) || gradeRank(a) - gradeRank(b) || (b.score || 0) - (a.score || 0) || a.name.localeCompare(b.name);
   }
 
   function filterLeads(leads, filter=state.filter) {
     return leads.filter(l => {
       if (filter === 'all') return true;
       if (filter === 'ready') return l.associateReady;
-      if (filter === 'research') return !l.associateReady;
+      if (filter === 'research') return !l.associateReady && !l.linkedinVerify && !l.cpaVerify;
+      if (filter === 'linkedinVerify') return l.linkedinVerify;
+      if (filter === 'cpaVerify') return l.cpaVerify;
       if (filter === 'linkedin') return l.hasLinkedIn || l.sourceType === 'linkedin';
       if (filter === 'email') return l.hasEmail;
       if (filter === 'phone') return l.hasPhone;
@@ -445,22 +464,26 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   }
 
   function counts() {
-    const all = [...state.store.leads, ...state.store.research];
+    const active = [...state.store.leads, ...(state.store.linkedinVerify || []), ...(state.store.cpaVerify || []), ...state.store.research];
+    const skipped = state.store.skipped || [];
     return {
-      total: all.length,
+      total: active.length,
       ready: state.store.leads.length,
       research: state.store.research.length,
-      linkedin: all.filter(l => l.hasLinkedIn || l.sourceType === 'linkedin').length,
-      email: all.filter(l => l.hasEmail).length,
-      phone: all.filter(l => l.hasPhone).length,
-      rss: all.filter(l => l.sourceType === 'rss').length,
-      npi: all.filter(l => l.sourceType === 'npi').length,
-      A: all.filter(l => l.grade === 'A').length,
-      cpa: all.filter(l => l.type === 'cpa').length,
-      investor: all.filter(l => l.type !== 'cpa').length,
+      linkedinVerify: (state.store.linkedinVerify || []).length,
+      cpaVerify: (state.store.cpaVerify || []).length,
+      linkedin: active.filter(l => l.hasLinkedIn || l.sourceType === 'linkedin').length,
+      email: active.filter(l => l.hasEmail).length,
+      phone: active.filter(l => l.hasPhone).length,
+      rss: active.filter(l => l.sourceType === 'rss').length,
+      npi: active.filter(l => l.sourceType === 'npi').length,
+      A: active.filter(l => l.grade === 'A').length,
+      cpa: active.filter(l => l.type === 'cpa').length,
+      investor: active.filter(l => l.type !== 'cpa').length,
       notes: state.store.notes.length,
       followUps: state.store.followUps.length,
-      suppressed: state.store.suppressed.length
+      suppressed: state.store.suppressed.length,
+      skipped: skipped.length
     };
   }
 
@@ -469,9 +492,9 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
     $('#navCount-dashboard').textContent = c.total;
     $('#navCount-radar').textContent = c.total;
     $('#navCount-workflow').textContent = c.ready;
-    $('#navCount-linkedin').textContent = c.linkedin;
+    $('#navCount-linkedin').textContent = c.linkedinVerify;
     $('#navCount-pipeline').textContent = c.investor;
-    $('#navCount-cpa').textContent = c.cpa;
+    $('#navCount-cpa').textContent = c.cpaVerify;
     $('#navCount-notes').textContent = c.notes;
     $('#navCount-calendar').textContent = c.followUps;
     $('#apiBadge').textContent = state.store.api.groqKey ? 'GROQ' : (radarStats().searches > 0 ? 'BRAVE' : 'OFF');
@@ -488,17 +511,17 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   function tabs(active=state.filter) {
     const c = counts();
     const items = [
-      ['all', `All ${c.total}`],
+      ['all', `Active ${c.total}`],
       ['ready', `Ready ${c.ready}`],
-      ['research', `Research ${c.research}`],
-      ['linkedin', `LinkedIn ${c.linkedin}`],
+      ['linkedinVerify', `LinkedIn Verify ${c.linkedinVerify}`],
+      ['cpaVerify', `CPA Verify ${c.cpaVerify}`],
       ['email', `Email ${c.email}`],
-      ['phone', `Phone ${c.phone}`],
+      ['linkedin', `Any LinkedIn ${c.linkedin}`],
       ['rss', `RSS/Public ${c.rss}`],
-      ['npi', `NPI ${c.npi}`],
       ['A', `A Grade ${c.A}`],
       ['investor', `Investors ${c.investor}`],
-      ['cpa', `CPA ${c.cpa}`]
+      ['cpa', `CPA ${c.cpa}`],
+      ['research', `Other Research ${c.research}`]
     ];
     return `<div class="tabs">${items.map(([key,label]) => `<button class="tab ${active===key?'active':''}" data-filter="${key}">${escapeHtml(label)}</button>`).join('')}</div>`;
   }
@@ -549,7 +572,7 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
       </div>
       <div class="actions">
         <button class="btn btn-primary btn-sm" data-action="open" data-id="${escapeHtml(lead.id)}">Open Lead Card</button>
-        ${lead.associateReady ? `<button class="btn btn-secondary btn-sm" data-action="advance" data-id="${escapeHtml(lead.id)}">Advance Day</button>` : `<button class="btn btn-teal btn-sm" data-action="ready" data-id="${escapeHtml(lead.id)}">Move to Ready</button>`}
+        ${lead.linkedinVerify ? `<button class="btn btn-teal btn-sm" data-action="openLinkedIn" data-id="${escapeHtml(lead.id)}">Open LinkedIn</button><button class="btn btn-primary btn-sm" data-action="confirmLinkedIn" data-id="${escapeHtml(lead.id)}">Confirm Verified</button>` : (lead.associateReady ? `<button class="btn btn-secondary btn-sm" data-action="advance" data-id="${escapeHtml(lead.id)}">Advance Day</button>` : `<button class="btn btn-teal btn-sm" data-action="ready" data-id="${escapeHtml(lead.id)}">Manual Promote</button>`)}
         <button class="btn btn-secondary btn-sm" data-action="handoff" data-id="${escapeHtml(lead.id)}">Handoff Sheet</button>
         <button class="btn btn-danger btn-sm" data-action="suppress" data-id="${escapeHtml(lead.id)}">Suppress</button>
       </div>
@@ -641,12 +664,12 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
 
     $('#page-workflow').innerHTML = `
       <div class="notice" style="margin-bottom:16px">
-        Required execution: every ready lead keeps grade, score, contact method tags, qualification status, evidence trail, notes, follow-up, and handoff history. Day 1 starts with email or LinkedIn when available; Ready means email or LinkedIn warm route exists. Phone-only NPI records stay in research/phone queue until a warm route is found or manually promoted.
+        Required execution: every ready lead keeps grade, score, contact method tags, qualification status, evidence trail, notes, follow-up, and handoff history. Day 1 starts with email or LinkedIn when available; Ready means email is available or LinkedIn has been manually verified. Phone-only NPI records are skipped from active workflow unless manually promoted.
       </div>
       <div class="grid grid-3" style="margin-bottom:16px">
-        ${kpi(ready.length, 'Warm-Route Ready')}
-        ${kpi(research.length, 'Research / Phone Queue')}
-        ${kpi(counts().linkedin, 'LinkedIn / Verify')}
+        ${kpi(ready.length, 'Ready Leads')}
+        ${kpi((state.store.linkedinVerify || []).length, 'LinkedIn Verify')}
+        ${kpi((state.store.cpaVerify || []).length, 'CPA Verify')}
       </div>
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-head"><div><div class="panel-title">Workflow Filters</div><div class="panel-sub">Use source filters without losing day status.</div></div></div>
@@ -658,9 +681,9 @@ If now is not the time, I can leave you alone. If you want to be kept on the lis
   }
 
   function renderLinkedIn() {
-    const leads = filterLeads(allVisibleLeads(), 'linkedin');
+    const leads = filterLeads(allVisibleLeads(), 'linkedinVerify');
     $('#page-linkedin').innerHTML = `
-      ${pageHeader('LinkedIn Verify', 'No automated LinkedIn scraping. The OS stores public/profile URLs and lets you manually open, confirm, and pull in details you choose to enter.')}
+      ${pageHeader('LinkedIn Verify', 'Public LinkedIn URLs found by Brave. Open the URL manually, verify the profile, then click Confirm Verified to move it into Ready.')}
       <div class="notice" style="margin-bottom:16px">
         Compliant flow: open profile URL manually, confirm the person, then add role/company/location/contact details into the lead card. The CRM keeps the URL and your manually-confirmed notes.
       </div>
@@ -913,14 +936,20 @@ Actions → Basin Radar Daily → Run workflow</pre>
   }
 
   function findLead(id) {
-    return [...state.store.leads, ...state.store.research].find(l => l.id === id);
+    return [...state.store.leads, ...(state.store.linkedinVerify || []), ...(state.store.cpaVerify || []), ...state.store.research].find(l => l.id === id);
   }
 
   function updateLead(lead) {
     const inReady = lead.associateReady;
     state.store.leads = state.store.leads.filter(l => l.id !== lead.id);
     state.store.research = state.store.research.filter(l => l.id !== lead.id);
-    if (inReady) state.store.leads.push(lead);
+    state.store.linkedinVerify = (state.store.linkedinVerify || []).filter(l => l.id !== lead.id);
+    state.store.cpaVerify = (state.store.cpaVerify || []).filter(l => l.id !== lead.id);
+    state.store.skipped = (state.store.skipped || []).filter(l => l.id !== lead.id);
+    if (lead.associateReady) state.store.leads.push(lead);
+    else if (lead.linkedinVerify) state.store.linkedinVerify.push(lead);
+    else if (lead.cpaVerify) state.store.cpaVerify.push(lead);
+    else if (lead.skipped) state.store.skipped.push(lead);
     else state.store.research.push(lead);
     saveStore();
     updateAll();
@@ -931,6 +960,9 @@ Actions → Basin Radar Daily → Run workflow</pre>
     if (!lead) return;
     state.store.leads = state.store.leads.filter(l => l.id !== id);
     state.store.research = state.store.research.filter(l => l.id !== id);
+    state.store.linkedinVerify = (state.store.linkedinVerify || []).filter(l => l.id !== id);
+    state.store.cpaVerify = (state.store.cpaVerify || []).filter(l => l.id !== id);
+    state.store.skipped = (state.store.skipped || []).filter(l => l.id !== id);
     state.store.suppressed.push({ ...lead, suppressedAt: new Date().toISOString() });
     saveStore();
     updateAll();
@@ -959,6 +991,9 @@ Actions → Basin Radar Daily → Run workflow</pre>
     const lead = findLead(id);
     if (!lead) return;
     lead.associateReady = true;
+    lead.linkedinVerify = false;
+    lead.cpaVerify = false;
+    lead.skipped = false;
     lead.bucket = 'ready';
     lead.status = 'Ready to Work';
     lead.workflowDay = lead.workflowDay || 1;
@@ -1185,6 +1220,43 @@ Actions → Basin Radar Daily → Run workflow</pre>
     showToast('CRM backup imported');
   }
 
+
+  function openLinkedInForLead(id) {
+    const lead = findLead(id);
+    if (!lead) return;
+    const li = (lead.contacts || []).find(c => /linkedin/.test(`${c.type} ${c.value}`.toLowerCase()));
+    if (!li) return showToast('No LinkedIn URL on this lead.', true);
+    window.open(li.value, '_blank', 'noopener');
+  }
+
+  function confirmLinkedInLead(id) {
+    const lead = findLead(id);
+    if (!lead) return;
+    lead.linkedinVerify = false;
+    lead.cpaVerify = false;
+    lead.skipped = false;
+    lead.associateReady = true;
+    lead.bucket = 'ready';
+    lead.status = 'Ready to Work';
+    lead.workflowDay = lead.workflowDay || 1;
+    lead.bestFirstAction = lead.hasEmail
+      ? 'Day 1: send evidence-based email first, then call if appropriate.'
+      : 'Day 1: LinkedIn verified. Send reviewed LinkedIn touch first, then call if appropriate.';
+    lead.notes = Array.isArray(lead.notes) ? lead.notes : [];
+    const n = {
+      id: uid('note'),
+      leadId: lead.id,
+      leadName: lead.name,
+      note: 'LinkedIn profile manually opened and marked verified.',
+      disposition: 'LinkedIn verified',
+      at: new Date().toISOString()
+    };
+    state.store.notes.push(n);
+    lead.notes.push(n);
+    updateLead(lead);
+    showToast(`${lead.name} moved to Ready after LinkedIn verification`);
+  }
+
   function bindStaticEvents() {
     $$('.nav-item[data-page]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1223,6 +1295,8 @@ Actions → Basin Radar Daily → Run workflow</pre>
         if (action === 'advance') advanceLead(id);
         if (action === 'ready') markReady(id);
         if (action === 'suppress') suppressLead(id);
+        if (action === 'openLinkedIn') openLinkedInForLead(id);
+        if (action === 'confirmLinkedIn') confirmLinkedInLead(id);
         if (action === 'handoff' || action === 'printHandoff') printHandoff(id);
         if (action === 'saveLead') saveLeadEdits(id);
         if (action === 'addContact') addContact(id);

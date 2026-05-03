@@ -1,35 +1,44 @@
-# Basin OS V2.1 — Warm Route Priority Rebuild
+# Basin OS V2.2 — Closed Circuit Lead Routing
 
-This update fixes the problem shown in V2.0:
+This version changes the lead operating system from "show me everything" to "show me only what can be worked."
+
+## Closed-circuit buckets
 
 ```text
-Ready 136
-LinkedIn 0
-Email 0
-Phone 252
+Ready
+- Named person
+- Email found
+- Day 1 email-first cadence can start
+
+LinkedIn Verify
+- Named person
+- LinkedIn URL found
+- User opens LinkedIn manually
+- User clicks Confirm Verified
+- Lead moves to Ready
+
+CPA Verify
+- CPA/tax/referral candidate found
+- Review for referral route
+- Manually promote if useful
+
+Skipped
+- No email
+- No LinkedIn URL
+- No CPA/referral path
+- Hidden from active workflow
 ```
 
-That was wrong for the Basin cadence because Day 1 should start with email or LinkedIn whenever possible.
-
-## V2.1 routing philosophy
+## What this fixes
 
 ```text
-Ready = named person + email OR LinkedIn URL
-Phone-only NPI = Phone Research / Warm Route Needed
-LinkedIn URL = LinkedIn Verify or Ready, depending on score
-Email = Email First / Ready
-RSS/Public = Research unless enriched with warm route
-```
-
-## What changed
-
-```text
-1. Phone-only NPI no longer becomes true Day 1 Ready.
-2. Brave runs harder for LinkedIn URLs and public emails.
-3. Brave query budget increased from 450 to 900.
-4. LinkedIn discovery budget increased from 80 to 120.
-5. NPI phone-only leads remain visible but do not pollute the ready workflow.
-6. Ready leads now better match the actual 7-stage cadence.
+1. Phone-only NPI records no longer clog the workflow.
+2. NPI source volume is still counted, but unworkable records are skipped.
+3. LinkedIn Verify becomes a real operational bucket.
+4. Each LinkedIn Verify lead has Open LinkedIn and Confirm Verified actions.
+5. CPA discovery is added through Brave public search.
+6. Ready leads are stricter and should represent actual Day 1 usable leads.
+7. C-grade phone-only records should no longer be the top Day 1 work list.
 ```
 
 ## Upload every file in this ZIP
@@ -52,12 +61,6 @@ radar-rejected.json
 README.md
 ```
 
-## Critical workflow file path
-
-```text
-.github/workflows/radar.yml
-```
-
 ## Required GitHub secret
 
 ```text
@@ -70,28 +73,25 @@ Optional:
 GROQ_API_KEY
 ```
 
+## Workflow file path
+
+```text
+.github/workflows/radar.yml
+```
+
 ## After upload
 
 1. GitHub → Actions → Basin Radar Daily → Run workflow.
 2. Wait for green.
 3. Open:
-   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-1-warm-route`
+   `https://64w7wkr84g-dev.github.io/Basin-OS-V4/?v=v2-2-closed-circuit`
 4. Click **Load Shared GitHub Radar**.
 
-## Expected result
+## If LinkedIn and Email still show zero
 
-Do not expect every lead to become Ready. That would be fake quality.
-
-Expected healthy result:
+That means Brave is not returning those URLs or the Action is not receiving `BRAVE_API_KEY`. Check the Action logs for:
 
 ```text
-Ready = warm-route leads with email or LinkedIn
-Research/Phone Queue = NPI phone-only records
-LinkedIn Verify = public LinkedIn URLs that need manual confirmation
-Email = public emails found by Brave
+braveConfigured: true
+publicSearches: above 0
 ```
-
-If LinkedIn and Email are still zero after this, the issue is either:
-1. Brave is not returning public LinkedIn/profile/email results for the queries.
-2. The Brave API key is not actually available to GitHub Actions.
-3. The Action is still running an old runner file.
