@@ -44,15 +44,20 @@ const pages: Array<{ key: PageKey; label: string; icon: React.ElementType; group
 ];
 
 const sourceFilters = [
-  ["all", "All"],
-  ["ready", "Ready"],
-  ["linkedin", "LinkedIn"],
+  ["all", "All Active"],
+  ["ready", "Ready for Associate"],
+  ["linkedinVerify", "LinkedIn Verify"],
+  ["linkedinVerified", "LinkedIn Verified"],
+  ["cpa", "CPA"],
+  ["cpaVerify", "CPA Verify"],
+  ["rss", "RSS/Public"],
+  ["npi", "NPI/MPI"],
   ["email", "Email"],
   ["phone", "Phone"],
-  ["rss", "RSS/Public"],
-  ["npi", "NPI"],
-  ["cpa", "CPA"],
-  ["A", "A Grade"]
+  ["research", "Research / Enrich"],
+  ["A", "A Grade"],
+  ["B", "B Grade"],
+  ["C", "C Grade"]
 ] as const;
 
 const METHOD_A = {
@@ -164,6 +169,50 @@ const REBUTTALS = [
   ["What is the minimum?", "The typical minimum can vary by fund window. The director can explain structure, risk, and suitability. Nothing should move forward unless it makes sense after review."]
 ];
 
+const DISPOSITIONS = [
+  "New / Not Worked",
+  "Attempted - No Answer",
+  "Left Voicemail",
+  "Email Sent",
+  "LinkedIn Message Sent",
+  "Connected - Interested",
+  "Connected - Not Interested",
+  "Requested Info",
+  "Follow Up - Tomorrow",
+  "Follow Up - This Week",
+  "Follow Up - Next Week",
+  "Follow Up - In One Month",
+  "Follow Up - Next Quarter",
+  "Booked Director Call",
+  "No Show",
+  "Rescheduled",
+  "Bad Number",
+  "Wrong Person",
+  "No Valid Contact Route",
+  "Already a Client",
+  "Do Not Call",
+  "Do Not Email",
+  "Do Not Contact",
+  "Not Accredited / Not Qualified",
+  "Not a Fit",
+  "Future Nurture",
+  "Closed / Suppressed"
+];
+
+const DAY_REQUIREMENTS: Record<number, string[]> = {
+  1: ["Review source/evidence trail", "Send or queue Day 1 email/LinkedIn touch", "Log result note", "Select disposition"],
+  2: ["Review previous touch", "Complete second attempt or reminder", "Log result note", "Select disposition"],
+  3: ["Complete LinkedIn touch when available", "Log result note", "Select disposition"],
+  4: ["Complete credibility-angle call/touch", "Log result note", "Select disposition"],
+  5: ["Review follow-up status", "Send nurture/value touch if appropriate", "Log result note", "Select disposition"],
+  6: ["Complete final research-based call", "Log result note", "Select disposition"],
+  7: ["Review response/no-response status", "Set next action", "Log result note", "Select disposition"],
+  8: ["Send final value/nurture touch if appropriate", "Log result note", "Select disposition"],
+  9: ["Prepare close-loop or future nurture", "Log result note", "Select disposition"],
+  10: ["Complete longer-term permission call/touch", "Move to nurture/closed/booked", "Log result note", "Select disposition"]
+};
+
+
 function initialStore(): Store {
   return { localLeads: [], notes: [], handoffs: [], suppressed: [], followUps: [] };
 }
@@ -270,9 +319,10 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
 
   const counts = React.useMemo(() => ({
     total: leads.length,
-    ready: leads.filter((l) => l.associateReady).length,
+    ready: leads.filter((l) => l.readyForAssociate || l.associateReady || l.bucket === "readyForAssociate" || l.bucket === "ready").length,
     linkedin: leads.filter((l) => l.linkedinVerify).length,
     cpa: leads.filter((l) => l.cpaVerify || l.isCPA).length,
+    research: leads.filter((l) => l.bucket === "research" || l.needsResearch).length,
     skipped: leads.filter((l) => l.skipped).length,
     rss: leads.filter((l) => /rss|news|public/i.test(`${l.sourceType} ${l.source}`)).length,
     npi: leads.filter((l) => /npi/i.test(`${l.sourceType} ${l.source}`)).length,
@@ -316,14 +366,19 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
         const blob = [lead.name, lead.company, lead.title, lead.signal, lead.summary, contacts(lead).map((c) => c.value).join(" ")].join(" ").toLowerCase();
         if (!blob.includes(q)) return false;
       }
-      if (filter === "ready") return lead.associateReady;
-      if (filter === "linkedin") return lead.linkedinVerify || hasLinkedIn(lead);
+      if (filter === "ready") return lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready";
+      if (filter === "linkedinVerify") return lead.linkedinVerify || lead.bucket === "linkedinVerify";
+      if (filter === "linkedinVerified") return lead.linkedinVerified || ((lead.readyForAssociate || lead.associateReady) && hasLinkedIn(lead));
+      if (filter === "cpa") return lead.isCPA || lead.type === "cpa" || (lead.tags || []).includes("CPA");
+      if (filter === "cpaVerify") return lead.cpaVerify || lead.bucket === "cpaVerify";
+      if (filter === "rss") return /rss|news|public/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("RSS/Public");
+      if (filter === "npi") return /npi|mpi/i.test(`${lead.sourceType} ${lead.source}`) || (lead.tags || []).includes("NPI/MPI");
       if (filter === "email") return hasEmail(lead);
       if (filter === "phone") return hasPhone(lead);
-      if (filter === "rss") return /rss|news|public/i.test(`${lead.sourceType} ${lead.source}`);
-      if (filter === "npi") return /npi/i.test(`${lead.sourceType} ${lead.source}`);
-      if (filter === "cpa") return lead.cpaVerify || lead.isCPA || lead.type === "cpa";
+      if (filter === "research") return lead.bucket === "research" || lead.needsResearch;
       if (filter === "A") return lead.grade === "A";
+      if (filter === "B") return lead.grade === "B";
+      if (filter === "C") return lead.grade === "C";
       return true;
     }).sort(prioritySort);
   }, [leads, search, filter]);
@@ -377,7 +432,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div className="mb-1 font-black uppercase tracking-[0.16em] text-rose-200">Compliance Always</div>
             Educational only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.
           </div>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.2 Closed Loop</div>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-[#0c141d] p-3 text-center font-mono text-xs text-basin-muted">Basin OS V4.3 Complete</div>
         </aside>
 
         <main className="min-w-0">
@@ -385,7 +440,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
             <div>
               <div className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-basin-gold">Basin Ventures Command Center</div>
               <h1 className="mt-1 text-3xl font-black tracking-tight">{activePage.label}</h1>
-              <p className="mt-1 max-w-4xl text-sm text-basin-muted">Closed-loop CRM: RSS/NPI/CPA/LinkedIn discovery → Brave enrichment → LinkedIn Verify or Ready → associate workflow.</p>
+              <p className="mt-1 max-w-4xl text-sm text-basin-muted">Complete closed-circuit CRM: RSS/NPI/CPA/LinkedIn discovery → Brave enrichment → LinkedIn Verify or Ready for Associate → Day 1–10 workflow.</p>
             </div>
             <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto]">
               <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search leads, companies, signals, notes, contact methods..." />
@@ -460,11 +515,12 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
         phone ? { type: "phone", value: phone, source: "manual" } : null
       ].filter(Boolean) as any,
       evidenceTrail: [{ source: "Manual Add", whatItProves: "Operator entered record." }],
-      associateReady: Boolean(email),
+      associateReady: Boolean(email && phone),
+      readyForAssociate: Boolean(email && phone),
       linkedinVerify: Boolean(!email && linkedin),
       cpaVerify: false,
       skipped: Boolean(!email && !linkedin),
-      bucket: email ? "ready" : linkedin ? "linkedinVerify" : "skipped"
+      bucket: email && phone ? "readyForAssociate" : linkedin ? "linkedinVerify" : "skipped"
     });
     updateLead(lead);
     showToast("Manual lead added.");
@@ -473,11 +529,11 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
   function renderKpis() {
     return (
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <Kpi label="Total Candidates" value={fmt(counts.total)} hint="Active + verify lanes" />
-        <Kpi label="Ready" value={fmt(counts.ready)} hint="Can work after review" />
-        <Kpi label="LinkedIn Verify" value={fmt(counts.linkedin)} hint="Open and confirm" />
-        <Kpi label="Email Route" value={fmt(counts.email)} hint="Best Day 1 path" />
-        <Kpi label="Public Searches" value={fmt(radar.stats.publicSearches)} hint="Brave/GitHub runner" />
+        <Kpi label="Total Candidates" value={fmt(counts.total)} hint="Visible active + verify lanes" />
+        <Kpi label="Ready for Associate" value={fmt(counts.ready)} hint="Workable Day 1 route" />
+        <Kpi label="LinkedIn Verify" value={fmt(counts.linkedin)} hint="Manual profile confirm" />
+        <Kpi label="Research / Enrich" value={fmt(counts.research)} hint="Not associate-ready" />
+        <Kpi label="RSS / LinkedIn / CPA" value={`${fmt(counts.rss)} / ${fmt(counts.linkedin)} / ${fmt(counts.cpa)}`} hint="Source quality mix" />
       </div>
     );
   }
@@ -495,9 +551,20 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
           <div className="flex flex-wrap gap-2">
             {sourceFilters.map(([key, label]) => {
               const count =
-                key === "all" ? counts.total : key === "ready" ? counts.ready : key === "linkedin" ? counts.linkedin :
-                key === "email" ? counts.email : key === "phone" ? counts.phone : key === "rss" ? counts.rss :
-                key === "npi" ? counts.npi : key === "cpa" ? counts.cpa : key === "A" ? counts.gradeA : 0;
+                key === "all" ? counts.total :
+                key === "ready" ? counts.ready :
+                key === "linkedinVerify" ? leads.filter((l) => l.linkedinVerify || l.bucket === "linkedinVerify").length :
+                key === "linkedinVerified" ? leads.filter((l) => l.linkedinVerified || ((l.readyForAssociate || l.associateReady) && hasLinkedIn(l))).length :
+                key === "cpa" ? counts.cpa :
+                key === "cpaVerify" ? leads.filter((l) => l.cpaVerify || l.bucket === "cpaVerify").length :
+                key === "rss" ? counts.rss :
+                key === "npi" ? counts.npi :
+                key === "email" ? counts.email :
+                key === "phone" ? counts.phone :
+                key === "research" ? counts.research :
+                key === "A" ? counts.gradeA :
+                key === "B" ? leads.filter((l) => l.grade === "B").length :
+                key === "C" ? leads.filter((l) => l.grade === "C").length : 0;
               return <button key={key} onClick={() => setFilter(key)} className={`rounded-full border px-3 py-2 text-sm font-black ${filter === key ? "border-basin-gold bg-basin-gold text-black" : "border-basin-border bg-[#0d151f] text-basin-muted hover:text-basin-text"}`}>{label} {count}</button>;
             })}
           </div>
@@ -564,7 +631,7 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
   }
 
   function renderWorkflow() {
-    const ready = filteredLeads.filter((l) => l.associateReady);
+    const ready = filteredLeads.filter((l) => l.readyForAssociate || l.associateReady || l.bucket === "readyForAssociate" || l.bucket === "ready");
     return (
       <div className="space-y-5">
         <div className="rounded-2xl border border-basin-gold/40 bg-basin-gold/10 p-4 text-sm text-basin-muted">
@@ -648,13 +715,18 @@ export function BasinOSApp({ radarData, initialPage = "dashboard" }: { radarData
   }
 
   function renderCallCoach() {
-    const lead = filteredLeads[0];
     return (
       <div className="space-y-5">
         <Card>
-          <CardHeader><div><CardTitle>Call Coach</CardTitle><CardDescription>Day cadence, compliance reminders, and objection handling.</CardDescription></div></CardHeader>
+          <CardHeader>
+            <div>
+              <CardTitle>Call Coach</CardTitle>
+              <CardDescription>Use this while live on a call. Full scripts stay in Master Playbook and 7-Channel Sequence.</CardDescription>
+            </div>
+          </CardHeader>
           <CardContent className="grid gap-4 xl:grid-cols-2">
-            {CADENCE.map((step) => <ScriptBlock key={step.day} title={`Day ${step.day} — ${step.title}`} body={interpolate(step.script, lead)} />)}
+            <ScriptBlock title="Opening Discipline" body={`Do not over-explain.\n\n1. State who you are.\n2. Reference the signal.\n3. Ask for 30 seconds.\n4. Keep the goal educational.\n5. Move toward director call only if there is interest.`} />
+            <ScriptBlock title="Compliance Guardrails" body={`Never say or imply:\n- guaranteed return\n- SEC registered\n- tax advice\n- accredited unless confirmed\n- no risk\n\nAlways frame as educational and optional. CPA/advisor review is appropriate.`} />
             {REBUTTALS.map(([objection, response]) => <ScriptBlock key={objection} title={`Objection: ${objection}`} body={response} />)}
           </CardContent>
         </Card>
@@ -780,7 +852,7 @@ GROQ_MODEL=llama-3.3-70b-versatile`}</pre>
     const linkedinUrl = contacts(lead).find((c) => /linkedin/i.test(`${c.type} ${c.value}`))?.value;
     return (
       <article key={lead.id} className="grid gap-3 rounded-2xl border border-white/10 bg-[#0c141d] p-4 transition hover:border-basin-gold/40 md:grid-cols-[auto_1fr_auto]">
-        <div className="grid h-12 w-12 place-items-center rounded-full border-2 border-basin-gold text-xl font-black text-basin-gold">{String(lead.name || "?").slice(0,1)}</div>
+        <div className={`grid h-12 w-12 place-items-center rounded-full border-2 text-xl font-black ${lead.grade === "A" ? "border-emerald-400 text-emerald-300" : lead.grade === "B" ? "border-blue-400 text-blue-300" : lead.grade === "C" ? "border-amber-400 text-amber-300" : "border-rose-400 text-rose-300"}`}>{lead.grade}</div>
         <div>
           <div className="font-black">{lead.name}</div>
           <div className="text-xs text-basin-muted">{lead.title} {lead.company ? `· ${lead.company}` : ""} {lead.location ? `· ${lead.location}` : ""}</div>
@@ -792,6 +864,7 @@ GROQ_MODEL=llama-3.3-70b-versatile`}</pre>
             {hasLinkedIn(lead) ? <Badge className="border-basin-blue/40 bg-basin-blue/10 text-basin-blue">LinkedIn</Badge> : null}
             {hasPhone(lead) ? <Badge className="border-basin-teal/40 bg-basin-teal/10 text-basin-teal">Phone</Badge> : null}
             {lead.isCPA ? <Badge className="border-amber-400/40 bg-amber-500/15 text-amber-300">CPA</Badge> : null}
+            {(lead.tags || []).filter((tag) => !["Ready for Associate","LinkedIn Verify","CPA Verify","Research / Enrich","Skipped",`${lead.grade} Grade`].includes(tag)).slice(0, 6).map((tag) => <Badge key={tag} className="border-white/15 bg-white/5 text-basin-muted">{tag}</Badge>)}
           </div>
           <p className="mt-3 line-clamp-4 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">fitReason:</span> {lead.fitReason}</p>
           <p className="mt-1 text-xs leading-5 text-basin-muted"><span className="font-bold text-basin-text">Next:</span> {lead.bestFirstAction || "Manual review required."}</p>
@@ -850,7 +923,9 @@ function LeadModal({
   const [email, setEmail] = React.useState(lead.generatedEmail || "");
   const [call, setCall] = React.useState(lead.generatedCall || "");
   const [note, setNote] = React.useState("");
-  const [disposition, setDisposition] = React.useState("Reviewed");
+  const [disposition, setDisposition] = React.useState(lead.disposition || "New / Not Worked");
+  const [nextFollowUp, setNextFollowUp] = React.useState(lead.nextFollowUp || "");
+  const [completedTasks, setCompletedTasks] = React.useState<string[]>(lead.requiredTasks || []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -880,11 +955,14 @@ function LeadModal({
         generatedEmail: data.email || "",
         generatedCall: data.call || "",
         associateReady: true,
+        readyForAssociate: true,
         linkedinVerify: false,
+        linkedinVerified: true,
         cpaVerify: false,
         skipped: false,
-        bucket: "ready",
-        status: "Ready to Work",
+        bucket: "readyForAssociate",
+        status: "Ready for Associate",
+        tags: [...new Set([...(lead.tags || []), "LinkedIn", "LinkedIn Verified", "Ready for Associate"])],
         workflowDay: lead.workflowDay || 1,
         bestFirstAction: "LinkedIn manually verified. Review generated sequence, then begin Day 1."
       });
@@ -895,15 +973,68 @@ function LeadModal({
     }
   }
 
-  function saveNote() {
-    if (!note.trim()) return;
-    onAddNote({
+
+  function toggleTask(task: string) {
+    setCompletedTasks((current) =>
+      current.includes(task) ? current.filter((item) => item !== task) : [...current, task]
+    );
+  }
+
+  function canAdvanceDay() {
+    const day = lead.workflowDay || 1;
+    const required = DAY_REQUIREMENTS[day] || DAY_REQUIREMENTS[1];
+    return required.every((task) => completedTasks.includes(task)) && disposition !== "New / Not Worked" && note.trim().length >= 8;
+  }
+
+  function advanceDay() {
+    if (!canAdvanceDay()) {
+      setError("Complete all required tasks, select a disposition, and add a real note before advancing.");
+      return;
+    }
+
+    const nextDay = Math.min((lead.workflowDay || 1) + 1, 10);
+    const callNote: LeadNote = {
       id: `note_${Date.now()}`,
       leadId: lead.id,
       leadName: String(lead.name || "Lead"),
       note,
       disposition,
-      at: new Date().toISOString()
+      at: new Date().toISOString(),
+      nextFollowUp
+    };
+
+    onAddNote(callNote);
+    onUpdated({
+      ...lead,
+      workflowDay: nextDay,
+      disposition,
+      nextFollowUp,
+      requiredTasks: [],
+      callHistory: [...(lead.callHistory || []), callNote]
+    });
+    setCompletedTasks([]);
+    setNote("");
+    setError("");
+  }
+
+  function saveNote() {
+    if (!note.trim()) return;
+    const savedNote: LeadNote = {
+      id: `note_${Date.now()}`,
+      leadId: lead.id,
+      leadName: String(lead.name || "Lead"),
+      note,
+      disposition,
+      at: new Date().toISOString(),
+      nextFollowUp
+    };
+    onAddNote(savedNote);
+    onUpdated({
+      ...lead,
+      disposition,
+      nextFollowUp,
+      requiredTasks: completedTasks,
+      callHistory: [...(lead.callHistory || []), savedNote]
     });
     setNote("");
   }
@@ -955,6 +1086,7 @@ Educational only. No guaranteed returns. No tax advice. Prospect should consult 
             <h2 id="modalLeadName" className="mt-1 text-2xl font-black">{lead.name}</h2>
             <p id="modalLeadTitle" className="mt-1 text-sm text-basin-muted">{lead.title}</p>
             <p id="modalLeadCompany" className="text-sm text-basin-muted">{lead.company}</p>
+            <p className="mt-2 font-mono text-xs text-basin-gold">Status: {lead.status || lead.bucket} · Day {lead.workflowDay || 0} · Disposition: {lead.disposition || "New / Not Worked"}</p>
           </div>
           <Button variant="secondary" onClick={onClose}>Close</Button>
         </div>
@@ -972,9 +1104,15 @@ Educational only. No guaranteed returns. No tax advice. Prospect should consult 
                   </div>
                 )) : empty("No evidence trail.")}
               </div>
-              <a id="btnOpenNav" target="_blank" className="inline-flex rounded-xl border border-basin-gold bg-gradient-to-b from-basin-gold2 to-basin-gold px-3 py-2 text-sm font-black text-black" href={linkedinUrl}>
-                Open Sales Navigator <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
+              {contacts(lead).some((c) => /linkedin/i.test(`${c.type} ${c.value}`)) ? (
+                <a id="btnOpenNav" target="_blank" className="inline-flex rounded-xl border border-basin-gold bg-gradient-to-b from-basin-gold2 to-basin-gold px-3 py-2 text-sm font-black text-black" href={linkedinUrl}>
+                  Open LinkedIn / Sales Navigator <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              ) : lead.sourceUrl ? (
+                <a target="_blank" className="inline-flex rounded-xl border border-basin-border bg-[#222b3a] px-3 py-2 text-sm font-black text-basin-text" href={lead.sourceUrl}>
+                  Open Source Evidence <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              ) : null}
             </CardContent>
           </Card>
 
@@ -1000,10 +1138,29 @@ Educational only. No guaranteed returns. No tax advice. Prospect should consult 
           <Card className="xl:col-span-2">
             <CardHeader><div><CardTitle>Call Notes + Handoff</CardTitle><CardDescription>Notes stay attached to the lead card.</CardDescription></div></CardHeader>
             <CardContent className="space-y-3">
-              <div className="grid gap-3 md:grid-cols-[220px_1fr_auto_auto]">
-                <Input value={disposition} onChange={(e) => setDisposition(e.target.value)} placeholder="Disposition" />
+              <div className="grid gap-3 lg:grid-cols-[260px_1fr_220px]">
+                <select className="rounded-xl border border-basin-border bg-[#0d151f] px-3 py-2 text-sm text-basin-text outline-none" value={disposition} onChange={(e) => setDisposition(e.target.value)}>
+                  {DISPOSITIONS.map((item) => <option key={item} value={item}>{item}</option>)}
+                </select>
                 <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Add call note, objection, follow-up, or outcome..." />
+                <Input type="date" value={nextFollowUp} onChange={(e) => setNextFollowUp(e.target.value)} />
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-[#0c141d] p-4">
+                <div className="mb-3 font-black">Required Tasks — Day {lead.workflowDay || 1}</div>
+                <div className="grid gap-2 md:grid-cols-2">
+                  {(DAY_REQUIREMENTS[lead.workflowDay || 1] || DAY_REQUIREMENTS[1]).map((task) => (
+                    <label key={task} className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/20 p-3 text-sm text-basin-muted">
+                      <input type="checkbox" checked={completedTasks.includes(task)} onChange={() => toggleTask(task)} />
+                      <span>{task}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
                 <Button variant="secondary" onClick={saveNote}>Save Note</Button>
+                <Button variant="teal" onClick={advanceDay}>Advance to Next Day</Button>
                 <Button variant="primary" onClick={buildHandoff}>Handoff Sheet</Button>
               </div>
               <div className="space-y-2">

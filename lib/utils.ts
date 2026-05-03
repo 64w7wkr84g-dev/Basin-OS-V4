@@ -19,7 +19,7 @@ export function gradeColor(grade?: LeadGrade | string) {
 }
 
 export function statusColor(lead: Lead) {
-  if (lead.associateReady || lead.bucket === "ready") return "border-emerald-400/40 bg-emerald-500/15 text-emerald-300";
+  if (lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready") return "border-emerald-400/40 bg-emerald-500/15 text-emerald-300";
   if (lead.linkedinVerify || lead.bucket === "linkedinVerify") return "border-indigo-400/40 bg-indigo-500/15 text-indigo-300";
   if (lead.cpaVerify || lead.isCPA || lead.bucket === "cpaVerify") return "border-amber-400/40 bg-amber-500/15 text-amber-300";
   if (lead.bucket === "research") return "border-sky-400/40 bg-sky-500/15 text-sky-300";
@@ -27,7 +27,7 @@ export function statusColor(lead: Lead) {
 }
 
 export function leadStatus(lead: Lead) {
-  if (lead.associateReady || lead.bucket === "ready") return "Ready";
+  if (lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready") return "Ready";
   if (lead.linkedinVerify || lead.bucket === "linkedinVerify") return "LinkedIn Verify";
   if (lead.cpaVerify || lead.isCPA || lead.bucket === "cpaVerify") return "CPA Verify";
   if (lead.bucket === "research") return "Research";
@@ -43,7 +43,16 @@ export function fmt(value?: number | null) { return new Intl.NumberFormat("en-US
 
 export function prioritySort(a: Lead, b: Lead) {
   const gr = (g?: string) => ({ A: 1, B: 2, C: 3, D: 4 }[g || ""] || 5);
-  const rr = (lead: Lead) => lead.associateReady ? 1 : lead.linkedinVerify ? 2 : lead.cpaVerify || lead.isCPA ? 3 : lead.bucket === "research" ? 6 : 9;
+  const rr = (lead: Lead) =>
+    (lead.readyForAssociate || lead.associateReady || lead.bucket === "readyForAssociate" || lead.bucket === "ready")
+      ? 1
+      : lead.linkedinVerify
+        ? 2
+        : lead.cpaVerify || lead.isCPA
+          ? 3
+          : lead.bucket === "research"
+            ? 6
+            : 9;
   return rr(a) - rr(b) || gr(a.grade) - gr(b.grade) || (b.score ?? 0) - (a.score ?? 0) || String(a.name).localeCompare(String(b.name));
 }
 

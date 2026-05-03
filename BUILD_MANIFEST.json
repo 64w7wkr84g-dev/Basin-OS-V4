@@ -6,13 +6,18 @@
   },
   {
     "path": ".github/workflows/radar.yml",
-    "bytes": 1445,
-    "sha256": "a4b586a44d4b8815d806529cce0bbd0a81b362c642360077d6db69ae263bd8df"
+    "bytes": 1446,
+    "sha256": "c2fba6606958fc4f9deb0e6cfe5937edd898c16f83971ff18e5d3fcc2f82389c"
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 6991,
-    "sha256": "4be01341ff28c6d0d6482eee40915e02c5ea3dd86a3849a3c53ab34479df5541"
+    "bytes": 7292,
+    "sha256": "6cbb2a65b2be584eaaa33ab5af51223a3f2bbe674a30de23aacb9945b3cb2ef1"
+  },
+  {
+    "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
+    "bytes": 828,
+    "sha256": "414cb5e812fa3a66439a587a6ecfa395367dee13f8711f3637ee0152e021de3d"
   },
   {
     "path": "DELETE_OLD_FILES_BEFORE_UPLOAD.md",
@@ -21,8 +26,8 @@
   },
   {
     "path": "README.md",
-    "bytes": 2096,
-    "sha256": "398d4400e00293b33350dab5a7305868ad93fe0f9a64910cf37e1da64b987835"
+    "bytes": 2883,
+    "sha256": "e92f4ce4c018381997086e06d58c68101dd1f0b7fbf0c7285f605825ae308aa8"
   },
   {
     "path": "app/analytics/page.tsx",
@@ -126,13 +131,13 @@
   },
   {
     "path": "basin-radar-runner.js",
-    "bytes": 29354,
-    "sha256": "f9497fdcddd99f99d6ccf9abf8c3abe39dbc15280858e6463727bea5ce62ff02"
+    "bytes": 33334,
+    "sha256": "41180c2d402ad5352f83a95cfa59d485775797bc10ac0dcd1e40a587040bd385"
   },
   {
     "path": "components/BasinOSApp.tsx",
-    "bytes": 54421,
-    "sha256": "c3e512d2108e1c0a81244d7b167d2f7613e344ab0dac63f3e8da976ae3e01297"
+    "bytes": 62654,
+    "sha256": "3140a86f2310600377c9b4948df47d6d26b19307377a3767b06f8b6e95b5720d"
   },
   {
     "path": "components/ThemeProvider.tsx",
@@ -171,8 +176,8 @@
   },
   {
     "path": "lib/utils.ts",
-    "bytes": 3147,
-    "sha256": "abdff543de3c660f21b00c626b13e601247d0a529a65c6bc49db03fdf43f8494"
+    "bytes": 3447,
+    "sha256": "a1f173ab4fb596597ef933ed82e09d2df2f47e219ac481389bf813b9a955c8cf"
   },
   {
     "path": "next.config.mjs",
@@ -181,8 +186,8 @@
   },
   {
     "path": "package.json",
-    "bytes": 1150,
-    "sha256": "c38131c2823def4689b36bd4db659b508fe5de71c397e22041f2380663fb6495"
+    "bytes": 1192,
+    "sha256": "667d6ba277cb26a4dbc676ab309be1e1fe1b36e65c8bd0ae6495fe3fef52c1a6"
   },
   {
     "path": "postcss.config.mjs",
@@ -191,8 +196,8 @@
   },
   {
     "path": "public/data/radar-leads.json",
-    "bytes": 1348,
-    "sha256": "4cbd25b628ea0c86c1f4688517c1f287b2bc341e93bc15b6c3eee81fe5a2ec8a"
+    "bytes": 1503,
+    "sha256": "fdc5f849968c0ebf7646fa2429db4a867f7cc6b9958ef3fbbeca0359045c8df8"
   },
   {
     "path": "public/data/radar-rejected.json",
@@ -216,8 +221,8 @@
   },
   {
     "path": "radar-leads.json",
-    "bytes": 1348,
-    "sha256": "4cbd25b628ea0c86c1f4688517c1f287b2bc341e93bc15b6c3eee81fe5a2ec8a"
+    "bytes": 1503,
+    "sha256": "fdc5f849968c0ebf7646fa2429db4a867f7cc6b9958ef3fbbeca0359045c8df8"
   },
   {
     "path": "radar-rejected.json",
@@ -231,8 +236,8 @@
   },
   {
     "path": "radar.yml",
-    "bytes": 1445,
-    "sha256": "a4b586a44d4b8815d806529cce0bbd0a81b362c642360077d6db69ae263bd8df"
+    "bytes": 1446,
+    "sha256": "c2fba6606958fc4f9deb0e6cfe5937edd898c16f83971ff18e5d3fcc2f82389c"
   },
   {
     "path": "tailwind.config.ts",
@@ -246,7 +251,7 @@
   },
   {
     "path": "types/index.ts",
-    "bytes": 2610,
-    "sha256": "9b66aecc1edf841754c946ab7728797f8fbdb0ae91c5a0f72ad0a40f62cf3a95"
+    "bytes": 2847,
+    "sha256": "77e0e02b23191cb2cac65ff5ea41f45201fd3b8acf23bfb41729f4809efea4ff"
   }
 ]

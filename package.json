@@ -1,8 +1,8 @@
 {
-  "name": "basin-os-v4-2-closed-loop",
-  "version": "4.2.0",
+  "name": "basin-os-v4-3-complete-closed-circuit",
+  "version": "4.3.0",
   "private": true,
-  "description": "Basin OS V4.1 full migration build: Next.js secure CRM with radar, playbook, LinkedIn verify, sequences, notes, handoffs, and analytics.",
+  "description": "Basin OS V4.3 complete closed-circuit CRM: source discovery, Brave enrichment, LinkedIn verify, ready-for-associate workflow, dispositions, playbook, notes, handoffs.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

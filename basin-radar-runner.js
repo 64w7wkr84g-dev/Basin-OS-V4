@@ -21,13 +21,13 @@ const BRAVE_API_KEY = process.env.BRAVE_API_KEY || "";
 const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-const MAX_PUBLIC_SEARCHES = Number(process.env.MAX_PUBLIC_SEARCHES || 450);
-const MAX_GROQ_CALLS = Number(process.env.MAX_GROQ_CALLS || 120);
-// NPI is only a seed source, not the main lead source.
-const MAX_NPI = Number(process.env.MAX_NPI || 35);
-const MAX_RSS = Number(process.env.MAX_RSS || 140);
-const MAX_LINKEDIN_DISCOVERY = Number(process.env.MAX_LINKEDIN_DISCOVERY || 180);
-const MAX_CPA_DISCOVERY = Number(process.env.MAX_CPA_DISCOVERY || 90);
+const MAX_PUBLIC_SEARCHES = Number(process.env.MAX_PUBLIC_SEARCHES || 500);
+const MAX_GROQ_CALLS = Number(process.env.MAX_GROQ_CALLS || 140);
+// NPI/MPI is a seed source, not the main lead engine.
+const MAX_NPI = Number(process.env.MAX_NPI || 45);
+const MAX_RSS = Number(process.env.MAX_RSS || 160);
+const MAX_LINKEDIN_DISCOVERY = Number(process.env.MAX_LINKEDIN_DISCOVERY || 200);
+const MAX_CPA_DISCOVERY = Number(process.env.MAX_CPA_DISCOVERY || 100);
 
 const STATE_PATH = path.join("public", "data", "radar-state.json");
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -103,8 +103,23 @@ function linkedinFromResult(result) {
 }
 function defaultExtraction(textSnippet) {
   const snippet = clean(textSnippet);
-  const score = 50;
-  return { name: null, company: null, title: null, isPerson: false, isCPA: /cpa|tax|account/i.test(snippet), score, grade: gradeFromScore(score), fitReason: "Default fallback score because AI parsing was unavailable. Manual verification required." };
+  const isLinkedIn = /linkedin\.com\/(in|pub)\//i.test(snippet);
+  const isCPA = /(cpa|certified public accountant|tax partner|tax advisor|tax planning|accounting firm)/i.test(snippet);
+  const isMedical = /(physician|surgeon|orthopaedic|orthopedic|anesthesiology|dentist|doctor|medical director|provider)/i.test(snippet);
+  const isAttorney = /(attorney|law partner|partner at|law firm|litigator)/i.test(snippet);
+  const likelyPerson = /[A-Z][a-z]+ [A-Z][a-z]+/.test(snippet);
+  const base = isCPA ? 78 : isLinkedIn ? 74 : isAttorney ? 70 : isMedical ? 62 : 50;
+  const score = likelyPerson ? base : Math.min(base, 55);
+  return {
+    name: null,
+    company: null,
+    title: isCPA ? "CPA / Tax Professional" : isMedical ? "Medical Professional" : isAttorney ? "Attorney / Partner" : null,
+    isPerson: likelyPerson,
+    isCPA,
+    score,
+    grade: gradeFromScore(score),
+    fitReason: "Fallback parser classified this public signal; manual verification still required."
+  };
 }
 function parseGroqJson(content) {
   const cleaned = String(content || "").trim().replace(/^```json/i, "").replace(/^```/i, "").replace(/```$/i, "").trim();
@@ -128,7 +143,7 @@ Rules:
 - Extract a real human person, not a company, clinic, school, department, article title, award, or office.
 - If a real human cannot be clearly identified, set name to null and isPerson to false.
 - isCPA true only for a CPA, tax partner, accounting professional, tax-planning professional, or accountant.
-- Score 0-100 for usefulness as a compliant educational lead or CPA/referral path for Basin Ventures.
+- Score 0-100 for usefulness as a compliant educational lead or CPA/referral path for Basin Ventures. LinkedIn profile URL + professional/business owner signal should score above bare NPI-only provider records. NPI-only records should normally score 50-62 unless enriched with email, LinkedIn, business ownership, award, practice growth, or CPA/referral context.
 - Grade must match score: A=88+, B=72-87, C=58-71, D<58.
 - Do not say or imply they are accredited.
 - Do not give tax advice.
@@ -252,53 +267,114 @@ function evidenceCount(lead) {
   return Array.isArray(lead.evidenceTrail) ? lead.evidenceTrail.filter(e => clean(e.url || e.whatItProves || "")).length : 0;
 }
 
+function ensureTag(lead, tag) {
+  lead.tags ||= [];
+  if (!lead.tags.includes(tag)) lead.tags.push(tag);
+}
+
+function clearRouteTags(lead) {
+  lead.tags = (lead.tags || []).filter(tag => ![
+    "Ready for Associate",
+    "LinkedIn Verify",
+    "LinkedIn Verified",
+    "CPA Verify",
+    "CPA",
+    "Research / Enrich",
+    "Skipped",
+    "A Grade",
+    "B Grade",
+    "C Grade",
+    "D Grade",
+    "Email",
+    "Phone",
+    "LinkedIn",
+    "RSS/Public",
+    "NPI/MPI",
+    "Brave Enriched"
+  ].includes(tag));
+}
+
+function addSourceTags(lead) {
+  const blob = `${lead.sourceType || ""} ${lead.source || ""} ${lead.sourceUrl || ""}`.toLowerCase();
+
+  if (/rss|news|public/.test(blob)) ensureTag(lead, "RSS/Public");
+  if (/npi|mpi|npiregistry/.test(blob)) ensureTag(lead, "NPI/MPI");
+  if (/cpa|tax|account/.test(blob) || lead.isCPA) ensureTag(lead, "CPA");
+  if (hasContact(lead, "email")) ensureTag(lead, "Email");
+  if (hasContact(lead, "phone")) ensureTag(lead, "Phone");
+  if (hasContact(lead, "linkedin")) ensureTag(lead, "LinkedIn");
+  if (evidenceCount(lead) >= 2) ensureTag(lead, "Brave Enriched");
+}
+
 function routeLead(lead) {
+  clearRouteTags(lead);
+
   const isPerson = isNamedPerson(lead);
   const isCPA = lead.isCPA === true;
   const score = Math.max(0, Math.min(100, Number(lead.score || 0)));
   const email = hasContact(lead, "email");
   const phone = hasContact(lead, "phone");
   const linkedIn = hasContact(lead, "linkedin");
-  const enriched = evidenceCount(lead) >= 2 || linkedIn || email;
-
-  // Closed-loop rules:
-  // READY = real named person + email + phone + enriched/public evidence + score threshold.
-  // LINKEDIN VERIFY = LinkedIn URL exists but contact/profile info still needs manual verification.
-  // CPA VERIFY = CPA/referral candidate that must be reviewed before outreach.
-  // RESEARCH = partial route; not associate-ready.
-  // SKIPPED = no usable route; do not waste associate time.
-  const ready = Boolean(isPerson && email && phone && enriched && score >= 58);
-  const linkedinVerify = Boolean(isPerson && !ready && linkedIn);
-  const cpaVerify = Boolean(isPerson && !ready && !linkedinVerify && isCPA);
-  const research = Boolean(isPerson && !ready && !linkedinVerify && !cpaVerify && (email || phone || score >= 72));
+  const evidenceN = evidenceCount(lead);
+  const npiOnly = /npi|mpi/i.test(`${lead.sourceType || ""} ${lead.source || ""}`) && !linkedIn && !email && evidenceN <= 1;
 
   lead.score = score;
   lead.grade = gradeFromScore(score);
   lead.isPerson = isPerson;
   lead.isCPA = isCPA;
-  lead.associateReady = ready;
+
+  ensureTag(lead, `${lead.grade} Grade`);
+  addSourceTags(lead);
+
+  // Closed-circuit CRM rules:
+  // Ready for Associate = real named person + email + phone + evidence/enrichment + score >= 58.
+  // LinkedIn Verify = LinkedIn URL found but human verification still needed.
+  // CPA Verify = CPA/referral route needing review.
+  // Research / Enrich = partial but not associate-ready.
+  // Skipped = no usable route.
+  const readyForAssociate = Boolean(isPerson && email && phone && evidenceN >= 1 && score >= 58);
+  const linkedinVerify = Boolean(isPerson && !readyForAssociate && linkedIn);
+  const cpaVerify = Boolean(isPerson && !readyForAssociate && !linkedinVerify && isCPA);
+  const research = Boolean(isPerson && !readyForAssociate && !linkedinVerify && !cpaVerify && !npiOnly && (email || phone || score >= 70));
+  const skipped = Boolean(!readyForAssociate && !linkedinVerify && !cpaVerify && !research);
+
+  lead.associateReady = readyForAssociate;
+  lead.readyForAssociate = readyForAssociate;
   lead.linkedinVerify = linkedinVerify;
+  lead.linkedinVerified = Boolean(lead.linkedinVerified && readyForAssociate);
   lead.cpaVerify = cpaVerify;
   lead.needsResearch = research;
-  lead.skipped = Boolean(!ready && !linkedinVerify && !cpaVerify && !research);
-  lead.bucket = ready ? "ready" : linkedinVerify ? "linkedinVerify" : cpaVerify ? "cpaVerify" : research ? "research" : "skipped";
-  lead.status = ready ? "Ready to Work" : linkedinVerify ? "LinkedIn Verify" : cpaVerify ? "CPA Verify" : research ? "Research / Enrich" : "Skipped / No Warm Route";
-  lead.queue = lead.status;
-  lead.workflowDay = ready ? 1 : 0;
-  lead.type = isCPA ? "cpa" : "investor";
-  lead.priorityRank = ready ? 1 : linkedinVerify ? 2 : cpaVerify ? 3 : research ? 6 : 9;
+  lead.skipped = skipped;
 
-  if (ready) {
-    lead.bestFirstAction = "Ready: email + phone + evidence exist. Start Day 1 with email or LinkedIn touch, then call only after review.";
+  lead.bucket = readyForAssociate ? "readyForAssociate" : linkedinVerify ? "linkedinVerify" : cpaVerify ? "cpaVerify" : research ? "research" : "skipped";
+  lead.status = readyForAssociate ? "Ready for Associate" : linkedinVerify ? "LinkedIn Verify" : cpaVerify ? "CPA Verify" : research ? "Research / Enrich" : "Skipped / No Warm Route";
+  lead.queue = lead.status;
+  lead.workflowDay = readyForAssociate ? (lead.workflowDay || 1) : 0;
+  lead.type = isCPA ? "cpa" : "investor";
+  lead.priorityRank = readyForAssociate ? 1 : linkedinVerify ? 2 : cpaVerify ? 3 : research ? 6 : 9;
+
+  if (readyForAssociate) ensureTag(lead, "Ready for Associate");
+  if (linkedinVerify) ensureTag(lead, "LinkedIn Verify");
+  if (lead.linkedinVerified) ensureTag(lead, "LinkedIn Verified");
+  if (cpaVerify) ensureTag(lead, "CPA Verify");
+  if (research) ensureTag(lead, "Research / Enrich");
+  if (skipped) ensureTag(lead, "Skipped");
+
+  if (readyForAssociate) {
+    lead.bestFirstAction = "Ready for Associate: email + phone + evidence exist. Start Day 1 with email or LinkedIn touch, then call only after review.";
   } else if (linkedinVerify) {
-    lead.bestFirstAction = "LinkedIn Verify: open the profile manually, confirm identity, paste bio/contact context, then move to Ready.";
+    lead.bestFirstAction = "LinkedIn Verify: open the profile manually, confirm identity, paste bio/contact context, then move to Ready for Associate.";
   } else if (cpaVerify) {
     lead.bestFirstAction = "CPA Verify: review referral/tax-professional relevance before outreach.";
   } else if (research) {
-    lead.bestFirstAction = "Research: incomplete route. Needs enrichment before associate workflow.";
+    lead.bestFirstAction = "Research / Enrich: incomplete route. Needs enrichment before associate workflow.";
   } else {
     lead.bestFirstAction = "Skipped: no email + phone + LinkedIn/manual verification route.";
   }
+
+  lead.disposition = lead.disposition || "New / Not Worked";
+  lead.requiredTasks = lead.requiredTasks || [];
+  lead.callHistory = lead.callHistory || [];
 
   return lead;
 }
@@ -313,14 +389,14 @@ async function fetchBraveQueryLeads(query, count, sourceContext) {
 }
 async function fetchLinkedInDiscovery() {
   const queries = [
-    'site:linkedin.com/in "physician" "practice owner" Texas',
-    'site:linkedin.com/in "orthopedic surgeon" Texas',
-    'site:linkedin.com/in "anesthesiologist" "medical director"',
+    'site:linkedin.com/in ("physician" OR "surgeon" OR "dentist") ("owner" OR "partner" OR "founder") Texas',
+    'site:linkedin.com/in "orthopedic surgeon" ("owner" OR "partner" OR "private practice")',
+    'site:linkedin.com/in "anesthesiologist" ("medical director" OR "partner")',
     'site:linkedin.com/in "dentist" "practice owner"',
-    'site:linkedin.com/in "attorney" "law partner" Texas',
-    'site:linkedin.com/in "CEO" "founder" acquisition',
-    'site:linkedin.com/in "CPA" "tax partner" Texas',
-    'site:linkedin.com/in "business owner" "liquidity event"'
+    'site:linkedin.com/in "attorney" ("law partner" OR "managing partner") Texas',
+    'site:linkedin.com/in ("CEO" OR "founder" OR "owner") ("acquisition" OR "exit" OR "sold")',
+    'site:linkedin.com/in "CPA" ("tax partner" OR "tax advisor" OR "tax planning") Texas',
+    'site:linkedin.com/in "business owner" ("liquidity event" OR "private equity" OR "M&A")'
   ];
   const out = [];
   for (const query of queries) {
@@ -352,10 +428,11 @@ function extractXml(item, tag) {
 }
 async function fetchRssSeeds() {
   const feeds = [
-    "https://news.google.com/rss/search?q=doctor%20joins%20practice%20OR%20surgeon%20named%20partner%20USA&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=physician%20opened%20medical%20practice%20OR%20surgeon%20conference%20speaker%20USA&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=CPA%20tax%20planning%20business%20owner%20liquidity%20event%20USA&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=attorney%20law%20partner%20award%20business%20owner%20USA&hl=en-US&gl=US&ceid=US:en"
+    "https://news.google.com/rss/search?q=(doctor%20OR%20surgeon%20OR%20physician)%20(owner%20OR%20partner%20OR%20founder)%20practice%20USA&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=(orthopedic%20surgeon%20OR%20dentist%20OR%20anesthesiologist)%20(named%20OR%20joins%20OR%20opens%20OR%20acquires)%20USA&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=(CPA%20OR%20tax%20partner%20OR%20tax%20advisor)%20(tax%20planning%20OR%20high%20net%20worth%20OR%20business%20owner)%20USA&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=(attorney%20OR%20law%20partner%20OR%20managing%20partner)%20(award%20OR%20named%20OR%20business%20owner)%20USA&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=(founder%20OR%20CEO%20OR%20business%20owner)%20(sold%20company%20OR%20acquisition%20OR%20liquidity%20event)%20USA&hl=en-US&gl=US&ceid=US:en"
   ];
   const out = [];
   for (const feed of feeds) {
@@ -444,9 +521,11 @@ async function main() {
   const radarState = await readJson(STATE_PATH, { seen: {}, suppressed: {} });
   const errors = [];
   let linkedin = [], cpa = [], rss = [], npi = [];
+
+  // Pull warm/contextual sources first. NPI is a backup seed source and should not dominate or consume all Groq calls.
+  try { rss = await fetchRssSeeds(); } catch (error) { errors.push({ source: "rss", reason: error.message }); }
   try { linkedin = await fetchLinkedInDiscovery(); } catch (error) { errors.push({ source: "linkedinDiscovery", reason: error.message }); }
   try { cpa = await fetchCpaDiscovery(); } catch (error) { errors.push({ source: "cpaDiscovery", reason: error.message }); }
-  try { rss = await fetchRssSeeds(); } catch (error) { errors.push({ source: "rss", reason: error.message }); }
   try { npi = await fetchNpiSeeds(); } catch (error) { errors.push({ source: "npi", reason: error.message }); }
   let all = dedupeLeads([...linkedin, ...cpa, ...rss, ...npi]).filter(lead => !radarState.suppressed?.[leadKey(lead)]);
   all.sort((a, b) => { const rank = lead => lead.sourceType === "linkedin" ? 1 : lead.sourceType === "cpa" ? 2 : lead.sourceType === "rss" ? 3 : 4; return rank(a) - rank(b) || Number(b.score || 0) - Number(a.score || 0); });
@@ -457,7 +536,7 @@ async function main() {
     enriched.push(lead);
   }
   all = dedupeLeads(enriched).map(routeLead).filter(lead => lead.isPerson === true).sort((a, b) => (a.priorityRank || 9) - (b.priorityRank || 9) || Number(b.score || 0) - Number(a.score || 0) || a.name.localeCompare(b.name));
-  const ready = all.filter(lead => lead.associateReady);
+  const ready = all.filter(lead => lead.readyForAssociate || lead.associateReady);
   const linkedinVerify = all.filter(lead => lead.linkedinVerify);
   const cpaVerify = all.filter(lead => lead.cpaVerify);
   const research = all.filter(lead => lead.bucket === "research");
@@ -467,8 +546,8 @@ async function main() {
     generatedAt: now(),
     engine: "Basin OS V4.1 Full Migration Radar Runner",
     compliance: { linkedin: "No LinkedIn page scraping. Stores possible LinkedIn profile URLs from Brave public search results only.", outreach: "No auto-send. Manual review required before every outreach.", qualification: "Accredited status is never assumed." },
-    routingRules: { ready: "Groq says real person + email + score >= 58.", linkedinVerify: "Groq says real person + LinkedIn URL but no email.", cpaVerify: "Groq says real person + CPA/tax/referral relevance.", skipped: "No email, no LinkedIn URL, no CPA/referral path." },
-    stats: { totalFound: all.length, activeVisible: active.length, readyToWork: ready.length, linkedinVerify: linkedinVerify.length, cpaVerify: cpaVerify.length, skipped: skipped.length, npiCollected: npi.length, rssCollected: rss.length, linkedinDiscoveryCollected: linkedin.length, cpaCollected: cpa.length, emailFound: active.filter(l => hasContact(l, "email")).length, linkedinCandidatesFound: active.filter(l => hasContact(l, "linkedin")).length, phoneFound: active.filter(l => hasContact(l, "phone")).length, publicSearches: runtime.publicSearches, groqCalls: runtime.groqCalls, groqFailures: runtime.groqFailures, braveFailures: runtime.braveFailures, braveConfigured: Boolean(BRAVE_API_KEY), groqConfigured: Boolean(GROQ_API_KEY), errors: errors.length },
+    routingRules: { readyForAssociate: "Real person + email + phone + evidence/enrichment + score >= 58.", linkedinVerify: "LinkedIn URL found but manual profile/contact verification is still needed.", cpaVerify: "CPA/tax/referral candidate requiring manual review.", research: "Partial route, not associate-ready.", skipped: "No email + phone + LinkedIn/manual verification route." },
+    stats: { totalFound: all.length, activeVisible: active.length, readyForAssociate: ready.length, readyToWork: ready.length, linkedinVerify: linkedinVerify.length, cpaVerify: cpaVerify.length, skipped: skipped.length, npiCollected: npi.length, rssCollected: rss.length, linkedinDiscoveryCollected: linkedin.length, cpaCollected: cpa.length, emailFound: active.filter(l => hasContact(l, "email")).length, linkedinCandidatesFound: active.filter(l => hasContact(l, "linkedin")).length, phoneFound: active.filter(l => hasContact(l, "phone")).length, publicSearches: runtime.publicSearches, groqCalls: runtime.groqCalls, groqFailures: runtime.groqFailures, braveFailures: runtime.braveFailures, braveConfigured: Boolean(BRAVE_API_KEY), groqConfigured: Boolean(GROQ_API_KEY), errors: errors.length },
     leads: ready,
     linkedinVerifyCandidates: linkedinVerify,
     cpaVerifyCandidates: cpaVerify,

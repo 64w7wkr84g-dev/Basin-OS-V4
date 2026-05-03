@@ -1,5 +1,5 @@
 export type LeadGrade = "A" | "B" | "C" | "D";
-export type LeadBucket = "ready" | "linkedinVerify" | "cpaVerify" | "research" | "skipped";
+export type LeadBucket = "readyForAssociate" | "ready" | "linkedinVerify" | "cpaVerify" | "research" | "skipped";
 export type PageKey =
   | "dashboard" | "lead-radar" | "leads" | "linkedin-builder" | "rss-monitor"
   | "investor-profiler" | "cpa-profiler" | "sequence-builder" | "call-coach"
@@ -32,13 +32,20 @@ export interface Lead {
   evidenceTrail?: EvidenceItem[];
   accreditedLikelyReason?: string;
   associateReady?: boolean;
+  readyForAssociate?: boolean;
   linkedinVerify?: boolean;
+  linkedinVerified?: boolean;
   cpaVerify?: boolean;
   skipped?: boolean;
   bucket?: LeadBucket | string;
   status?: string;
   workflowDay?: number;
   bestFirstAction?: string;
+  tags?: string[];
+  disposition?: string;
+  nextFollowUp?: string;
+  requiredTasks?: string[];
+  callHistory?: LeadNote[];
   generatedEmail?: string;
   generatedCall?: string;
   linkedinBio?: string;
@@ -49,6 +56,7 @@ export interface Lead {
 export interface RadarStats {
   totalFound: number;
   activeVisible: number;
+  readyForAssociate?: number;
   readyToWork: number;
   linkedinVerify: number;
   cpaVerify: number;
