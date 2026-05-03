@@ -787,6 +787,9 @@ async function main(){
       githubModelCalls:ai.modelCalls || 0
     },
     errors,
+    // Embedded fallback arrays: cleanup page can still load Phone Verify / Research even if sidecar JSON files are not published yet.
+    phoneOnlyCandidates,
+    researchCandidates,
     leads:usable
   };
 
