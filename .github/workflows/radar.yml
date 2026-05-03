@@ -12,6 +12,8 @@ jobs:
   radar:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
     steps:
       - name: Checkout repository
@@ -20,7 +22,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
+
+      - name: Show runtime
+        run: |
+          node --version
+          npm --version
 
       - name: Run Basin Radar
         env:
