@@ -1,24 +1,4 @@
 {
-  "lastRunAt": "2026-05-03T11:39:40.471Z",
-  "status": "complete",
-  "message": "Generated 80 total candidates, 0 ready, 80 prep/research, 500 public searches.",
-  "totalFound": 80,
-  "readyToWork": 0,
-  "filteredNotUsable": 116,
-  "research": 80,
-  "npiCollected": 80,
-  "rssCollected": 0,
-  "linkedinVerify": 0,
-  "linkedinCandidatesFound": 0,
-  "contactNeeded": 80,
-  "publicSearches": 500,
-  "aiCalls": 0,
-  "noReadyCap": true,
-  "npiPhoneOnlyReady": false,
-  "tier1Ready": 0,
-  "tier2Ready": 0,
-  "tier3Ready": 0,
-  "tier4Ready": 0,
-  "braveConfigured": true,
-  "groqConfigured": true
+  "status": "starter",
+  "message": "Run workflow to populate radar data."
 }

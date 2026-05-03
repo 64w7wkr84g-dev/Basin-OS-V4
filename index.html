@@ -670,215 +670,7 @@ function copySelectedHandoff(){let note=selectedHandoffNote();if(!note)return to
 function downloadSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');download('director-handoff-'+(note.name||'prospect').replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.txt',buildHandoffText(note));toast('HANDOFF DOWNLOADED')}
 function printHandoffById(id){let note=handoffMeetings().find(n=>n.id===id);if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
 function printSelectedHandoff(){let note=selectedHandoffNote();if(!note)return toast('NO HANDOFF');printHandoffNote(note)}
-function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'
-<script id="basin-v75-hard-repair">
-(function(){
-  'use strict';
-  const STORE_KEY='basin_os_integrated';
-  const $=(s,r=document)=>r.querySelector(s);
-  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-  const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-  function parse(v,d){try{return JSON.parse(v)}catch(e){return d}}
-  function getStore(){
-    const s=parse(localStorage.getItem(STORE_KEY)||'{}',{});
-    s.leads=Array.isArray(s.leads)?s.leads:[];
-    s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];
-    s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];
-    s.leadFactory=s.leadFactory||{};
-    s.leadFactory.leads=Array.isArray(s.leadFactory.leads)?s.leadFactory.leads:[];
-    s.leadFactory.research=Array.isArray(s.leadFactory.research)?s.leadFactory.research:[];
-    return s;
-  }
-  function slim(l){
-    if(!l||typeof l!=='object') return l;
-    const keep=['id','name','title','role','specialty','company','location','practiceLocation','source','sourceType','sourceUrl','signal','summary','contactMethods','bestContactRoute','queue','status','bucket','day','workflowDay','grade','score','sourceConfidence','qualityTier','priorityRank','crossReferenced','fitReason','accreditedLikelyReason','evidenceTrail','nextAction','bestFirstAction','associateReady'];
-    const o={}; keep.forEach(k=>{if(l[k]!==undefined)o[k]=l[k];});
-    if(Array.isArray(o.contactMethods)) o.contactMethods=o.contactMethods.slice(0,8);
-    if(Array.isArray(o.evidenceTrail)) o.evidenceTrail=o.evidenceTrail.slice(0,8);
-    return o;
-  }
-  function saveStore(s){
-    const o=Object.assign({},s);
-    o.leads=(o.leads||[]).slice(0,800).map(slim);
-    o.radarLeads=(o.radarLeads||[]).slice(0,800).map(slim);
-    o.leadWorkflow=(o.leadWorkflow||[]).slice(0,1200).map(slim);
-    o.leadFactory=o.leadFactory||{};
-    o.leadFactory.leads=(o.leadFactory.leads||[]).slice(0,800).map(slim);
-    o.leadFactory.research=(o.leadFactory.research||[]).slice(0,1000).map(slim);
-    try{ localStorage.setItem(STORE_KEY,JSON.stringify(o)); window.STORE=Object.assign(window.STORE||{},o); return true; }
-    catch(e){
-      Object.keys(localStorage).forEach(k=>{ if(/backup|archive|debug|old|radar_raw|basin_os_integrated_bak/i.test(k)) try{localStorage.removeItem(k)}catch(_){} });
-      try{ localStorage.setItem(STORE_KEY,JSON.stringify(o)); window.STORE=Object.assign(window.STORE||{},o); return true; }catch(e2){ console.warn('[Basin V7.5] local save still failed',e2); return false; }
-    }
-  }
-  function groqKey(){return localStorage.getItem('GROQ_API_KEY')||localStorage.getItem('BASIN_GROQ_API_KEY')||''}
-  function markGroq(){
-    if(groqKey()){
-      window.BV_API=window.BV_API||{};
-      window.BV_API.groqLive=true;
-      window.BV_API.groqConnected=true;
-      return true;
-    }
-    return false;
-  }
-  async function fetchJson(path){
-    try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'}); const t=await r.text(); if(!r.ok||!t.trim()) return null; return JSON.parse(t);}catch(e){return null}
-  }
-  async function radar(){
-    return (await fetchJson('data/radar-leads.json')) || (await fetchJson('radar-leads.json')) || {stats:{},leads:[],researchCandidates:[],allCandidates:[],errors:[]};
-  }
-  function allRecords(r){
-    const s=getStore();
-    return [...(r.leads||[]),...(r.researchCandidates||[]),...(r.allCandidates||[]),...s.leads,...s.radarLeads,...s.leadWorkflow,...s.leadFactory.leads,...s.leadFactory.research].filter(Boolean);
-  }
-  function stats(r){
-    const st=r.stats||{}, rec=allRecords(r);
-    return {
-      found:Number(st.totalFound||Math.max(rec.length,(r.allCandidates||[]).length,(r.leads||[]).length+(r.researchCandidates||[]).length)||0),
-      ready:Number(st.readyToWork||(r.leads||[]).length||0),
-      filtered:Number(st.filteredNotUsable||st.research||(r.researchCandidates||[]).length||0),
-      npi:Number(st.npiCollected||rec.filter(l=>/npi|npiregistry|provider-view/i.test([l.source,l.sourceType,l.sourceUrl].join(' '))).length||0),
-      rss:Number(st.rssCollected||rec.filter(l=>/rss|google rss|news\.google|article/i.test([l.source,l.sourceType,l.sourceUrl].join(' '))).length||0),
-      li:Number(st.linkedinCandidatesFound||st.linkedinVerify||rec.filter(l=>/linkedin/i.test([l.queue,l.status,l.sourceConfidence,(l.contactMethods||[]).map(c=>`${c.type} ${c.value}`).join(' ')].join(' '))).length||0),
-      contact:Number(st.contactNeeded||rec.filter(l=>/contact route/i.test([l.queue,l.status,l.bucket].join(' '))).length||0),
-      searches:Number(st.publicSearches||0),
-      ai:Number(st.aiCalls||0),
-      generatedAt:r.generatedAt||''
-    };
-  }
-  function importRadarToLocal(r){
-    const s=getStore();
-    const ready=Array.isArray(r.leads)?r.leads:[];
-    const research=Array.isArray(r.researchCandidates)?r.researchCandidates:[];
-    if(ready.length || research.length){
-      s.leadFactory.leads=ready;
-      s.leadFactory.research=research;
-      s.radarLeads=ready;
-      s.leadWorkflow=ready.concat(research);
-      s.lastRadarLoadedAt=new Date().toISOString();
-      saveStore(s);
-    }
-  }
-  function setCard(labelRe,value){
-    const page=$('.page.active')||document;
-    $$('[class*="stat"],[class*="metric"],[class*="kpi"],.grid3>div,.stats-grid>div,.kpi-grid>div',page).forEach(card=>{
-      const t=card.textContent||'';
-      if(labelRe.test(t)){
-        const n=card.querySelector('.stat-val,.kpi-val,.metric-val,.num,.value') || [...card.querySelectorAll('*')].find(x=>/^\d+$/.test(clean(x.textContent))) || card.firstElementChild;
-        if(n) n.textContent=String(value);
-      }
-    });
-  }
-  function updateCounts(st){
-    setCard(/total\s*found|total\s*leads|all\s*sources/i,st.found);
-    setCard(/usable\s*leads|ready\s*to\s*work/i,st.ready);
-    setCard(/active\s*lead\s*work|active\s*cadence/i,st.ready);
-    setCard(/filtered\s*\/\s*not\s*usable|filtered|not\s*usable/i,st.filtered);
-    setCard(/has\s*contact/i,st.ready);
-    $$('a,button,.nav-item,.side-link,.menu-item').forEach(el=>{
-      const badge=el.querySelector('.badge,.pill,.count,[class*="badge"],[class*="count"]');
-      const txt=el.textContent||'';
-      if(/Lead Radar/i.test(txt)&&badge) badge.textContent=String(st.found);
-      if(/\bLeads\b/i.test(txt)&&!/Radar/i.test(txt)&&badge) badge.textContent=String(st.ready||st.found);
-    });
-  }
-  function panelApi(st){
-    const groq=markGroq(), brave=st.searches>0;
-    return `<div id="basin-v75-api-panel" class="panel" style="margin:0 0 16px 0;border:2px solid rgba(77,209,185,.8);box-shadow:0 0 0 1px rgba(77,209,185,.18)">
-      <div class="panel-hd"><div><div class="panel-title">API Command Center — Live Connections</div><div class="panel-sub">Groq is browser-side. Brave runs in GitHub Actions from BRAVE_API_KEY. The browser cannot read GitHub Secrets, so Brave is verified by Public Searches.</div></div></div>
-      <div class="panel-bd"><div class="grid3">
-        <div class="stat"><div class="stat-val">${groq?'ON':'OFF'}</div><div class="stat-lbl">GROQ BROWSER</div><div class="mini-note">${groq?'Saved browser key detected and auto-connected.':'Click Save / Connect Groq.'}</div></div>
-        <div class="stat"><div class="stat-val">${brave?'ON':'CHECK'}</div><div class="stat-lbl">BRAVE GITHUB RUNNER</div><div class="mini-note">Latest public searches: ${st.searches}. If this stays 0 after a green Action, check BRAVE_API_KEY.</div></div>
-        <div class="stat"><div class="stat-val">${st.ai}</div><div class="stat-lbl">AI CALLS</div><div class="mini-note">Groq browser + GitHub/runner AI are separate.</div></div>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-        <button class="btn btn-primary" onclick="BasinV75.saveGroq()">Save / Connect Groq</button>
-        <button class="btn btn-primary" onclick="BasinV75.saveBraveTest()">Optional: Save Brave Test Key</button>
-        <button class="btn btn-ghost" onclick="BasinV75.testBrave()">Test Optional Brave Browser Key</button>
-        <button class="btn btn-ghost" onclick="BasinV75.explain()">Explain Brave vs Browser</button>
-      </div>
-      <div class="mini-note" style="margin-top:12px"><strong>Latest radar:</strong> found ${st.found} · ready ${st.ready} · prep/filter ${st.filtered} · LinkedIn candidates ${st.li} · NPI ${st.npi} · RSS/Public ${st.rss}</div>
-      </div></div>`;
-  }
-  function panelLead(st){
-    return `<div id="basin-v75-priority-panel" class="panel" style="margin-bottom:14px;border:2px solid rgba(216,148,36,.65)">
-      <div class="panel-hd"><div><div class="panel-title">Priority / Source Truth</div><div class="panel-sub">No cap. Everything found is retained. Email/LinkedIn/cross-referenced leads rank above plain NPI phone seeds.</div></div></div>
-      <div class="panel-bd"><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="chip">Raw Found ${st.found}</span><span class="chip">Ready ${st.ready}</span><span class="chip">Prep / Filtered ${st.filtered}</span><span class="chip">LinkedIn Candidates ${st.li}</span><span class="chip">NPI Seeds ${st.npi}</span><span class="chip">RSS/Public ${st.rss}</span><span class="chip">Brave Searches ${st.searches}</span>
-      </div></div></div>`;
-  }
-  function sortCards(){
-    const page=$('.page.active')||document;
-    $$('.panel,.card,section,div',page).forEach(container=>{
-      const records=$$(':scope > .record',container);
-      if(records.length<2) return;
-      records.sort((a,b)=>{
-        const tx=x=>x.textContent||'';
-        const grade=x=>({A:0,B:20,C:40,D:60,R:80}[((tx(x).match(/\b([ABCDR])\b/)||[])[1]||'R')]??80);
-        const score=x=>Number((tx(x).match(/score\s*[: ]\s*(\d+)/i)||[])[1]||0);
-        const boost=x=>(/email/i.test(tx(x))?-10:0)+(/linkedin/i.test(tx(x))?-8:0)+(/phone/i.test(tx(x))?-2:0);
-        return (grade(a)-score(a)/100+boost(a))-(grade(b)-score(b)/100+boost(b));
-      });
-      records.forEach(r=>container.appendChild(r));
-    });
-  }
-  async function render(){
-    const r=await radar(), st=stats(r);
-    importRadarToLocal(r);
-    updateCounts(st);
-    const page=$('.page.active')||document;
-    $('#basin-v75-api-panel')?.remove();
-    $('#basin-v75-priority-panel')?.remove();
-    if(/API Command Center/i.test(page.textContent||'')){
-      $$('.panel',page).forEach(p=>{
-        const t=p.textContent||'';
-        if(/Connection Setup|GROQ API KEY|Run Limits & Automation|Live API Status/i.test(t) && !/Live Connections/i.test(t)) p.style.display='none';
-      });
-      const h=$('h1,h2,.page-title',page)||page.firstElementChild||page;
-      h.insertAdjacentHTML('afterend',panelApi(st));
-    }
-    if(/Lead Radar|Leads Workflow|Lead Generation Dashboard/i.test(page.textContent||'')){
-      const anchor=$('#basin-v67-tabs',page)||$('#v74-priority-panel',page)||$('.grid3,.stats-grid,.kpi-grid',page);
-      if(anchor) anchor.insertAdjacentHTML('afterend',panelLead(st));
-      sortCards();
-    }
-  }
-  window.BasinV75={
-    render,
-    saveGroq(){
-      const key=prompt('Paste Groq API key for this browser:',groqKey());
-      if(key===null)return;
-      if(clean(key)){localStorage.setItem('GROQ_API_KEY',clean(key,400));localStorage.setItem('BASIN_GROQ_API_KEY',clean(key,400));markGroq();alert('Groq saved and connected in this browser.');}
-      else {localStorage.removeItem('GROQ_API_KEY');localStorage.removeItem('BASIN_GROQ_API_KEY');alert('Groq key cleared.');}
-      setTimeout(render,200);
-    },
-    saveBraveTest(){
-      const key=prompt('Optional browser Brave test key. Production Brave belongs in GitHub Secret BRAVE_API_KEY:',localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||'');
-      if(key===null)return;
-      if(clean(key)){localStorage.setItem('BASIN_BRAVE_API_KEY_TEST_ONLY',clean(key,400));alert('Optional Brave browser test key saved.');}
-      else {localStorage.removeItem('BASIN_BRAVE_API_KEY_TEST_ONLY');alert('Optional Brave browser test key cleared.');}
-      setTimeout(render,200);
-    },
-    async testBrave(){
-      const key=localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||'';
-      if(!key)return alert('No optional browser Brave test key saved. Production still uses GitHub Secret BRAVE_API_KEY.');
-      try{
-        const r=await fetch('https://api.search.brave.com/res/v1/web/search?q='+encodeURIComponent('Basin Ventures Southlake')+'&count=1',{headers:{'Accept':'application/json','X-Subscription-Token':key}});
-        alert(r.ok?'Brave browser test succeeded.':'Brave browser test failed: '+r.status);
-      }catch(e){alert('Browser test blocked/failed. GitHub Actions may still work server-side. '+e.message);}
-    },
-    explain(){alert('Groq can show ON in the browser because the key is saved locally. Brave production cannot show the secret itself because GitHub Secrets are not exposed to webpages. Brave shows ON when the latest radar JSON reports Public Searches > 0.');}
-  };
-  window.addEventListener('error',e=>console.warn('[Basin V7.5 caught error]',e.message));
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);});
-  else {setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);}
-  new MutationObserver(()=>{clearTimeout(window.__basinV75);window.__basinV75=setTimeout(render,450);}).observe(document.body,{childList:true,subtree:true});
-})();
-</script>
-
-</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
+function printHandoffNote(note){let txt=buildHandoffText(note);let w=window.open('','_blank');if(!w){copyText(null,txt);return toast('POPUP BLOCKED — COPIED')}w.document.write('<!doctype html><html><head><title>Director Handoff - '+esc(note.name||'Prospect')+'</title><style>body{font-family:Arial,sans-serif;color:#0f172a;margin:28px;line-height:1.35}h1{font-size:20px;margin:0 0 4px}.meta{color:#64748b;font-size:12px;margin-bottom:14px}.box{border:1px solid #d1d5db;border-radius:8px;padding:10px;margin:8px 0;break-inside:avoid}.h{font-size:11px;font-weight:bold;color:#b45309;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}.b{white-space:pre-wrap;font-size:12px}@media print{body{margin:18px}.box{padding:8px;margin:6px 0}}</style></head><body><h1>Director Handoff — Basin Ventures</h1><div class="meta">'+esc(note.name||'')+' · '+esc(note.due?fmtDue(note.due):'No meeting time')+'</div>'+txt.split('\n\n').slice(1).map(p=>{let i=p.indexOf('\n'),h=i>-1?p.slice(0,i):p,b=i>-1?p.slice(i+1):'';return '<div class="box"><div class="h">'+esc(h)+'</div><div class="b">'+esc(b)+'</div></div>'}).join('')+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
 function snoozeFollowup(id,days){let n=STORE.notes.find(x=>x.id===id);if(!n)return;let base=new Date();base.setDate(base.getDate()+days);base.setHours(9,0,0,0);n.due=toLocalInputValue(base);if((n.status||'Open')==='Done')n.status='Follow-Up Needed';save();refresh();toast(days===1?'MOVED TO TOMORROW':'MOVED +7 DAYS')}
 function toLocalInputValue(d){let pad=x=>String(x).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function syncNoteToPipeline(note){let inv=(STORE.investors||[]).find(x=>(x.name||'').toLowerCase()===(note.name||'').toLowerCase());if(!inv)return;let o=(note.outcome||'').toLowerCase(),s=(note.status||'').toLowerCase();if(o.includes('appointment booked')||s.includes('meeting')){let old=inv.status;inv.status='Appt Booked';inv.statusUpdated=new Date().toISOString();if(old!=='Appt Booked'&&note.id.indexOf('handoff')===-1)autoCreateHandoffTask(inv)}else if(o.includes('director call held'))inv.status='Call Held';else if(o.includes('closed won'))inv.status='Closed';else if(o.includes('connected')||o.includes('voicemail')||o.includes('no answer')){if(inv.status==='New')inv.status='Contacted'}}
@@ -2063,9 +1855,9 @@ applyApiCorsClarity();
 console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
 </script>
 
-<script src="js/lead-factory-v6.js?v=75"></script>
+<script src="js/lead-factory-v6.js?v=76"></script>
 
-<script id="basin-v75-hard-repair">
+<script id="basin-v76-hard-repair-safe">
 (function(){
   'use strict';
   const STORE_KEY='basin_os_integrated';
@@ -2073,7 +1865,6 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
   const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
   function parse(v,d){try{return JSON.parse(v)}catch(e){return d}}
   function getStore(){
     const s=parse(localStorage.getItem(STORE_KEY)||'{}',{});
@@ -2087,7 +1878,7 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
   }
   function slim(l){
     if(!l||typeof l!=='object') return l;
-    const keep=['id','name','title','role','specialty','company','location','practiceLocation','source','sourceType','sourceUrl','signal','summary','contactMethods','bestContactRoute','queue','status','bucket','day','workflowDay','grade','score','sourceConfidence','qualityTier','priorityRank','crossReferenced','fitReason','accreditedLikelyReason','evidenceTrail','nextAction','bestFirstAction','associateReady'];
+    const keep=['id','name','title','role','specialty','company','location','practiceLocation','source','sourceType','sourceUrl','signal','summary','contactMethods','bestContactRoute','queue','status','bucket','day','workflowDay','grade','score','sourceConfidence','qualityTier','priorityRank','crossReferenced','fitReason','accreditedLikelyReason','evidenceTrail','nextAction','bestFirstAction','associateReady','workflow','notes'];
     const o={}; keep.forEach(k=>{if(l[k]!==undefined)o[k]=l[k];});
     if(Array.isArray(o.contactMethods)) o.contactMethods=o.contactMethods.slice(0,8);
     if(Array.isArray(o.evidenceTrail)) o.evidenceTrail=o.evidenceTrail.slice(0,8);
@@ -2101,28 +1892,18 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
     o.leadFactory=o.leadFactory||{};
     o.leadFactory.leads=(o.leadFactory.leads||[]).slice(0,800).map(slim);
     o.leadFactory.research=(o.leadFactory.research||[]).slice(0,1000).map(slim);
-    try{ localStorage.setItem(STORE_KEY,JSON.stringify(o)); window.STORE=Object.assign(window.STORE||{},o); return true; }
+    try{localStorage.setItem(STORE_KEY,JSON.stringify(o));window.STORE=Object.assign(window.STORE||{},o);return true;}
     catch(e){
-      Object.keys(localStorage).forEach(k=>{ if(/backup|archive|debug|old|radar_raw|basin_os_integrated_bak/i.test(k)) try{localStorage.removeItem(k)}catch(_){} });
-      try{ localStorage.setItem(STORE_KEY,JSON.stringify(o)); window.STORE=Object.assign(window.STORE||{},o); return true; }catch(e2){ console.warn('[Basin V7.5] local save still failed',e2); return false; }
+      Object.keys(localStorage).forEach(k=>{if(/backup|archive|debug|old|radar_raw|basin_os_integrated_bak/i.test(k))try{localStorage.removeItem(k)}catch(_){}})
+      try{localStorage.setItem(STORE_KEY,JSON.stringify(o));window.STORE=Object.assign(window.STORE||{},o);return true;}catch(e2){console.warn('[Basin V7.6] local save failed',e2);return false;}
     }
   }
   function groqKey(){return localStorage.getItem('GROQ_API_KEY')||localStorage.getItem('BASIN_GROQ_API_KEY')||''}
-  function markGroq(){
-    if(groqKey()){
-      window.BV_API=window.BV_API||{};
-      window.BV_API.groqLive=true;
-      window.BV_API.groqConnected=true;
-      return true;
-    }
-    return false;
-  }
+  function markGroq(){if(groqKey()){window.BV_API=window.BV_API||{};window.BV_API.groqLive=true;window.BV_API.groqConnected=true;return true;}return false;}
   async function fetchJson(path){
-    try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'}); const t=await r.text(); if(!r.ok||!t.trim()) return null; return JSON.parse(t);}catch(e){return null}
+    try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});const t=await r.text();if(!r.ok||!t.trim())return null;return JSON.parse(t);}catch(e){return null}
   }
-  async function radar(){
-    return (await fetchJson('data/radar-leads.json')) || (await fetchJson('radar-leads.json')) || {stats:{},leads:[],researchCandidates:[],allCandidates:[],errors:[]};
-  }
+  async function radar(){return (await fetchJson('data/radar-leads.json'))||(await fetchJson('radar-leads.json'))||{stats:{},leads:[],researchCandidates:[],allCandidates:[],errors:[]};}
   function allRecords(r){
     const s=getStore();
     return [...(r.leads||[]),...(r.researchCandidates||[]),...(r.allCandidates||[]),...s.leads,...s.radarLeads,...s.leadWorkflow,...s.leadFactory.leads,...s.leadFactory.research].filter(Boolean);
@@ -2138,31 +1919,22 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
       li:Number(st.linkedinCandidatesFound||st.linkedinVerify||rec.filter(l=>/linkedin/i.test([l.queue,l.status,l.sourceConfidence,(l.contactMethods||[]).map(c=>`${c.type} ${c.value}`).join(' ')].join(' '))).length||0),
       contact:Number(st.contactNeeded||rec.filter(l=>/contact route/i.test([l.queue,l.status,l.bucket].join(' '))).length||0),
       searches:Number(st.publicSearches||0),
-      ai:Number(st.aiCalls||0),
-      generatedAt:r.generatedAt||''
+      ai:Number(st.aiCalls||0)
     };
   }
   function importRadarToLocal(r){
+    const ready=Array.isArray(r.leads)?r.leads:[], research=Array.isArray(r.researchCandidates)?r.researchCandidates:[];
+    if(!ready.length&&!research.length)return;
     const s=getStore();
-    const ready=Array.isArray(r.leads)?r.leads:[];
-    const research=Array.isArray(r.researchCandidates)?r.researchCandidates:[];
-    if(ready.length || research.length){
-      s.leadFactory.leads=ready;
-      s.leadFactory.research=research;
-      s.radarLeads=ready;
-      s.leadWorkflow=ready.concat(research);
-      s.lastRadarLoadedAt=new Date().toISOString();
-      saveStore(s);
-    }
+    s.leadFactory.leads=ready; s.leadFactory.research=research; s.radarLeads=ready; s.leadWorkflow=ready.concat(research); s.lastRadarLoadedAt=new Date().toISOString();
+    saveStore(s);
   }
   function setCard(labelRe,value){
     const page=$('.page.active')||document;
     $$('[class*="stat"],[class*="metric"],[class*="kpi"],.grid3>div,.stats-grid>div,.kpi-grid>div',page).forEach(card=>{
-      const t=card.textContent||'';
-      if(labelRe.test(t)){
-        const n=card.querySelector('.stat-val,.kpi-val,.metric-val,.num,.value') || [...card.querySelectorAll('*')].find(x=>/^\d+$/.test(clean(x.textContent))) || card.firstElementChild;
-        if(n) n.textContent=String(value);
-      }
+      const t=card.textContent||''; if(!labelRe.test(t))return;
+      const n=card.querySelector('.stat-val,.kpi-val,.metric-val,.num,.value')||[...card.querySelectorAll('*')].find(x=>/^\d+$/.test(clean(x.textContent)))||card.firstElementChild;
+      if(n)n.textContent=String(value);
     });
   }
   function updateCounts(st){
@@ -2172,15 +1944,15 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
     setCard(/filtered\s*\/\s*not\s*usable|filtered|not\s*usable/i,st.filtered);
     setCard(/has\s*contact/i,st.ready);
     $$('a,button,.nav-item,.side-link,.menu-item').forEach(el=>{
-      const badge=el.querySelector('.badge,.pill,.count,[class*="badge"],[class*="count"]');
+      const badge=el.querySelector('.badge,.pill,.count,[class*="badge"],[class*="count"]'); if(!badge)return;
       const txt=el.textContent||'';
-      if(/Lead Radar/i.test(txt)&&badge) badge.textContent=String(st.found);
-      if(/\bLeads\b/i.test(txt)&&!/Radar/i.test(txt)&&badge) badge.textContent=String(st.ready||st.found);
+      if(/Lead Radar/i.test(txt)) badge.textContent=String(st.found);
+      if(/\bLeads\b/i.test(txt)&&!/Radar/i.test(txt)) badge.textContent=String(st.ready||st.found);
     });
   }
   function panelApi(st){
     const groq=markGroq(), brave=st.searches>0;
-    return `<div id="basin-v75-api-panel" class="panel" style="margin:0 0 16px 0;border:2px solid rgba(77,209,185,.8);box-shadow:0 0 0 1px rgba(77,209,185,.18)">
+    return `<div id="basin-v76-api-panel" class="panel" style="margin:0 0 16px 0;border:2px solid rgba(77,209,185,.8);box-shadow:0 0 0 1px rgba(77,209,185,.18)">
       <div class="panel-hd"><div><div class="panel-title">API Command Center — Live Connections</div><div class="panel-sub">Groq is browser-side. Brave runs in GitHub Actions from BRAVE_API_KEY. The browser cannot read GitHub Secrets, so Brave is verified by Public Searches.</div></div></div>
       <div class="panel-bd"><div class="grid3">
         <div class="stat"><div class="stat-val">${groq?'ON':'OFF'}</div><div class="stat-lbl">GROQ BROWSER</div><div class="mini-note">${groq?'Saved browser key detected and auto-connected.':'Click Save / Connect Groq.'}</div></div>
@@ -2188,16 +1960,16 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
         <div class="stat"><div class="stat-val">${st.ai}</div><div class="stat-lbl">AI CALLS</div><div class="mini-note">Groq browser + GitHub/runner AI are separate.</div></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-        <button class="btn btn-primary" onclick="BasinV75.saveGroq()">Save / Connect Groq</button>
-        <button class="btn btn-primary" onclick="BasinV75.saveBraveTest()">Optional: Save Brave Test Key</button>
-        <button class="btn btn-ghost" onclick="BasinV75.testBrave()">Test Optional Brave Browser Key</button>
-        <button class="btn btn-ghost" onclick="BasinV75.explain()">Explain Brave vs Browser</button>
+        <button class="btn btn-primary" onclick="BasinV76.saveGroq()">Save / Connect Groq</button>
+        <button class="btn btn-primary" onclick="BasinV76.saveBraveTest()">Optional: Save Brave Test Key</button>
+        <button class="btn btn-ghost" onclick="BasinV76.testBrave()">Test Optional Brave Browser Key</button>
+        <button class="btn btn-ghost" onclick="BasinV76.explain()">Explain Brave vs Browser</button>
       </div>
       <div class="mini-note" style="margin-top:12px"><strong>Latest radar:</strong> found ${st.found} · ready ${st.ready} · prep/filter ${st.filtered} · LinkedIn candidates ${st.li} · NPI ${st.npi} · RSS/Public ${st.rss}</div>
       </div></div>`;
   }
   function panelLead(st){
-    return `<div id="basin-v75-priority-panel" class="panel" style="margin-bottom:14px;border:2px solid rgba(216,148,36,.65)">
+    return `<div id="basin-v76-priority-panel" class="panel" style="margin-bottom:14px;border:2px solid rgba(216,148,36,.65)">
       <div class="panel-hd"><div><div class="panel-title">Priority / Source Truth</div><div class="panel-sub">No cap. Everything found is retained. Email/LinkedIn/cross-referenced leads rank above plain NPI phone seeds.</div></div></div>
       <div class="panel-bd"><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">
         <span class="chip">Raw Found ${st.found}</span><span class="chip">Ready ${st.ready}</span><span class="chip">Prep / Filtered ${st.filtered}</span><span class="chip">LinkedIn Candidates ${st.li}</span><span class="chip">NPI Seeds ${st.npi}</span><span class="chip">RSS/Public ${st.rss}</span><span class="chip">Brave Searches ${st.searches}</span>
@@ -2206,8 +1978,7 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
   function sortCards(){
     const page=$('.page.active')||document;
     $$('.panel,.card,section,div',page).forEach(container=>{
-      const records=$$(':scope > .record',container);
-      if(records.length<2) return;
+      const records=$$(':scope > .record',container); if(records.length<2)return;
       records.sort((a,b)=>{
         const tx=x=>x.textContent||'';
         const grade=x=>({A:0,B:20,C:40,D:60,R:80}[((tx(x).match(/\b([ABCDR])\b/)||[])[1]||'R')]??80);
@@ -2218,57 +1989,60 @@ console.log('Basin OS integrated playbook + Tavily/Groq radar loaded ✓');
       records.forEach(r=>container.appendChild(r));
     });
   }
+  function rebindSidebar(){
+    document.querySelectorAll('.nav-item[onclick*="goPage"]').forEach(item=>{
+      if(item.dataset.v76Bound)return; item.dataset.v76Bound='1';
+      const raw=item.getAttribute('onclick')||''; const m=raw.match(/goPage\('([^']+)'/); if(!m)return;
+      item.addEventListener('click',function(e){
+        if(typeof window.goPage==='function'){ e.preventDefault(); window.goPage(m[1], item); }
+      },true);
+    });
+  }
   async function render(){
+    rebindSidebar();
     const r=await radar(), st=stats(r);
     importRadarToLocal(r);
     updateCounts(st);
     const page=$('.page.active')||document;
-    $('#basin-v75-api-panel')?.remove();
-    $('#basin-v75-priority-panel')?.remove();
+    $('#basin-v76-api-panel')?.remove(); $('#basin-v76-priority-panel')?.remove();
     if(/API Command Center/i.test(page.textContent||'')){
       $$('.panel',page).forEach(p=>{
-        const t=p.textContent||'';
-        if(/Connection Setup|GROQ API KEY|Run Limits & Automation|Live API Status/i.test(t) && !/Live Connections/i.test(t)) p.style.display='none';
+        const t=p.textContent||''; if(/Connection Setup|GROQ API KEY|Run Limits & Automation|Live API Status/i.test(t)&&!/Live Connections/i.test(t))p.style.display='none';
       });
       const h=$('h1,h2,.page-title',page)||page.firstElementChild||page;
       h.insertAdjacentHTML('afterend',panelApi(st));
     }
     if(/Lead Radar|Leads Workflow|Lead Generation Dashboard/i.test(page.textContent||'')){
       const anchor=$('#basin-v67-tabs',page)||$('#v74-priority-panel',page)||$('.grid3,.stats-grid,.kpi-grid',page);
-      if(anchor) anchor.insertAdjacentHTML('afterend',panelLead(st));
+      if(anchor)anchor.insertAdjacentHTML('afterend',panelLead(st));
       sortCards();
     }
   }
-  window.BasinV75={
+  window.BasinV76={
     render,
     saveGroq(){
-      const key=prompt('Paste Groq API key for this browser:',groqKey());
-      if(key===null)return;
+      const key=prompt('Paste Groq API key for this browser:',groqKey()); if(key===null)return;
       if(clean(key)){localStorage.setItem('GROQ_API_KEY',clean(key,400));localStorage.setItem('BASIN_GROQ_API_KEY',clean(key,400));markGroq();alert('Groq saved and connected in this browser.');}
-      else {localStorage.removeItem('GROQ_API_KEY');localStorage.removeItem('BASIN_GROQ_API_KEY');alert('Groq key cleared.');}
+      else{localStorage.removeItem('GROQ_API_KEY');localStorage.removeItem('BASIN_GROQ_API_KEY');alert('Groq key cleared.');}
       setTimeout(render,200);
     },
     saveBraveTest(){
-      const key=prompt('Optional browser Brave test key. Production Brave belongs in GitHub Secret BRAVE_API_KEY:',localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||'');
-      if(key===null)return;
+      const key=prompt('Optional browser Brave test key. Production Brave belongs in GitHub Secret BRAVE_API_KEY:',localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||''); if(key===null)return;
       if(clean(key)){localStorage.setItem('BASIN_BRAVE_API_KEY_TEST_ONLY',clean(key,400));alert('Optional Brave browser test key saved.');}
-      else {localStorage.removeItem('BASIN_BRAVE_API_KEY_TEST_ONLY');alert('Optional Brave browser test key cleared.');}
+      else{localStorage.removeItem('BASIN_BRAVE_API_KEY_TEST_ONLY');alert('Optional Brave browser test key cleared.');}
       setTimeout(render,200);
     },
     async testBrave(){
-      const key=localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||'';
-      if(!key)return alert('No optional browser Brave test key saved. Production still uses GitHub Secret BRAVE_API_KEY.');
-      try{
-        const r=await fetch('https://api.search.brave.com/res/v1/web/search?q='+encodeURIComponent('Basin Ventures Southlake')+'&count=1',{headers:{'Accept':'application/json','X-Subscription-Token':key}});
-        alert(r.ok?'Brave browser test succeeded.':'Brave browser test failed: '+r.status);
-      }catch(e){alert('Browser test blocked/failed. GitHub Actions may still work server-side. '+e.message);}
+      const key=localStorage.getItem('BASIN_BRAVE_API_KEY_TEST_ONLY')||''; if(!key)return alert('No optional browser Brave test key saved. Production still uses GitHub Secret BRAVE_API_KEY.');
+      try{const r=await fetch('https://api.search.brave.com/res/v1/web/search?q='+encodeURIComponent('Basin Ventures Southlake')+'&count=1',{headers:{'Accept':'application/json','X-Subscription-Token':key}}); alert(r.ok?'Brave browser test succeeded.':'Brave browser test failed: '+r.status);}
+      catch(e){alert('Browser test blocked/failed. GitHub Actions may still work server-side. '+e.message);}
     },
     explain(){alert('Groq can show ON in the browser because the key is saved locally. Brave production cannot show the secret itself because GitHub Secrets are not exposed to webpages. Brave shows ON when the latest radar JSON reports Public Searches > 0.');}
   };
-  window.addEventListener('error',e=>console.warn('[Basin V7.5 caught error]',e.message));
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);});
-  else {setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);}
-  new MutationObserver(()=>{clearTimeout(window.__basinV75);window.__basinV75=setTimeout(render,450);}).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('error',e=>console.warn('[Basin V7.6 caught error]',e.message));
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);});
+  else{setTimeout(render,250);setTimeout(render,1500);setTimeout(render,4500);}
+  new MutationObserver(()=>{clearTimeout(window.__basinV76);window.__basinV76=setTimeout(render,450);}).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 
