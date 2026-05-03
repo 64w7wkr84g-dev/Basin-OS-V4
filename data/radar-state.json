@@ -1,4 +1,615 @@
 {
-  "seen": {},
+  "seen": {
+    "morganlewisattorneylawpartnerusahttpsnewsgooglecomrssarticlescbmi9wfbvv95cuxqtkdszeq4m0zvakwzymzuq2uwt3dsqmluzevvvfc3t2hzde54dnjsbezvetvwnjvhs20tretlbkhjem9vv3pmbehvumhbd1z1bnfuvudvltzqrktlr01pcjzxrmmzvhpvwvlfynfvmwzjwkpqqwvbaxltskhonkfltgjldljxm0gyduhxsdjlvzm4smtntvbszmhou0fdt2ftwxmteet6uhfwavlhshjnzlfft0fawgnxdldxexuxadlgyk0tzdntxzljce1hz3rmdxbpcnfgsm1bzk1ybdnhtfrqdxl2oe40r01zz01haxj5u2znskzvoc5": {
+      "name": "Morgan Lewis",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "patrickyinglingattorneylawpartnerusahttpsnewsgooglecomrssarticlescbmijwfbvv95cuxntmxkmdrwukrbehvyd1bfv2m0lw9gtf93lvc3q0fnlwvzvjferfqwnlo0neuxnmozx2hnnkuxqlz1z1zou21xenncmwtyd2pmuwlzamhuqtbizexmqmtpy21pvnfwejbzb2lydwpnwuxhrg1mt2vsrwc2blrxtnzisxfvckhysv9cdlcwmfpjbwoc5": {
+      "name": "Patrick Yingling",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aadityavaidyaorthopaedicsurgeryprovideracurephysicaltherapyandwellnesscenterllchoustontx4084443080httpsnpiregistrycmshhsgovproviderview1114608312": {
+      "name": "AADITYA VAIDYA",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aaroncreekorthopaedicsurgeryprovideraaronsdoctorofficedestinfl8502902154httpsnpiregistrycmshhsgovproviderview1487251740": {
+      "name": "AARON CREEK",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aaroneubanksorthopaedicsurgeryprovideraaronceubanksmdpasouthlaketx8173108783httpsnpiregistrycmshhsgovproviderview1265977631": {
+      "name": "AARON EUBANKS",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aaronosborneorthopaedicsurgeryprovideraarongosbornedoincreddingca5302257800httpsnpiregistrycmshhsgovproviderview1013024926": {
+      "name": "AARON OSBORNE",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aaronschrayerorthopaedicsurgeryprovideraarondschrayermdpanorthlaketx9724201776httpsnpiregistrycmshhsgovproviderview1194183988": {
+      "name": "AARON SCHRAYER",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aaronschrayerorthopaedicsurgeryprovideraarondschrayermdpaflowermoundtx9724201776httpsnpiregistrycmshhsgovproviderview1528426426": {
+      "name": "AARON SCHRAYER",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "abedabdelazizorthopaedicsurgeryproviderlakewaytx5124391000httpsnpiregistrycmshhsgovproviderview1699262709": {
+      "name": "ABED ABDELAZIZ",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "abramburgherorthopaedicsurgeryprovideradvancedspineandpainllcphoenixaz4806400513httpsnpiregistrycmshhsgovproviderview1356950653": {
+      "name": "ABRAM BURGHER",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "abraransariorthopaedicsurgerydowatkinsvillega7066135880httpsnpiregistrycmshhsgovproviderview1467715540": {
+      "name": "ABRAR ANSARI",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "abtinforooharorthopaedicsurgeryproviderabtinforooharmdincencinoca3107704271httpsnpiregistrycmshhsgovproviderview1396012555": {
+      "name": "ABTIN FOROOHAR",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "adeetaminorthopaedicsurgerymdoklahomacityok4052712663httpsnpiregistrycmshhsgovproviderview1609337989": {
+      "name": "ADEET AMIN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "adhamabdelfattahorthopaedicsurgerymdsanantoniotx2106801000httpsnpiregistrycmshhsgovproviderview1073833026": {
+      "name": "ADHAM ABDELFATTAH",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "akereatteorthopaedicsurgeryproviderakfriendsllcdaviefl7543568300httpsnpiregistrycmshhsgovproviderview1700562345": {
+      "name": "AKERE ATTE",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "aliashraforthopaedicsurgeryprovideraashmdpllcdallastx2148247744httpsnpiregistrycmshhsgovproviderview1578112264": {
+      "name": "ALI ASHRAF",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "alirezaalijaniorthopaedicsurgerymdparkerco3033449090httpsnpiregistrycmshhsgovproviderview1184682742": {
+      "name": "ALIREZA ALIJANI",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "amgadaminorthopaedicsurgerymdbostonma6177249338httpsnpiregistrycmshhsgovproviderview1679861389": {
+      "name": "AMGAD AMIN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "amirabduljabbarorthopaedicsurgerymdseattlewa2063863880httpsnpiregistrycmshhsgovproviderview1801155767": {
+      "name": "AMIR ABDUL-JABBAR",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "amitagarwalaorthopaedicsurgerymdgoldenco3032331223httpsnpiregistrycmshhsgovproviderview1154383131": {
+      "name": "AMIT AGARWALA",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "amrabdelgawadorthopaedicsurgerymdbrooklynny7182837400httpsnpiregistrycmshhsgovproviderview1720228547": {
+      "name": "AMR ABDELGAWAD",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "andrewadamczykorthopaedicsurgerymdphoenixaz6025213250httpsnpiregistrycmshhsgovproviderview1639898620": {
+      "name": "ANDREW ADAMCZYK",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "angeliawilkinsorthopaedicsurgeryprovideragirouardllcpalatkafl3865302953httpsnpiregistrycmshhsgovproviderview1003026600": {
+      "name": "ANGELIA WILKINS",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "angeloparameswaranorthopaedicsurgeryprovideraaorthopedicshoustontx8323180381httpsnpiregistrycmshhsgovproviderview1073039244": {
+      "name": "ANGELO PARAMESWARAN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "anthonyabeneorthopaedicsurgerymdsanjoseca4089727000httpsnpiregistrycmshhsgovproviderview1457437964": {
+      "name": "ANTHONY ABENE",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "arnoldahnfeldtorthopaedicsurgerymdcoloradospringsco7195760437httpsnpiregistrycmshhsgovproviderview1396981387": {
+      "name": "ARNOLD AHNFELDT",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "benkodaeorthopaedicsurgeryprovider1stmedcareclinicbaytowntx8328773380httpsnpiregistrycmshhsgovproviderview1962805036": {
+      "name": "BEN KODAE",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "brandybarroworthopaedicsurgeryprovideraccuspinepllcscottsdaleaz2143963936httpsnpiregistrycmshhsgovproviderview1972998979": {
+      "name": "BRANDY BARROW",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "bryanmatankyorthopaedicsurgeryprovideradvancedorthopaedicsandsportsmedicinepcchandleraz5204261000httpsnpiregistrycmshhsgovproviderview1821594235": {
+      "name": "BRYAN MATANKY",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "bryanmatankyorthopaedicsurgeryprovideradvancedorthopaedicsandsportsmedicinepccasagrandeaz5204261000httpsnpiregistrycmshhsgovproviderview1417066788": {
+      "name": "BRYAN MATANKY",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "charlesabrahamsenorthopaedicsurgerymdbaypinesfl7273986661httpsnpiregistrycmshhsgovproviderview1134101298": {
+      "name": "CHARLES ABRAHAMSEN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "cyrusabbaschianorthopaedicsurgerymdplanotx9725665564httpsnpiregistrycmshhsgovproviderview1265662100": {
+      "name": "CYRUS ABBASCHIAN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "damonadamanyorthopaedicsurgerymdsuncitywestaz6235375600httpsnpiregistrycmshhsgovproviderview1770622771": {
+      "name": "DAMON ADAMANY",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "danielmullenorthopaedicsurgeryprovideradvancedorthopedicsllcmesaaz4808347000httpsnpiregistrycmshhsgovproviderview1790044410": {
+      "name": "DANIEL MULLEN",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "davidabbasiorthopaedicsurgerymddelraybeachfl5614658884httpsnpiregistrycmshhsgovproviderview1790947398": {
+      "name": "DAVID ABBASI",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "daviddominguezorthopaedicsurgeryprovider3dsportsmedicinejointcenterincmelbournefl3216108939httpsnpiregistrycmshhsgovproviderview1316351372": {
+      "name": "DAVID DOMINGUEZ",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "davishurleyorthopaedicsurgeryprovideradvancedorthopedicandsportsmedicinespecialistspcdenverco3033449090httpsnpiregistrycmshhsgovproviderview1871539478": {
+      "name": "DAVIS HURLEY",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "dilhanabeyewardeneorthopaedicsurgerymdpalmbeachgardensfl5616947776httpsnpiregistrycmshhsgovproviderview1063852663": {
+      "name": "DILHAN ABEYEWARDENE",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "donnasowersorthopaedicsurgeryprovideralpineorthopaedicssportsmedicinepctellurideco9706416788httpsnpiregistrycmshhsgovproviderview1881297059": {
+      "name": "DONNA SOWERS",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "donnasowersorthopaedicsurgeryprovideralpineorthopaedicssportsmedicinepccrestedbutteco9706416788httpsnpiregistrycmshhsgovproviderview1992308191": {
+      "name": "DONNA SOWERS",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "douglasabelesorthopaedicsurgerymdcastrovalleyca5105380430httpsnpiregistrycmshhsgovproviderview1508961582": {
+      "name": "DOUGLAS ABELES",
+      "lastSeen": "2026-05-03T12:48:59.731Z",
+      "status": "Research Needed"
+    },
+    "douglasadamsorthopaedicsurgerymdcoloradospringsco7196327669httpsnpiregistrycmshhsgovproviderview1760689707": {
+      "name": "DOUGLAS ADAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "edissonguamanorthopaedicsurgeryprovider4asurgicalservicesllcboyntonbeachfl5616170686httpsnpiregistrycmshhsgovproviderview1073299079": {
+      "name": "EDISSON GUAMAN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "eduardoanguizolaorthopaedicsurgeryprovideraccesshealthmedicalgroupincranchocucamongaca9094833530httpsnpiregistrycmshhsgovproviderview1306092622": {
+      "name": "EDUARDO ANGUIZOLA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "elisaabarcaorthopaedicsurgeryprovideradvancedspineandpainllcphoenixaz4805730130httpsnpiregistrycmshhsgovproviderview1134010192": {
+      "name": "ELISA ABARCA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "eslamalkaramanyorthopaedicsurgeryprovideroklahomacityok4052715964httpsnpiregistrycmshhsgovproviderview1770178873": {
+      "name": "ESLAM ALKARAMANY",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "faridehheidarpourorthopaedicsurgeryprovideradvancedmedicinerehabilitationoftexasdallastx2146962273httpsnpiregistrycmshhsgovproviderview1154593283": {
+      "name": "FARIDEH HEIDARPOUR",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "garyandersonorthopaedicsurgerymdoklahomacityok4059470911httpsnpiregistrycmshhsgovproviderview1952496259": {
+      "name": "GARY ANDERSON",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "garychenorthopaedicsurgeryprovideracurgentcareincanaheimca7146344884httpsnpiregistrycmshhsgovproviderview1114457538": {
+      "name": "GARY CHEN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "gauravabbiorthopaedicsurgerymdburlingameca6506921475httpsnpiregistrycmshhsgovproviderview1700074853": {
+      "name": "GAURAV ABBI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "geoffreyabramsorthopaedicsurgerymdstanfordca6507234000httpsnpiregistrycmshhsgovproviderview1285821223": {
+      "name": "GEOFFREY ABRAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "gloriabeimorthopaedicsurgeryprovideralpineorthopaedicssportsmedicinepcgunnisonco9706416788httpsnpiregistrycmshhsgovproviderview1376501387": {
+      "name": "GLORIA BEIM",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "haagendienerorthopaedicsurgeryprovidera1orthopedicllctempeaz4802997908httpsnpiregistrycmshhsgovproviderview1962788331": {
+      "name": "HAAGEN DIENER",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "huongleorthopaedicsurgeryprovider1960familypracticepaspringtx2815863888httpsnpiregistrycmshhsgovproviderview1184173221": {
+      "name": "HUONG LE",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jacobadamsorthopaedicsurgerymdscottsdaleaz4806974824httpsnpiregistrycmshhsgovproviderview1518256585": {
+      "name": "JACOB ADAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jamesackerorthopaedicsurgerymdormondbeachfl3866727850httpsnpiregistrycmshhsgovproviderview1972653434": {
+      "name": "JAMES ACKER",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jamesrayorthopaedicsurgeryprovideraarpphysicalmedicineandrehabllcladylakefl3522502252httpsnpiregistrycmshhsgovproviderview1851713960": {
+      "name": "JAMES RAY",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jarrettleathemorthopaedicsurgeryprovideradvancedspineandpainllcgilbertaz4805730130httpsnpiregistrycmshhsgovproviderview1487394888": {
+      "name": "JARRETT LEATHEM",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jarrettleathemorthopaedicsurgeryprovideradvancedspineandpainllcsurpriseaz4805730130httpsnpiregistrycmshhsgovproviderview1659030005": {
+      "name": "JARRETT LEATHEM",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jayalbrightorthopaedicsurgerymdauroraco7207771234httpsnpiregistrycmshhsgovproviderview1720058860": {
+      "name": "JAY ALBRIGHT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jeanjacquesabitbolorthopaedicsurgerymdsandiegoca8588742306httpsnpiregistrycmshhsgovproviderview1245281856": {
+      "name": "JEAN-JACQUES ABITBOL",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jeffreyabildgaardorthopaedicsurgerymdgilbertaz4809642908httpsnpiregistrycmshhsgovproviderview1528388584": {
+      "name": "JEFFREY ABILDGAARD",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jessicaevansorthopaedicsurgeryproviderabcsurgicalllcbeaumonttx4097812747httpsnpiregistrycmshhsgovproviderview1841810306": {
+      "name": "JESSICA EVANS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "johnandersonorthopaedicsurgerymdoklahomacityok4059470911httpsnpiregistrycmshhsgovproviderview1407949142": {
+      "name": "JOHN ANDERSON",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "johnathonozturkorthopaedicsurgeryprovideradvancedorthopedicsofoklahomapllcowassook9186098088httpsnpiregistrycmshhsgovproviderview1104663996": {
+      "name": "JOHNATHON OZTURK",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "johnathonozturkorthopaedicsurgeryprovideradvancedorthopedicsofoklahomapllcclaremoreok9183410600httpsnpiregistrycmshhsgovproviderview1437906302": {
+      "name": "JOHNATHON OZTURK",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "johnathonozturkorthopaedicsurgeryprovideradvancedorthopedicsofoklahomapllctulsaok9184942665httpsnpiregistrycmshhsgovproviderview1235676453": {
+      "name": "JOHNATHON OZTURK",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jonabbottorthopaedicsurgerymdtucsonaz5204443474httpsnpiregistrycmshhsgovproviderview1790973089": {
+      "name": "JON ABBOTT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "jorgeacevedoorthopaedicsurgerymdjacksonvillefl9046340640httpsnpiregistrycmshhsgovproviderview1710969225": {
+      "name": "JORGE ACEVEDO",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "joshuaabramsorthopaedicsurgerydophoenixaz6029442900httpsnpiregistrycmshhsgovproviderview1649482084": {
+      "name": "JOSHUA ABRAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "juliebartlettorthopaedicsurgeryprovider360orthoandspinellctampafl8333674968httpsnpiregistrycmshhsgovproviderview1972062685": {
+      "name": "JULIE BARTLETT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "kameeweardenorthopaedicsurgeryprovideradvancedorthopedicandsportsmedicinespecialistspcdenverco3033449090httpsnpiregistrycmshhsgovproviderview1831267566": {
+      "name": "KAMEE WEARDEN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "karimabdollahiorthopaedicsurgerymdlagunabeachca9494998226httpsnpiregistrycmshhsgovproviderview1942240403": {
+      "name": "KARIM ABDOLLAHI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "kasraahmadiniaorthopaedicsurgerymdtulsaok9184942665httpsnpiregistrycmshhsgovproviderview1831389865": {
+      "name": "KASRA AHMADINIA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "katethongtranganorthopaedicsurgeryprovideradvancedspinecarellcparadisevalleyaz6025260846httpsnpiregistrycmshhsgovproviderview1609756493": {
+      "name": "KATE THONGTRANGAN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "keivanabtahiorthopaedicsurgerydotulsaok9184946980httpsnpiregistrycmshhsgovproviderview1295000560": {
+      "name": "KEIVAN ABTAHI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "kendallcarllorthopaedicsurgeryprovider365spinecareofnorthtexaspllcplanotx4696930165httpsnpiregistrycmshhsgovproviderview1730696956": {
+      "name": "KENDALL CARLL",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "krisaldenorthopaedicsurgerymdphdbasaltco9707420115httpsnpiregistrycmshhsgovproviderview1992842132": {
+      "name": "KRIS ALDEN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "markbennallackorthopaedicsurgeryprovider1stindustrialmedicalgrouporangeca7142894693httpsnpiregistrycmshhsgovproviderview1689863995": {
+      "name": "MARK BENNALLACK",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "mathewjamesorthopaedicsurgeryprovideradvancedfootandanklecarephoenixaz6318278159httpsnpiregistrycmshhsgovproviderview1033626189": {
+      "name": "MATHEW JAMES",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "mehdiaboueiorthopaedicsurgerymdvilleplattela3373639486httpsnpiregistrycmshhsgovproviderview1871124909": {
+      "name": "MEHDI ABOUEI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "melaniegrossorthopaedicsurgeryprovider9397llcfortworthtx2146155168httpsnpiregistrycmshhsgovproviderview1972936102": {
+      "name": "MELANIE GROSS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "michaelabdulianorthopaedicsurgerymdglendaleca8185470608httpsnpiregistrycmshhsgovproviderview1649469628": {
+      "name": "MICHAEL ABDULIAN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "michaelabrahamsorthopaedicsurgerymdplantationfl9545838130httpsnpiregistrycmshhsgovproviderview1417069048": {
+      "name": "MICHAEL ABRAHAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "mohammedabbasorthopaedicsurgerymdtucsonaz5206269245httpsnpiregistrycmshhsgovproviderview1003437872": {
+      "name": "MOHAMMED ABBAS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "munawaraliorthopaedicsurgerymdoklahomacityok4052700501httpsnpiregistrycmshhsgovproviderview1508960030": {
+      "name": "MUNAWAR ALI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "nealagarwalorthopaedicsurgeryprovider123interventionalpainllcrichmondtx2818241885httpsnpiregistrycmshhsgovproviderview1013859578": {
+      "name": "NEAL AGARWAL",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "nealagarwalanesthesiologyprovider123interventionalpainllcrichmondtx2818241885httpsnpiregistrycmshhsgovproviderview1013859578": {
+      "name": "NEAL AGARWAL",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "neelanandorthopaedicsurgeryproviderabcspineinclosangelesca3104239769httpsnpiregistrycmshhsgovproviderview1427585306": {
+      "name": "NEEL ANAND",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "nicholasabidiorthopaedicsurgerymdcapitolaca8314754024httpsnpiregistrycmshhsgovproviderview1548273758": {
+      "name": "NICHOLAS ABIDI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "nicholasalfonsoorthopaedicsurgerymdauroraco7208480000httpsnpiregistrycmshhsgovproviderview1467895219": {
+      "name": "NICHOLAS ALFONSO",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "obafuntoabimbolaorthopaedicsurgerymdmphlakelandfl8636807214httpsnpiregistrycmshhsgovproviderview1891139945": {
+      "name": "OBAFUNTO ABIMBOLA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "pattysnyderorthopaedicsurgeryprovideraoinsitutepamcallentx9566862663httpsnpiregistrycmshhsgovproviderview1295854453": {
+      "name": "PATTY SNYDER",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "paulabbottorthopaedicsurgerymdfriscoco9706683633httpsnpiregistrycmshhsgovproviderview1871599753": {
+      "name": "PAUL ABBOTT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "paulabeytaorthopaedicsurgerymdburlingameca6506528700httpsnpiregistrycmshhsgovproviderview1225126147": {
+      "name": "PAUL ABEYTA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "paulalattarorthopaedicsurgerymdthorntonco3032872800httpsnpiregistrycmshhsgovproviderview1871013714": {
+      "name": "PAUL AL-ATTAR",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "payamrafatorthopaedicsurgeryproviderastepaheadfootcarepcfriscotx9146997200httpsnpiregistrycmshhsgovproviderview1417180845": {
+      "name": "PAYAM RAFAT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "rafaelfossorthopaedicsurgeryprovideraccidentandwellnessclinicspalmbeachgardensfl5616272821httpsnpiregistrycmshhsgovproviderview1558597625": {
+      "name": "RAFAEL FOSS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "randallmurrayorthopaedicsurgeryproviderandersonsportsmedicineandorthopediccenterpllcoklahomacityok4054184500httpsnpiregistrycmshhsgovproviderview1407516339": {
+      "name": "RANDALL MURRAY",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "rasheedabiolaorthopaedicsurgerymdlivoniami7345420200httpsnpiregistrycmshhsgovproviderview1659669075": {
+      "name": "RASHEED ABIOLA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "reidabramsorthopaedicsurgerymdsandiegoca6195435555httpsnpiregistrycmshhsgovproviderview1548202245": {
+      "name": "REID ABRAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "richardaadalenorthopaedicsurgerymdminneapolismn6125966187httpsnpiregistrycmshhsgovproviderview1699847400": {
+      "name": "RICHARD AADALEN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "richardabdoorthopaedicsurgerymdclearwaterfl7274465993httpsnpiregistrycmshhsgovproviderview1063472108": {
+      "name": "RICHARD ABDO",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "richardackersonorthopaedicsurgerymdfruitaco9708582705httpsnpiregistrycmshhsgovproviderview1104091438": {
+      "name": "RICHARD ACKERSON",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "robertadamsorthopaedicsurgerymdglenwoodspgsco9703847140httpsnpiregistrycmshhsgovproviderview1689638793": {
+      "name": "ROBERT ADAMS",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "robyabrahamorthopaedicsurgerymdplantationfl9544725969httpsnpiregistrycmshhsgovproviderview1609215698": {
+      "name": "ROBY ABRAHAM",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "rogercharboneauorthopaedicsurgeryprovideradaorthopedicssportsmedicinepcadaok5803324443httpsnpiregistrycmshhsgovproviderview1427196773": {
+      "name": "ROGER CHARBONEAU",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "ryanalbrechtorthopaedicsurgerymdmontroseco9702496641httpsnpiregistrycmshhsgovproviderview1942595319": {
+      "name": "RYAN ALBRECHT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "samuelabumoussaorthopaedicsurgeryproviderdoralfl3055377272httpsnpiregistrycmshhsgovproviderview1831628049": {
+      "name": "SAMUEL ABUMOUSSA",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "shamsimoheimaniorthopaedicsurgeryprovideramichaelmoheimanimdincsantaanaca7142850014httpsnpiregistrycmshhsgovproviderview1780874222": {
+      "name": "SHAMSI MOHEIMANI",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "shehanabeyewardeneorthopaedicsurgerymdoklahomacityok4056923783httpsnpiregistrycmshhsgovproviderview1457846412": {
+      "name": "SHEHAN ABEYEWARDENE",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "sheilaalganorthopaedicsurgerymdoklahomacityok4052712663httpsnpiregistrycmshhsgovproviderview1629071543": {
+      "name": "SHEILA ALGAN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "solonroseblattorthopaedicsurgeryprovideradvancedorthopedicsofarkansasvalleycanoncityco7192754061httpsnpiregistrycmshhsgovproviderview1477442424": {
+      "name": "SOLON ROSEBLATT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "stanleygravesorthopaedicsurgeryprovideradvancedorthopedicsofarcadiapllcphoenixaz6029528111httpsnpiregistrycmshhsgovproviderview1275373714": {
+      "name": "STANLEY GRAVES",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "stephenabeloworthopaedicsurgerymdsouthlaketahoeca5305448033httpsnpiregistrycmshhsgovproviderview1356559082": {
+      "name": "STEPHEN ABELOW",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "stephenackerleyorthopaedicsurgerymdmuskogeeok9185773000httpsnpiregistrycmshhsgovproviderview1891778767": {
+      "name": "STEPHEN ACKERLEY",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "stephenpetrovichorthopaedicsurgeryproviderahsoklahomaphysiciangroupllctulsaok9185793826httpsnpiregistrycmshhsgovproviderview1235182775": {
+      "name": "STEPHEN PETROVICH",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "stevenanagnostorthopaedicsurgerymdtulsaok9187012000httpsnpiregistrycmshhsgovproviderview1407817885": {
+      "name": "STEVEN ANAGNOST",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "thomasacottorthopaedicsurgerymdgilbertaz6026485444httpsnpiregistrycmshhsgovproviderview1760826853": {
+      "name": "THOMAS ACOTT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "torgomabraamyanorthopaedicsurgerymdvannuysca8189016600httpsnpiregistrycmshhsgovproviderview1013370410": {
+      "name": "TORGOM ABRAAMYAN",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "whitneymurphyorthopaedicsurgeryprovideraaronsdoctorofficepanamacitybeachfl8503532719httpsnpiregistrycmshhsgovproviderview1750194064": {
+      "name": "WHITNEY MURPHY",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    },
+    "williamabblittorthopaedicsurgerymdaustintx5124391000httpsnpiregistrycmshhsgovproviderview1003235078": {
+      "name": "WILLIAM ABBLITT",
+      "lastSeen": "2026-05-03T12:48:59.732Z",
+      "status": "Research Needed"
+    }
+  },
   "suppressed": {}
 }
