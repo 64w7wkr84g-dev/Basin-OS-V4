@@ -1,0 +1,22 @@
+{
+  "generatedAt": null,
+  "engine": "Basin OS Clean Rebuild starter \u2014 run GitHub Actions to populate",
+  "stats": {
+    "totalFound": 0,
+    "readyToWork": 0,
+    "research": 0,
+    "npiCollected": 0,
+    "rssCollected": 0,
+    "linkedinCandidatesFound": 0,
+    "emailFound": 0,
+    "phoneFound": 0,
+    "publicSearches": 0,
+    "braveConfigured": false,
+    "groqConfigured": false,
+    "errors": 0
+  },
+  "leads": [],
+  "researchCandidates": [],
+  "allCandidates": [],
+  "errors": []
+}
