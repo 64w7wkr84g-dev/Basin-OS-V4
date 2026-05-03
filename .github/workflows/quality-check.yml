@@ -1,0 +1,52 @@
+name: Basin OS Quality Check
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  quality-check:
+    name: Security, HTML, JS, JSON, and YAML checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secret scan with TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --results=verified,unknown
+
+      - name: Super-Linter
+        uses: super-linter/super-linter/slim@v7.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_JAVASCRIPT_STANDARD: true
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+          VALIDATE_HTML: true
+          VALIDATE_CSS: true
+          VALIDATE_MARKDOWN: false
+          FILTER_REGEX_EXCLUDE: "^(data/|radar-leads\\.json|radar-rejected\\.json|README_.*\\.md)"
+
+      - name: Proof HTML
+        uses: anishathalye/proof-html@v2
+        with:
+          directory: .
+          check_html: true
+          check_css: true
+          check_external_hash: false
+          check_favicon: false
+          check_opengraph: false
