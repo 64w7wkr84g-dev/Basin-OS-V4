@@ -28,8 +28,8 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MAX_NPI: "140"
           MAX_RSS: "80"
-          MAX_LINKEDIN_DISCOVERY: "80"
-          MAX_PUBLIC_SEARCHES: "450"
+          MAX_LINKEDIN_DISCOVERY: "120"
+          MAX_PUBLIC_SEARCHES: "900"
         run: node basin-radar-runner.js
 
       - name: Validate JSON
