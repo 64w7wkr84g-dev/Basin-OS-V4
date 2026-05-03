@@ -29,12 +29,12 @@ jobs:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: "llama-3.3-70b-versatile"
-          MAX_PUBLIC_SEARCHES: "450"
-          MAX_GROQ_CALLS: "120"
-          MAX_NPI: "35"
-          MAX_RSS: "140"
-          MAX_LINKEDIN_DISCOVERY: "180"
-          MAX_CPA_DISCOVERY: "90"
+          MAX_PUBLIC_SEARCHES: "500"
+          MAX_GROQ_CALLS: "140"
+          MAX_NPI: "45"
+          MAX_RSS: "160"
+          MAX_LINKEDIN_DISCOVERY: "200"
+          MAX_CPA_DISCOVERY: "100"
         run: node basin-radar-runner.js
 
       - name: Validate JSON
