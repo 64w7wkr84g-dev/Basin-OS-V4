@@ -26,8 +26,10 @@ jobs:
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          MAX_NPI: "120"
-          MAX_PUBLIC_SEARCHES: "250"
+          MAX_NPI: "140"
+          MAX_RSS: "80"
+          MAX_LINKEDIN_DISCOVERY: "80"
+          MAX_PUBLIC_SEARCHES: "450"
         run: node basin-radar-runner.js
 
       - name: Validate JSON
