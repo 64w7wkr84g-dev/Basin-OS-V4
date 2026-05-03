@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-03T10:44:09.265Z",
+  "lastRunAt": "2026-05-03T10:59:28.130Z",
   "status": "complete",
   "readyToWork": 50,
   "highConfidenceReady": 0,
@@ -14,6 +14,6 @@
   "rssCollected": 70,
   "publicSearches": 120,
   "aiCalls": 80,
-  "aiErrors": 65,
-  "message": "V6.9 created 50 ready-to-work leads, 0 LinkedIn verify, 0 contact needed."
+  "aiErrors": 63,
+  "message": "V7.1 created 50 ready-to-work leads, 0 LinkedIn verify, 0 contact needed."
 }
