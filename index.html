@@ -3,38 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#07110f" />
-  <title>Basin OS V2.2.1 — Closed Circuit Lead OS</title>
+  <meta name="theme-color" content="#030607" />
+  <title>Basin OS V3 — Bloomberg Lead Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=v2-2-1-errorfix">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=v3-groq-terminal">
 </head>
 <body>
   <div id="app" class="app-shell">
-    <aside class="sidebar" aria-label="Basin OS navigation">
+    <aside class="sidebar">
       <div class="brand-card">
-        <div class="brand-mark">
-          <div class="logo-orb">B</div>
+        <div class="brand-row">
+          <div class="brand-icon">B</div>
           <div>
             <div class="brand-name">BASIN</div>
             <div class="brand-sub">VENTURES</div>
           </div>
         </div>
-        <div class="brand-caption">Lead Generation + Playbook</div>
+        <div class="brand-caption">Lead Generation Terminal</div>
       </div>
 
       <nav class="nav">
-        <div class="nav-section">Overview</div>
+        <div class="nav-section">Terminal</div>
         <button class="nav-item active" data-page="dashboard">⚡ <span>Dashboard</span><b id="navCount-dashboard">0</b></button>
-        <button class="nav-item" data-page="radar">📡 <span>Lead Radar</span><b id="navCount-radar">0</b></button>
-        <button class="nav-item" data-page="workflow">🧭 <span>Leads Workflow</span><b id="navCount-workflow">0</b></button>
+        <button class="nav-item" data-page="workflow">🧭 <span>Action Queue</span><b id="navCount-workflow">0</b></button>
         <button class="nav-item" data-page="linkedin">💼 <span>LinkedIn Verify</span><b id="navCount-linkedin">0</b></button>
-        <button class="nav-item" data-page="pipeline">👤 <span>Investor Pipeline</span><b id="navCount-pipeline">0</b></button>
-        <button class="nav-item" data-page="cpa">🤝 <span>CPA Pipeline</span><b id="navCount-cpa">0</b></button>
+        <button class="nav-item" data-page="cpa">🤝 <span>CPA Verify</span><b id="navCount-cpa">0</b></button>
+        <button class="nav-item" data-page="radar">📡 <span>Live Radar Feed</span><b id="navCount-radar">0</b></button>
 
         <div class="nav-section">Execution</div>
-        <button class="nav-item" data-page="sequence">✉️ <span>7-Channel Sequence</span></button>
-        <button class="nav-item" data-page="callcoach">🎙️ <span>Call Coach</span></button>
+        <button class="nav-item" data-page="playbook">📘 <span>Master Playbook</span></button>
         <button class="nav-item" data-page="notes">📝 <span>Call Notes</span><b id="navCount-notes">0</b></button>
         <button class="nav-item" data-page="handoffs">📄 <span>Director Handoffs</span></button>
         <button class="nav-item" data-page="calendar">📅 <span>Follow-Up Calendar</span><b id="navCount-calendar">0</b></button>
@@ -47,39 +45,60 @@
       </nav>
 
       <div class="compliance-box">
-        <strong>Compliance Always</strong>
+        <strong>Compliance</strong>
         <span>Educational intro only. No guaranteed returns. No tax advice. Accredited investors only. Manual review before outreach.</span>
       </div>
 
-      <div class="version-box">Basin OS V2.2.1 Error Fix</div>
+      <div class="version-box">Basin OS V3 Groq Terminal</div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <div class="title-block">
+        <div>
           <div class="eyebrow">Basin Ventures Command Center</div>
           <h1 id="pageTitle">Dashboard</h1>
-          <p id="pageSubtitle">A single, clean operating system for lead discovery, verification, cadence, notes, follow-ups, and director handoffs.</p>
+          <p id="pageSubtitle">High-density lead intelligence terminal for ready leads, LinkedIn verification, CPA routes, scripts, notes, and handoffs.</p>
         </div>
         <div class="top-actions">
           <input id="globalSearch" class="search" placeholder="Search leads, companies, signals, notes, contact methods..." />
           <button id="reloadRadarBtn" class="btn btn-primary">Load Shared GitHub Radar</button>
-          <button id="runLocalBtn" class="btn btn-secondary">Manual Add</button>
+          <button id="manualAddBtn" class="btn btn-secondary">Manual Add</button>
         </div>
       </header>
 
-      <section id="statusBanner" class="status-banner">
-        Loading Basin OS...
+      <section id="statusBanner" class="status-banner">Booting Basin OS terminal...</section>
+
+      <section id="page-dashboard" class="page active">
+        <div id="kpiStrip" class="kpi-strip"></div>
+        <div class="terminal-grid">
+          <section class="action-queue panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Action Queue</div>
+                <div class="panel-sub">Ready, LinkedIn Verify, and CPA Verify. Sorted by score and route quality.</div>
+              </div>
+              <div id="queueTabs" class="tabs"></div>
+            </div>
+            <div id="actionQueueList" class="lead-list panel-body"></div>
+          </section>
+
+          <section class="radar-feed panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Live Radar Feed</div>
+                <div class="panel-sub">Latest GitHub Actions radar output and source distribution.</div>
+              </div>
+            </div>
+            <div id="liveRadarFeed" class="feed-list panel-body"></div>
+          </section>
+        </div>
       </section>
 
-      <section id="page-dashboard" class="page active"></section>
-      <section id="page-radar" class="page"></section>
       <section id="page-workflow" class="page"></section>
       <section id="page-linkedin" class="page"></section>
-      <section id="page-pipeline" class="page"></section>
       <section id="page-cpa" class="page"></section>
-      <section id="page-sequence" class="page"></section>
-      <section id="page-callcoach" class="page"></section>
+      <section id="page-radar" class="page"></section>
+      <section id="page-playbook" class="page"></section>
       <section id="page-notes" class="page"></section>
       <section id="page-handoffs" class="page"></section>
       <section id="page-calendar" class="page"></section>
@@ -93,17 +112,90 @@
     <div class="modal">
       <div class="modal-head">
         <div>
-          <div class="eyebrow">Full CRM Lead Card</div>
-          <h2 id="modalTitle">Lead Card</h2>
+          <div class="eyebrow">Human-in-the-loop Verification</div>
+          <h2 id="modalLeadName">Lead Name</h2>
+          <p id="modalLeadTitle" class="modal-subtitle">Title</p>
+          <p id="modalLeadCompany" class="modal-subtitle">Company</p>
         </div>
         <button id="closeModalBtn" class="icon-btn" aria-label="Close">✕</button>
       </div>
-      <div id="modalBody" class="modal-body"></div>
+
+      <div id="modalBody" class="modal-body">
+        <div class="modal-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Evidence Trail</div>
+                <div class="panel-sub">Public source trail used for qualification.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="modalEvidenceTrail" class="evidence-trail"></div>
+              <a id="btnOpenNav" target="_blank" rel="noopener" class="btn btn-primary">Open Sales Navigator</a>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Manual LinkedIn Verification</div>
+                <div class="panel-sub">Open the URL yourself, verify identity, then paste the bio/about section.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <textarea id="inputLinkedinBio" class="input" placeholder="Paste LinkedIn Bio Here"></textarea>
+              <button id="btnVerifyDraft" class="btn btn-teal">Verify & Draft Sequence</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Drafted Day 1 Email</div>
+                <div class="panel-sub">Generated by Groq from pasted bio + public signal. Review before sending.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <textarea id="outputEmail" class="input code" readonly placeholder="Drafted Day 1 Email will appear here..."></textarea>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">Drafted Day 3 Soft Phone Script</div>
+                <div class="panel-sub">Compliant call language. No guarantees. No tax advice.</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <textarea id="outputCallNotes" class="input code" readonly placeholder="Drafted Call Script will appear here..."></textarea>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel modal-notes">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">CRM Notes</div>
+              <div class="panel-sub">Attach notes and follow-up instructions directly to this lead.</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <textarea id="modalNoteInput" class="input" placeholder="Add call note, verification note, objection, or follow-up..."></textarea>
+            <div class="modal-actions">
+              <button id="btnSaveNote" class="btn btn-secondary">Save Note</button>
+              <button id="btnPrintHandoff" class="btn btn-secondary">Print Handoff</button>
+              <button id="btnSuppressLead" class="btn btn-danger">Suppress</button>
+            </div>
+            <div id="modalLeadNotes" class="note-list"></div>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast hidden"></div>
 
-  <script src="js/app.js?v=v2-2-1-errorfix"></script>
+  <script src="js/app.js?v=v3-groq-terminal"></script>
 </body>
 </html>

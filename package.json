@@ -1,11 +1,11 @@
 {
-  "name": "basin-os-clean-rebuild",
-  "version": "2.2.1",
+  "name": "basin-os-v3-groq-terminal",
+  "version": "3.0.0",
+  "description": "Basin OS V3 Groq-parsed radar runner and Bloomberg terminal UI",
   "private": true,
-  "description": "Basin OS V2.2.1 closed-circuit routing error fix",
   "scripts": {
-    "check": "node --check basin-radar-runner.js && node --check js/app.js",
-    "radar": "node basin-radar-runner.js"
+    "radar": "node basin-radar-runner.js",
+    "check": "node --check basin-radar-runner.js && node --check js/app.js"
   },
   "engines": {
     "node": ">=20"
