@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Basin OS V7.1 Cross-Referenced Lead Engine
+ * Basin OS V7.3 Cross-Referenced Lead Engine
  *
  * Key fix:
  * - NPI is treated as an identity seed, not the whole lead.
@@ -16,12 +16,17 @@ const path = require('path');
 
 const MAX_NPI_PER_QUERY = Number(process.env.NPI_MAX_PER_QUERY || 10);
 const MAX_RSS_PER_FEED = Number(process.env.RADAR_MAX_RSS_PER_FEED || 14);
-const ENRICH_NPI_LIMIT = Number(process.env.ENRICH_NPI_LIMIT || 120);
-const MAX_READY_TOTAL = Number(process.env.MAX_READY_TOTAL || 175);
-const MAX_READY_NPI_PHONE_ONLY = Number(process.env.MAX_READY_NPI_PHONE_ONLY || 50);
+const ENRICH_NPI_LIMIT = Number(process.env.ENRICH_NPI_LIMIT || 300);
+const MAX_READY_TOTAL = Number(process.env.MAX_READY_TOTAL || 999999);
+const MAX_READY_NPI_PHONE_ONLY = Number(process.env.MAX_READY_NPI_PHONE_ONLY || 999999);
 const NPI_BACKLOG_LIMIT = Number(process.env.NPI_BACKLOG_LIMIT || 500);
-const MAX_PUBLIC_SEARCHES = Number(process.env.PUBLIC_SEARCH_MAX || 120);
+const MAX_PUBLIC_SEARCHES = Number(process.env.PUBLIC_SEARCH_MAX || 300);
 const MAX_AI = Number(process.env.AI_MAX_LEAD_ANALYSES || 80);
+const STRICT_NPI_SECOND_SOURCE = String(process.env.STRICT_NPI_SECOND_SOURCE || 'true').toLowerCase() !== 'false';
+const LINKEDIN_CANDIDATE_PRIORITY = String(process.env.LINKEDIN_CANDIDATE_PRIORITY || 'true').toLowerCase() !== 'false';
+const BRAVE_RESULT_COUNT = Number(process.env.BRAVE_RESULT_COUNT || 8);
+const NO_READY_CAP = String(process.env.NO_READY_CAP || 'true').toLowerCase() !== 'false';
+const NPI_PHONE_ONLY_READY = String(process.env.NPI_PHONE_ONLY_READY || 'false').toLowerCase() === 'true';
 
 const BRAVE_KEY = process.env.BRAVE_API_KEY || '';
 const TAVILY_KEY = process.env.TAVILY_API_KEY || '';
@@ -128,8 +133,45 @@ function confidenceFor(c,ev){
   if(hasSecondSource(ev)) return 'Contact route needed — cross-referenced but no route';
   return 'Single Source — needs enrichment';
 }
-function queueFor(c,ev){
-  if(hasLinkedInCandidate(c) && !hasEmailContact(c) && !hasReliablePhone(c,ev)) return {queue:'LinkedIn Verify',bucket:'linkedin-verify',first:'Open candidate LinkedIn URL manually, confirm/reject match, then paste profile snapshot to enrich CRM.'};
+function npiOnlyPhone(c, ev, raw={}){
+  const blob=[raw.source, raw.sourceType, raw.sourceUrl, raw.url, (ev||[]).map(e=>`${e.source} ${e.url}`).join(' ')].join(' ').toLowerCase();
+  return hasReliablePhone(c,ev) && /npi|npiregistry|provider-view/.test(blob) && !hasSecondSource(ev) && !hasEmailContact(c) && !hasVerifiedLinkedIn(c);
+}
+
+function qualityTier(lead){
+  const c=lead.contactMethods||[], ev=lead.evidenceTrail||[];
+  const hasEmail=hasEmailContact(c), hasVerifiedLi=hasVerifiedLinkedIn(c), hasLi=hasLinkedInCandidate(c), hasPhone=hasReliablePhone(c,ev), second=hasSecondSource(ev);
+  if(hasEmail && (hasVerifiedLi || hasLi) && hasPhone && second) return 'Tier 1 — Email + LinkedIn + Phone + Cross-Referenced';
+  if((hasEmail || hasVerifiedLi) && hasPhone && second) return 'Tier 2 — Digital Route + Phone + Cross-Referenced';
+  if((hasEmail || hasVerifiedLi || hasLi) && second) return 'Tier 3 — Digital Route + Cross-Referenced';
+  if(hasPhone && second) return 'Tier 4 — Phone + Second Source';
+  if(hasPhone) return 'Tier 5 — NPI/Phone Seed Only';
+  return 'Prep — Needs Contact Route';
+}
+function priorityRank(lead){
+  const tier=qualityTier(lead);
+  if(/^Tier 1/.test(tier)) return 1;
+  if(/^Tier 2/.test(tier)) return 2;
+  if(/^Tier 3/.test(tier)) return 3;
+  if(/^Tier 4/.test(tier)) return 4;
+  if(/^Tier 5/.test(tier)) return 5;
+  return 9;
+}
+function sortByQuality(arr){
+  return (arr||[]).slice().sort((a,b)=>{
+    const r=priorityRank(a)-priorityRank(b); if(r) return r;
+    const s=(b.score||0)-(a.score||0); if(s) return s;
+    return String(a.name||'').localeCompare(String(b.name||''));
+  });
+}
+
+function queueFor(c,ev,raw={}){
+  if(LINKEDIN_CANDIDATE_PRIORITY && hasLinkedInCandidate(c) && !hasVerifiedLinkedIn(c) && !hasEmailContact(c)) {
+    return {queue:'LinkedIn Verify',bucket:'linkedin-verify',first:'Candidate LinkedIn URL found. Manually confirm/reject the match, then paste profile snapshot to enrich CRM before associate work.'};
+  }
+  if(STRICT_NPI_SECOND_SOURCE && npiOnlyPhone(c,ev,raw) && !NPI_PHONE_ONLY_READY) {
+    return {queue:'Contact Route Needed',bucket:'contact-needed',first:'NPI phone-only seed. It is not a priority work lead yet. Use Brave/public search to find email, candidate/verified LinkedIn, public bio, practice website, or second-source evidence before pushing to associate work.'};
+  }
   const route = bestRoute(c,ev);
   if(route) return {queue:'Ready to Work',bucket:'day1',first: route==='Email' ? 'Day 1: send/queue evidence-based email first, then follow cadence.' : route==='LinkedIn' ? 'Day 1: use verified LinkedIn route for evidence-based touch, then follow cadence.' : 'Day 1: review evidence. Phone is the best route; use call step according to cadence.'};
   if(hasSecondSource(ev)) return {queue:'Contact Route Needed',bucket:'contact-needed',first:'Find a reliable email, confirmed LinkedIn URL, or reliable phone tied to evidence before outreach.'};
@@ -168,7 +210,7 @@ function score(raw,c,ev){
   return Math.min(98,Math.max(1,Math.round(s)));
 }
 function makeLead(raw,c,ev){
-  const q=queueFor(c,ev), sc=score(raw,c,ev), route=bestRoute(c,ev), fam=[...evidenceFamilies(ev)];
+  const q=queueFor(c,ev,raw), sc=score(raw,c,ev), route=bestRoute(c,ev), fam=[...evidenceFamilies(ev)];
   return {
     id: raw.id || uid('lead'),
     name: clean(raw.name,100),
@@ -191,6 +233,8 @@ function makeLead(raw,c,ev){
     nextAction:q.first,
     sourceConfidence:confidenceFor(c,ev),
     sourceFamilies:fam,
+    qualityTier:qualityTier({contactMethods:c,evidenceTrail:ev,score:sc,name:raw.name}),
+    priorityRank:priorityRank({contactMethods:c,evidenceTrail:ev,score:sc,name:raw.name}),
     crossReferenced:hasSecondSource(ev),
     fitReason:raw.fitReason||fitReason(raw),
     accreditedLikelyReason:raw.accreditedLikelyReason||accreditedReason(raw),
@@ -203,6 +247,7 @@ function makeLead(raw,c,ev){
     bucket:q.bucket,
     stage:q.bucket,
     status:q.queue,
+    qualityTier:'',
     workflow:{day:q.queue==='Ready to Work'?1:0,stage:q.bucket,completedTasks:[],disposition:'',note:''},
     notes:[],
     foundAt:now(),
@@ -232,7 +277,7 @@ async function fetchJson(url){ return JSON.parse((await fetchText(url)).text); }
 let searchCount=0;
 async function braveSearch(q){
   if(!BRAVE_KEY) return [];
-  const url='https://api.search.brave.com/res/v1/web/search?q='+encodeURIComponent(q)+'&count=5&country=us&search_lang=en&text_decorations=false';
+  const url='https://api.search.brave.com/res/v1/web/search?q='+encodeURIComponent(q)+'&count='+BRAVE_RESULT_COUNT+'&country=us&search_lang=en&text_decorations=false';
   const r=await fetch(url,{headers:{'Accept':'application/json','X-Subscription-Token':BRAVE_KEY,'User-Agent':'BasinOSLeadFactory/6.8'}});
   if(!r.ok) throw new Error(`Brave ${r.status}`);
   const j=await r.json();
@@ -254,10 +299,15 @@ async function publicSearch(q){
 }
 async function enrichPublic(raw,c,ev){
   if(!raw.name || !personOk(raw.name)) return;
+  const baseRole = raw.company || raw.specialty || raw.title || '';
+  const city = raw.location || '';
   const queries=[
-    `"${raw.name}" "${raw.company||raw.specialty||raw.title||''}" "${raw.location||''}" LinkedIn`,
-    `"${raw.name}" "${raw.company||raw.specialty||raw.title||''}" "${raw.location||''}" bio`,
-    `"${raw.name}" "${raw.company||raw.specialty||raw.title||''}" email phone`
+    `site:linkedin.com/in "${raw.name}" "${baseRole}"`,
+    `"${raw.name}" "${baseRole}" "${city}" LinkedIn`,
+    `"${raw.name}" "${baseRole}" "${city}" bio profile`,
+    `"${raw.name}" "${baseRole}" "${city}" practice website`,
+    `"${raw.name}" "${baseRole}" email phone`,
+    `"${raw.name}" "${city}" "${baseRole}"`
   ];
   for(const q of queries){
     const results=await publicSearch(q);
@@ -407,19 +457,20 @@ async function aiEnrich(leads){
   const contactNeeded=dedupe(allCandidates.filter(l => l.bucket==='contact-needed' || l.queue==='Contact Route Needed'));
   let research=dedupe(allCandidates.filter(l => l.bucket==='research' || l.queue==='Research Needed'));
 
-  const readyStrong=ready.filter(l => l.crossReferenced || hasEmailContact(l.contactMethods) || hasVerifiedLinkedIn(l.contactMethods));
+  // No hard cap on discovered or ready leads. The system prioritizes by quality instead of discarding/capping.
+  // NPI phone-only records are not promoted unless NPI_PHONE_ONLY_READY=true. They stay in prep/contact-needed.
+  const readyStrong=ready.filter(l => l.crossReferenced || hasEmailContact(l.contactMethods) || hasVerifiedLinkedIn(l.contactMethods) || hasLinkedInCandidate(l.contactMethods));
   const readyNpiPhoneOnly=ready.filter(l => !readyStrong.includes(l) && /npi/i.test(`${l.source} ${l.sourceType} ${l.sourceConfidence}`));
   const readyOther=ready.filter(l => !readyStrong.includes(l) && !readyNpiPhoneOnly.includes(l));
-  const balancedPhoneOnly=readyNpiPhoneOnly.slice(0,MAX_READY_NPI_PHONE_ONLY);
-  const npiBacklog=readyNpiPhoneOnly.slice(MAX_READY_NPI_PHONE_ONLY,NPI_BACKLOG_LIMIT).map(l=>({...l,bucket:'npi-backlog',stage:'npi-backlog',queue:'NPI Candidate Backlog',status:'NPI Candidate Backlog',associateReady:false,bestFirstAction:'Backlog: needs second-source enrichment before priority work.',sourceConfidence:l.sourceConfidence||'Phone Route Only — single-source evidence'}));
+  const npiBacklog = NPI_PHONE_ONLY_READY ? [] : readyNpiPhoneOnly.map(l=>({...l,bucket:'contact-needed',stage:'contact-needed',queue:'Contact Route Needed',status:'Contact Route Needed',associateReady:false,bestFirstAction:'NPI phone-only seed. Needs email, LinkedIn candidate/verified URL, practice website, public bio, or second-source evidence before priority work.',sourceConfidence:l.sourceConfidence||'Phone Route Only — single-source evidence'}));
 
-  ready=dedupe([...readyStrong,...balancedPhoneOnly,...readyOther]).slice(0,MAX_READY_TOTAL);
-  research=dedupe([...contactNeeded,...research,...npiBacklog]).slice(0,700);
+  ready=sortByQuality(dedupe([...readyStrong,...(NPI_PHONE_ONLY_READY?readyNpiPhoneOnly:[]),...readyOther]));
+  research=sortByQuality(dedupe([...linkedinVerify,...contactNeeded,...research,...npiBacklog]));
 
   const generatedAt=now();
   const radar={
     generatedAt,
-    engine:'Basin OS V7.1 Cross-Referenced Lead Engine',
+    engine:'Basin OS V7.3 Cross-Referenced Lead Engine',
     automationMode:'NPI/RSS seeds → public search enrichment → source confidence → Meta Llama/Groq evaluation → balanced work queues',
     compliance:{linkedinScraping:false,autoMessaging:false,autoProfileReading:false,candidateUrlsOnly:true,manualConfirmationRequired:true,accreditationProof:'Public data creates accredited-likely proxy only; qualification must be verified compliantly.'},
     stats:{
@@ -428,13 +479,22 @@ async function aiEnrich(leads){
       crossReferencedReady:ready.filter(l=>l.crossReferenced).length,
       phoneRouteOnlyReady:ready.filter(l=>/Phone Route Only/i.test(l.sourceConfidence)).length,
       linkedinVerify:linkedinVerify.length,
+      linkedinCandidatesFound:allCandidates.filter(l=>hasLinkedInCandidate(l.contactMethods||[])).length,
       contactNeeded:contactNeeded.length,
       research:research.length,
       npiCollected:npi.leads.length,
-      npiReadyPhoneOnly:balancedPhoneOnly.length,
+      npiPhoneOnlyMovedToPrep:npiBacklog.length,
       npiBacklog:npiBacklog.length,
+      noReadyCap:NO_READY_CAP,
+      npiPhoneOnlyReady:NPI_PHONE_ONLY_READY,
+      tier1Ready:ready.filter(l=>/^Tier 1/.test(l.qualityTier||'')).length,
+      tier2Ready:ready.filter(l=>/^Tier 2/.test(l.qualityTier||'')).length,
+      tier3Ready:ready.filter(l=>/^Tier 3/.test(l.qualityTier||'')).length,
+      tier4Ready:ready.filter(l=>/^Tier 4/.test(l.qualityTier||'')).length,
       rssCollected:rss.leads.length,
       publicSearches:searchCount,
+      strictNpiSecondSource:STRICT_NPI_SECOND_SOURCE,
+      linkedInCandidatePriority:LINKEDIN_CANDIDATE_PRIORITY,
       aiCalls:ai.calls,
       aiErrors:ai.errors.length
     },
@@ -443,13 +503,14 @@ async function aiEnrich(leads){
     npiCandidateBacklog:npiBacklog,
     errors:[...npi.rejected.slice(0,50),...rss.errors.slice(0,50),...ai.errors.slice(0,50)]
   };
-  const researchJson={generatedAt,engine:radar.engine,stats:{total:radar.researchCandidates.length,linkedinVerify:linkedinVerify.length,contactNeeded:contactNeeded.length,research:research.length,npiBacklog:npiBacklog.length},candidates:radar.researchCandidates};
+  const researchJson={generatedAt,engine:radar.engine,stats:{total:radar.researchCandidates.length,linkedinVerify:linkedinVerify.length,
+      linkedinCandidatesFound:allCandidates.filter(l=>hasLinkedInCandidate(l.contactMethods||[])).length,contactNeeded:contactNeeded.length,research:research.length,npiBacklog:npiBacklog.length},candidates:radar.researchCandidates};
 
   fs.mkdirSync(out('data'),{recursive:true});
   fs.writeFileSync(out('radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('data/radar-leads.json'),JSON.stringify(radar,null,2));
   fs.writeFileSync(out('radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
   fs.writeFileSync(out('data/radar-research-candidates.json'),JSON.stringify(researchJson,null,2));
-  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V7.1 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
-  console.log(`V7.1 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
+  fs.writeFileSync(out('data/radar-run-log.json'),JSON.stringify({lastRunAt:generatedAt,status:'complete',...radar.stats,message:`V7.3 created ${ready.length} ready-to-work leads, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed.`},null,2));
+  console.log(`V7.3 complete: ${ready.length} ready-to-work, ${linkedinVerify.length} LinkedIn verify, ${contactNeeded.length} contact needed, ${research.length} research/backlog, ${searchCount} public searches.`);
 })().catch(e=>{ console.error(e); process.exitCode=1; });

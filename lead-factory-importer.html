@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Basin OS — Lead Factory Importer V7.1</title>
+<title>Basin OS — Lead Factory Importer V7.3</title>
 <style>
 body{margin:0;background:#070b10;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:24px}
 .card{max-width:980px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
@@ -15,10 +15,10 @@ pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radi
 </head>
 <body>
 <div class="card">
-<h1>Basin OS Lead Factory Importer V7.1</h1>
+<h1>Basin OS Lead Factory Importer V7.3</h1>
 <div class="warn"><b>Safe LinkedIn workflow:</b> candidate URL only, manual open, manual confirm/reject, optional pasted snapshot parser. No page reading or scraping.</div>
 <div class="info"><b>Use:</b> this page force-loads the latest GitHub radar JSON into this browser’s localStorage.</div>
-<button onclick="loadFactory()">Load V7.1 Lead Factory Data</button>
+<button onclick="loadFactory()">Load V7.3 Lead Factory Data</button>
 <button onclick="clearFactory()">Clear Lead Factory Browser Data</button>
 <div id="summary"></div>
 <div id="out"></div>
@@ -35,7 +35,7 @@ async function loadFactory(){
   const leads=Array.isArray(active.leads)?active.leads:[];
   const candidates=Array.isArray(research.candidates)?research.candidates:(Array.isArray(active.researchCandidates)?active.researchCandidates:[]);
   const s=getStore();
-  s.leadFactory={leads,research:candidates,activity:[{id:'import_'+Date.now(),text:'Imported V7.1 Lead Factory data',createdAt:now()}],lastImportedAt:now()};
+  s.leadFactory={leads,research:candidates,activity:[{id:'import_'+Date.now(),text:'Imported V7.3 Lead Factory data',createdAt:now()}],lastImportedAt:now()};
   s.radarLeads=leads;
   s.leadWorkflow=leads.concat(candidates);
   save(s);
