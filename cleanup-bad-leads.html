@@ -3,23 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Basin OS — Clean and Reload Verified Leads</title>
+<title>Basin OS — Reload Verified Leads + RSS Research</title>
 <style>
 body{margin:0;background:#070b10;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:24px}
-.card{max-width:820px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
+.card{max-width:920px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
 button{background:#d89424;color:#070b10;border:0;border-radius:12px;padding:14px 18px;font-weight:900;font-size:16px;margin:6px 6px 6px 0}
 pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radius:12px;padding:14px;color:#b7c4d8;max-height:440px;overflow:auto}
 .warn{border:1px solid #7a3540;background:#2a1218;color:#ffd0d0;border-radius:12px;padding:12px;margin:14px 0}
 .good{border:1px solid #286f4a;background:#0d2519;color:#c6ffdc;border-radius:12px;padding:12px;margin:14px 0}
+.info{border:1px solid #315d7c;background:#0e2233;color:#cdeaff;border-radius:12px;padding:12px;margin:14px 0}
+code{color:#ffd37a}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>Basin OS Verified Lead Cleaner</h1>
-<p>This clears old fake leads from this browser and reloads only current <code>radar-leads.json</code> verified leads.</p>
-<div class="warn"><b>Rule:</b> visible lead name must be a real person and must have phone, email, direct LinkedIn profile, or NPI profile/phone.</div>
+<h1>Basin OS Reload Tool</h1>
+<p>This clears fake browser-stored leads and reloads the latest GitHub radar data.</p>
+<div class="warn"><b>Active lead rule:</b> real person + actual phone/email/direct LinkedIn/NPI contact.</div>
+<div class="info"><b>RSS rule:</b> Google RSS signals without contact are loaded into <b>Research</b>, not Day 1 active leads.</div>
 <button onclick="cleanOnly()">Clean Existing Bad Leads</button>
-<button onclick="reloadVerified()">Reload Verified GitHub Radar Leads</button>
+<button onclick="reloadVerified()">Reload Verified Leads Only</button>
+<button onclick="reloadVerifiedAndResearch()">Reload Verified Leads + RSS Research</button>
 <div id="out"></div>
 </div>
 <script>
@@ -53,7 +57,7 @@ function hasActualContact(l){
 }
 function keepLead(l){return looksLikePersonName(l.name)&&hasActualContact(l)}
 function getStore(){
-  const key=localStorage.getItem('basin_os_integrated')?'basin_os_integrated':'basin_os_integrated';
+  const key='basin_os_integrated';
   let store={};
   try{store=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){store={}}
   store.radarLeads=Array.isArray(store.radarLeads)?store.radarLeads:[];
@@ -68,7 +72,7 @@ function cleanStore(store){
   ['radarLeads','leadWorkflow','investors'].forEach(k=>{
     const before=store[k].length;
     const kept=[], removed=[];
-    store[k].forEach(l=>keepLead(l)?kept.push(l):removed.push(l));
+    store[k].forEach(l=>keepLead(l)||l.isResearchCandidate?kept.push(l):removed.push(l));
     removed.forEach(l=>store.radarRejected.push({
       id:'local-clean-'+Date.now()+'-'+Math.random().toString(16).slice(2),
       name:l.name||l.title||'Unknown',
@@ -83,11 +87,45 @@ function cleanStore(store){
   });
   return report;
 }
+function normalizeWorkflowLead(l,bucket){
+  return Object.assign({},l,{
+    bucket:bucket||'day1',
+    workflowDay:bucket==='needsresearch'?0:1,
+    dailyState:{tasks:[false,false,false,false,false],disposition:'',note:''},
+    requiredTasks:{review:false,contact:false,outreach:false,disposition:false,note:false}
+  });
+}
+function normalizeCandidate(c){
+  return {
+    id:c.id||('candidate-'+Date.now()+'-'+Math.random().toString(16).slice(2)),
+    name:c.name||c.signal||'RSS Research Candidate',
+    title:c.title||'Research Candidate',
+    company:c.company||'',
+    source:c.source||'Google RSS Research Candidate',
+    sourceFeed:c.sourceFeed||'RSS',
+    url:c.url||c.sourceUrl||'',
+    sourceUrl:c.sourceUrl||c.url||'',
+    signal:c.signal||'',
+    summary:c.summary||'',
+    reason:c.reason||'Needs contact research',
+    nextAction:c.nextAction||'Research contact method before moving to Day 1.',
+    bucket:'needsresearch',
+    workflowDay:0,
+    status:'Research Needed',
+    qualificationStatus:'Research Needed',
+    contactable:false,
+    isResearchCandidate:true,
+    grade:'R',
+    score:0,
+    contactMethods:[],
+    dailyState:{tasks:[false,false,false,false,false],disposition:'Research',note:'RSS candidate. Not active lead until contact method is verified.'}
+  }
+}
 function cleanOnly(){
   const {key,store}=getStore();
   const report=cleanStore(store);
   save(key,store);
-  document.getElementById('out').innerHTML='<div class="good"><b>Cleanup complete.</b> Go back to Basin OS and refresh.</div><pre>'+report.join('\n')+'</pre>';
+  document.getElementById('out').innerHTML='<div class="good"><b>Cleanup complete.</b> Go back to Basin OS and refresh.</div><pre>'+report.join('\\n')+'</pre>';
 }
 async function reloadVerified(){
   const {key,store}=getStore();
@@ -96,9 +134,26 @@ async function reloadVerified(){
   const data=await res.json();
   const leads=Array.isArray(data.leads)?data.leads.filter(keepLead):[];
   store.radarLeads=leads;
-  store.leadWorkflow=leads.map(l=>Object.assign({},l,{bucket:'Day1',workflowDay:1,requiredTasks:{review:false,contact:false,outreach:false,disposition:false,note:false}}));
+  store.leadWorkflow=leads.map(l=>normalizeWorkflowLead(l,'day1'));
   save(key,store);
-  document.getElementById('out').innerHTML='<div class="good"><b>Reload complete.</b> Loaded '+leads.length+' verified leads into this browser.</div><pre>'+cleanReport.join('\n')+'\nLoaded verified leads: '+leads.length+'</pre>';
+  document.getElementById('out').innerHTML='<div class="good"><b>Reload complete.</b> Loaded '+leads.length+' verified active leads.</div><pre>'+cleanReport.join('\\n')+'\\nLoaded verified leads: '+leads.length+'</pre>';
+}
+async function reloadVerifiedAndResearch(){
+  const {key,store}=getStore();
+  const cleanReport=cleanStore(store);
+  const leadRes=await fetch('radar-leads.json?v='+Date.now());
+  const leadData=await leadRes.json();
+  const leads=Array.isArray(leadData.leads)?leadData.leads.filter(keepLead):[];
+  let candidates=[];
+  try{
+    const candRes=await fetch('radar-research-candidates.json?v='+Date.now());
+    const candData=await candRes.json();
+    candidates=Array.isArray(candData.candidates)?candData.candidates.map(normalizeCandidate):[];
+  }catch(e){}
+  store.radarLeads=leads;
+  store.leadWorkflow=leads.map(l=>normalizeWorkflowLead(l,'day1')).concat(candidates);
+  save(key,store);
+  document.getElementById('out').innerHTML='<div class="good"><b>Reload complete.</b> Loaded '+leads.length+' verified active leads and '+candidates.length+' RSS research candidates.</div><pre>'+cleanReport.join('\\n')+'\\nVerified active leads: '+leads.length+'\\nRSS research candidates: '+candidates.length+'</pre>';
 }
 </script>
 </body>
