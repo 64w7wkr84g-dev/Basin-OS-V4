@@ -1,5 +1,134 @@
 {
-  "generatedAt": null,
-  "stats": {},
-  "sample": []
+  "generatedAt": "2026-05-03T13:08:54.415Z",
+  "stats": {
+    "totalFound": 163,
+    "readyToWork": 140,
+    "research": 23,
+    "npiCollected": 140,
+    "rssCollected": 23,
+    "linkedinDiscoveryCollected": 0,
+    "linkedinCandidatesFound": 0,
+    "emailFound": 0,
+    "phoneFound": 140,
+    "publicSearches": 450,
+    "braveConfigured": true,
+    "groqConfigured": true,
+    "errors": 0
+  },
+  "sampleReady": [
+    {
+      "name": "AADITYA VAIDYA",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "AARON CREEK",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "AARON EUBANKS",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "AARON OSBORNE",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "AARON SCHRAYER",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "AARON SCHRAYER",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "ABED ABDELAZIZ",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    },
+    {
+      "name": "ABRAM BURGHER",
+      "score": 64,
+      "status": "Ready to Work",
+      "contacts": [
+        "phone"
+      ]
+    }
+  ],
+  "sampleResearch": [
+    {
+      "name": "Attorney Shelice Tolbert",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Barbara Brazis Joins",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Brian Donley Named",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Brian Saulnier",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Cardinal Health",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Chris Rokkas Joins",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Clark Gamblin",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Cristine Espinosa Joins",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    }
+  ]
 }
