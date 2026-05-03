@@ -11,7 +11,7 @@ permissions:
 jobs:
   radar:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
@@ -24,23 +24,115 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Verify required secrets exist
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -z "$BRAVE_API_KEY" ]; then
+            echo "BRAVE_API_KEY is missing from GitHub Actions secrets"
+            exit 1
+          fi
+
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "GROQ_API_KEY is missing from GitHub Actions secrets"
+            exit 1
+          fi
+
+          echo "Required GitHub Actions secrets are present"
+
+      - name: Verify required project files exist
+        run: |
+          if [ ! -f "basin-radar-runner.js" ]; then
+            echo "basin-radar-runner.js is missing"
+            exit 1
+          fi
+
+          if [ ! -f "package.json" ]; then
+            echo "package.json is missing"
+            exit 1
+          fi
+
+          mkdir -p public/data
+
+          echo "Required project files are present"
+
+      - name: Syntax check radar runner
+        run: node --check basin-radar-runner.js
+
       - name: Run Basin Radar
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_MODEL: "llama-3.3-70b-versatile"
+
+          # Search/enrichment caps
           MAX_PUBLIC_SEARCHES: "500"
           MAX_GROQ_CALLS: "140"
+
+          # Source balancing
+          # NPI/MPI is only a seed source, not the main engine.
           MAX_NPI: "45"
           MAX_RSS: "160"
           MAX_LINKEDIN_DISCOVERY: "200"
           MAX_CPA_DISCOVERY: "100"
-        run: node basin-radar-runner.js
-
-      - name: Validate JSON
         run: |
-          node -e "JSON.parse(require('fs').readFileSync('public/data/radar-leads.json','utf8')); console.log('public/data/radar-leads.json valid')"
-          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('radar-leads.json valid')"
+          echo "Starting Basin Radar Runner..."
+          node basin-radar-runner.js
+
+      - name: Validate generated radar JSON
+        run: |
+          if [ ! -f "public/data/radar-leads.json" ]; then
+            echo "public/data/radar-leads.json was not generated"
+            exit 1
+          fi
+
+          if [ ! -f "radar-leads.json" ]; then
+            echo "radar-leads.json was not generated"
+            exit 1
+          fi
+
+          node -e "const fs=require('fs'); const f='public/data/radar-leads.json'; const j=JSON.parse(fs.readFileSync(f,'utf8')); console.log('generatedAt:', j.generatedAt); console.log('engine:', j.engine); console.log('stats:', JSON.stringify(j.stats,null,2)); if(!j.stats){throw new Error('stats missing')};"
+          node -e "JSON.parse(require('fs').readFileSync('radar-leads.json','utf8')); console.log('root radar-leads.json valid')"
+
+      - name: Fail if runner produced fake or empty work
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const j = JSON.parse(fs.readFileSync("public/data/radar-leads.json", "utf8"));
+          const s = j.stats || {};
+
+          const problems = [];
+
+          if (!s.braveConfigured) problems.push("braveConfigured is false");
+          if (!s.groqConfigured) problems.push("groqConfigured is false");
+          if ((s.publicSearches || 0) < 5) problems.push(`publicSearches too low: ${s.publicSearches || 0}`);
+          if ((s.groqCalls || 0) < 3) problems.push(`groqCalls too low: ${s.groqCalls || 0}`);
+
+          const nonNpi =
+            (s.rssCollected || 0) +
+            (s.linkedinDiscoveryCollected || 0) +
+            (s.cpaCollected || 0);
+
+          if (nonNpi <= 0) {
+            problems.push("No RSS, LinkedIn discovery, or CPA leads were collected. Runner is falling back to NPI/MPI only.");
+          }
+
+          if ((s.npiCollected || 0) > 0 && nonNpi <= 0) {
+            problems.push(`NPI/MPI collected ${s.npiCollected}, but non-NPI sources collected 0`);
+          }
+
+          if (problems.length) {
+            console.error("Basin Radar quality gate failed:");
+            for (const p of problems) console.error("- " + p);
+            console.error("Full stats:");
+            console.error(JSON.stringify(s, null, 2));
+            process.exit(1);
+          }
+
+          console.log("Basin Radar quality gate passed.");
+          console.log(JSON.stringify(s, null, 2));
+          NODE
 
       - name: Commit radar data
         uses: stefanzweifel/git-auto-commit-action@v5
