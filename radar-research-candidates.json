@@ -1,4 +1,60 @@
 {
-  "generatedAt": null,
-  "candidates": []
+  "generatedAt": "2026-05-03T17:48:12.626Z",
+  "candidates": [
+    {
+      "id": "rss_arizona-officehttps-news-google-com-rss-articles-cbmicefvx3lxtfaxc1fuz0vlahnzsgjqsl9wrtvretdvsjbda2l1rwo0ylhvbepfm2ffc1h",
+      "name": "Arizona Office",
+      "company": "",
+      "title": "Attorney / Law Partner",
+      "location": "USA",
+      "sourceType": "rss",
+      "source": "Google News RSS",
+      "sourceUrl": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5",
+      "signal": "Real Estate Attorney Andrew Yocopis Joins Procopio in its Scottsdale, Arizona Office as Newest Partner - Procopio",
+      "summary": "&lt;a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5\" target=\"_blank\"&gt;Real Estate Attorney Andrew Yocopis Joins Procopio in its Scottsdale, Arizona Office as Newest Partner&lt;/a&gt; &lt;font color=\"#6f6f6f\"&gt;Procopio&lt;/font&gt;",
+      "fitReason": "Public signal classified by deterministic fallback parser; manual verification still required.",
+      "accreditedLikelyReason": "Professional role/context supports screening only. Accredited status must be confirmed by the prospect.",
+      "contactMethods": [],
+      "evidenceTrail": [
+        {
+          "source": "Google News RSS",
+          "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5",
+          "whatItProves": "&lt;a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5\" target=\"_blank\"&gt;Real Estate Attorney Andrew Yocopis Joins Procopio in its Scottsdale, Arizona Office as Newest Partner&lt;/a&gt; &lt;font color=\"#6f6f6f\"&gt;Procopio&lt;/font&gt;",
+          "capturedAt": "2026-05-03T17:47:52.871Z"
+        }
+      ],
+      "score": 72,
+      "grade": "B",
+      "type": "investor",
+      "isPerson": true,
+      "isCPA": false,
+      "foundAt": "2026-05-03T17:47:52.871Z",
+      "rawSearchResult": {
+        "title": "Real Estate Attorney Andrew Yocopis Joins Procopio in its Scottsdale, Arizona Office as Newest Partner - Procopio",
+        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5",
+        "description": "&lt;a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFAxc1FuZ0VLaHNzSGJqSl9WRTVReTdVSjBDa2l1RWo0YlhVbEpfM2FFc1hzdVUtRDZvcC0xYzRFZS05OTNFd1A5X3J4SG5TV1RvYjgzbW5PQWV4a3MxWS1DVkF2YmFENDB5QkZzVWJidmI?oc=5\" target=\"_blank\"&gt;Real Estate Attorney Andrew Yocopis Joins Procopio in its Scottsdale, Arizona Office as Newest Partner&lt;/a&gt; &lt;font color=\"#6f6f6f\"&gt;Procopio&lt;/font&gt;"
+      },
+      "tags": [
+        "B Grade",
+        "RSS/Public",
+        "Research / Enrich"
+      ],
+      "associateReady": false,
+      "readyForAssociate": false,
+      "linkedinVerify": false,
+      "linkedinVerified": false,
+      "cpaVerify": false,
+      "needsResearch": true,
+      "skipped": false,
+      "bucket": "research",
+      "status": "Research / Enrich",
+      "queue": "Research / Enrich",
+      "workflowDay": 0,
+      "priorityRank": 6,
+      "bestFirstAction": "Research / Enrich: incomplete route. Needs enrichment before associate workflow.",
+      "disposition": "New / Not Worked",
+      "requiredTasks": [],
+      "callHistory": []
+    }
+  ]
 }
