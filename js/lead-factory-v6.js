@@ -1,4 +1,4 @@
-/* Basin OS V6.4 — Automated Lead Factory + Manual LinkedIn Verification CRM
+/* Basin OS V6.5 — Automated Lead Factory + Manual LinkedIn Verification CRM
    Safe LinkedIn handling:
    - does not open LinkedIn automatically
    - does not read LinkedIn pages
@@ -659,7 +659,7 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 
-/* Basin OS V6.4 — Auto Bridge
+/* Basin OS V6.5 — Auto Bridge
    Fixes the exact issue where radar records exist but Dashboard / Leads Workflow still show 0.
    This automatically mirrors Lead Factory + Radar records into the legacy Basin OS buckets the existing UI reads.
 */
@@ -891,4 +891,267 @@
     setTimeout(autoBridge,7000);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
+
+/* Basin OS V6.5 — Leads Workflow Source Tabs + Priority Filters
+   Adds source/route tabs above Day 1 so LinkedIn Verify leads can be worked first.
+*/
+(function(){
+  'use strict';
+
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const clean = v => String(v ?? '').replace(/\s+/g,' ').trim();
+  const digits = v => String(v||'').replace(/\D/g,'');
+  const isEmail = v => /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(String(v||''));
+  const isLinkedIn = v => /linkedin\.com\/in\//i.test(String(v||''));
+  const isPhone = v => digits(v).length >= 10;
+  const byId = id => document.getElementById(id);
+
+  window.BASIN_LEAD_SOURCE_FILTER = window.BASIN_LEAD_SOURCE_FILTER || 'all';
+
+  function hardEnsure(){
+    try { if(typeof ensureStore === 'function') ensureStore(); } catch(e){}
+    window.STORE = window.STORE || {};
+    STORE.leadWorkflow = Array.isArray(STORE.leadWorkflow) ? STORE.leadWorkflow : [];
+    STORE.radarLeads = Array.isArray(STORE.radarLeads) ? STORE.radarLeads : [];
+    STORE.leadFactory = STORE.leadFactory || {};
+    STORE.leadFactory.leads = Array.isArray(STORE.leadFactory.leads) ? STORE.leadFactory.leads : [];
+    return STORE;
+  }
+
+  function score(w){ return Number(w.score || 0); }
+  function grade(w){
+    const s = score(w);
+    return w.grade || (s >= 82 ? 'A' : s >= 68 ? 'B' : s >= 52 ? 'C' : 'D');
+  }
+  function contactMethods(w){
+    const out = [];
+    (Array.isArray(w.contactMethods) ? w.contactMethods : []).forEach(c => {
+      const type = clean(c.type || c.kind || '');
+      const value = clean(c.value || c.url || c.href || '');
+      if(type || value) out.push({type,value,status:clean(c.status||c.confidence||''),verified:!!c.verified});
+    });
+    if(w.email) out.push({type:'Email',value:w.email,status:'Verified'});
+    if(w.phone) out.push({type:'Phone',value:w.phone,status:'Verified'});
+    if(w.linkedin) out.push({type:'LinkedIn Profile',value:w.linkedin,status:w.linkedinVerified?'Verified':'Needs Manual Confirmation',verified:!!w.linkedinVerified});
+    return out;
+  }
+  function findLeadForWorkflow(w){
+    hardEnsure();
+    return (STORE.radarLeads||[]).find(l => l.id === w.leadId || l.id === w.id) ||
+      (STORE.leadFactory.leads||[]).find(l => l.id === w.leadId || l.id === w.id) ||
+      w;
+  }
+  function hasContact(w, kind){
+    const l = findLeadForWorkflow(w);
+    const c = contactMethods(l).concat(contactMethods(w));
+    if(kind === 'email') return c.some(x => /email/i.test(x.type) && isEmail(x.value));
+    if(kind === 'linkedinVerified') return c.some(x => /linkedin/i.test(x.type) && isLinkedIn(x.value) && (/verified/i.test(x.status) || x.verified));
+    if(kind === 'linkedinCandidate') return c.some(x => /linkedin/i.test(x.type) && isLinkedIn(x.value) && !(/verified/i.test(x.status) || x.verified));
+    if(kind === 'phone') return c.some(x => /phone/i.test(x.type) && isPhone(x.value));
+    return false;
+  }
+  function sourceBlob(w){
+    const l = findLeadForWorkflow(w);
+    return [w.source,w.sourceType,w.queue,w.contactPriority,w.bestFirstAction,w.nextAction,w.url,w.sourceUrl,w.title,w.company,w.summary,w.signal,l.source,l.sourceType,l.queue,l.contactPriority,l.bestFirstAction,l.nextAction,l.url,l.sourceUrl,l.title,l.company,l.summary,l.signal].join(' ').toLowerCase();
+  }
+  function sourceClass(w){
+    const b = sourceBlob(w);
+    if(hasContact(w,'email')) return 'email';
+    if(hasContact(w,'linkedinVerified')) return 'linkedin';
+    if(hasContact(w,'linkedinCandidate') || /linkedin|salesnav|sales navigator/.test(b)) return 'linkedin-verify';
+    if(/npi|npiregistry|provider-view/.test(b)) return 'npi';
+    if(hasContact(w,'phone') || /phone|call first/.test(b)) return 'phone';
+    if(/rss|google news|news\.google|public source|article/.test(b)) return 'rss';
+    if(/manual/.test(b)) return 'manual';
+    if(/research/.test(b)) return 'research';
+    return 'other';
+  }
+  function sourceLabel(w){
+    const cls = sourceClass(w);
+    return ({
+      email:'Email First',
+      linkedin:'LinkedIn Verified',
+      'linkedin-verify':'LinkedIn Verify',
+      npi:'NPI / Physicians',
+      phone:'Phone / Call Verify',
+      rss:'RSS / Public News',
+      manual:'Manual Entry',
+      research:'Research Needed',
+      other:'Other'
+    })[cls] || 'Other';
+  }
+  function sourceRank(w){
+    const cls = sourceClass(w);
+    // LinkedIn/email are top operational priorities. Candidate LinkedIn comes before phone/NPI because it is fastest to enrich.
+    return ({
+      email: 1,
+      linkedin: 2,
+      'linkedin-verify': 3,
+      npi: 4,
+      phone: 5,
+      rss: 6,
+      manual: 7,
+      research: 8,
+      other: 9
+    })[cls] || 9;
+  }
+  function tabMatch(w, filter){
+    if(filter === 'all') return true;
+    if(filter === 'a') return grade(w) === 'A';
+    if(filter === 'day1') return /^day1$/i.test(w.bucket || 'day1') || Number(w.day || 1) === 1;
+    return sourceClass(w) === filter;
+  }
+  function sortedWorkflow(list){
+    return (list||[]).slice().sort((a,b) => {
+      const sr = sourceRank(a) - sourceRank(b);
+      if(window.BASIN_LEAD_SOURCE_FILTER === 'all' && sr) return sr;
+      const gs = score(b) - score(a);
+      if(gs) return gs;
+      return clean(a.name).localeCompare(clean(b.name));
+    });
+  }
+  function sourceCounts(list){
+    const c = {all:list.length,a:0,day1:0,email:0,linkedin:0,'linkedin-verify':0,npi:0,phone:0,rss:0,manual:0,research:0,other:0};
+    list.forEach(w => {
+      if(grade(w) === 'A') c.a++;
+      if(/^day1$/i.test(w.bucket || 'day1') || Number(w.day || 1) === 1) c.day1++;
+      c[sourceClass(w)] = (c[sourceClass(w)] || 0) + 1;
+    });
+    return c;
+  }
+  function setLeadSourceFilter(filter){
+    window.BASIN_LEAD_SOURCE_FILTER = filter || 'all';
+    try { renderLeadsWorkflowPage(); } catch(e) { console.warn('[Basin V6.5] render after filter failed', e); }
+  }
+  window.setLeadSourceFilter = setLeadSourceFilter;
+
+  function contactLine(w){
+    const l = findLeadForWorkflow(w);
+    const c = contactMethods(l).concat(contactMethods(w));
+    const uniq = [];
+    const seen = new Set();
+    c.forEach(x => {
+      const key = (x.type+'|'+x.value).toLowerCase();
+      if(!x.value || seen.has(key)) return;
+      seen.add(key); uniq.push(x);
+    });
+    if(!uniq.length) return '<div class="mini-note" style="margin-top:7px;color:#ff9aa9">No visible contact method yet.</div>';
+    return '<div class="rec-tags" style="margin-top:8px">' + uniq.slice(0,5).map(x => {
+      let val = x.value;
+      let html = esc(x.type)+': '+esc(val);
+      if(/^https?:\/\//i.test(val)) html = esc(x.type)+': <a href="'+esc(val)+'" target="_blank" rel="noopener" style="color:#8bd5ff">Open</a>';
+      if(/email/i.test(x.type) && isEmail(val)) html = 'Email: <a href="mailto:'+esc(val)+'" style="color:#8bd5ff">'+esc(val)+'</a>';
+      if(/phone/i.test(x.type) && isPhone(val)) html = 'Phone: <a href="tel:'+digits(val)+'" style="color:#8bd5ff">'+esc(val)+'</a>';
+      return '<span class="tag gray">'+html+'</span>';
+    }).join('') + '</div>';
+  }
+
+  function card(w){
+    const cls = sourceClass(w);
+    const label = sourceLabel(w);
+    const g = grade(w);
+    const sc = score(w);
+    const name = clean(w.name || 'Unnamed Lead');
+    const meta = [w.company || '', w.title || '', 'Score '+sc, w.status || 'Open'].filter(Boolean).join(' · ');
+    const next = w.bestFirstAction || w.nextAction || 'Complete first action, choose disposition, and log note.';
+    const openFull = (window.BasinLeadFactory && typeof window.BasinLeadFactory.openLead === 'function') ? '<button class="btn btn-ghost btn-sm" onclick="BasinLeadFactory.openLead(\''+esc(w.leadId||w.id)+'\')">Full CRM Card</button>' : '';
+    return '<div class="record" style="grid-template-columns:46px 1fr auto">'
+      + '<div class="score '+esc(g)+'">'+esc(g)+'</div>'
+      + '<div><div class="rec-name">'+esc(name)+'</div>'
+      + '<div class="rec-meta">'+esc(meta)+'</div>'
+      + '<div class="rec-tags"><span class="tag gold">'+esc((w.bucket||'day1').toUpperCase())+'</span><span class="tag teal">'+esc(label)+'</span><span class="tag gray">'+esc(w.updatedAt||w.createdAt||'')+'</span></div>'
+      + contactLine(w)
+      + '<div class="mini-note" style="margin-top:7px"><strong>Next:</strong> '+esc(next)+'</div></div>'
+      + '<div class="rec-actions" style="flex-wrap:wrap;max-width:360px">'
+      + (cls === 'linkedin-verify' ? '<button class="btn btn-primary btn-sm" onclick="BasinLeadFactory&&BasinLeadFactory.openLead?BasinLeadFactory.openLead(\''+esc(w.leadId||w.id)+'\'):void(0)">Verify LinkedIn</button>' : '')
+      + '<button class="btn btn-primary btn-sm" onclick="advanceLeadWorkflow(\''+esc(w.id)+'\')">Complete / Next Day</button>'
+      + openFull
+      + '<button class="btn btn-ghost btn-sm" onclick="setLeadWorkflowBucket(\''+esc(w.id)+'\',\'callback\')">Callback</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="setLeadWorkflowBucket(\''+esc(w.id)+'\',\'future\')">Future</button>'
+      + '<button class="btn btn-danger btn-sm" onclick="setLeadWorkflowBucket(\''+esc(w.id)+'\',\'notinterested\')">Not Interested</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="makeInvestorFromWorkflow(\''+esc(w.id)+'\')">Pipeline</button>'
+      + '</div></div>';
+  }
+
+  function tabsHtml(counts){
+    const tabs = [
+      ['all','All Sources'],
+      ['a','A Grade'],
+      ['email','Email First'],
+      ['linkedin','LinkedIn Verified'],
+      ['linkedin-verify','LinkedIn Verify'],
+      ['npi','NPI / Physicians'],
+      ['phone','Phone / Call'],
+      ['rss','RSS / Public News'],
+      ['manual','Manual'],
+      ['research','Research']
+    ];
+    return '<div class="panel" style="margin-bottom:14px"><div class="panel-hd"><div><div class="panel-title">Lead Source Filters</div><div class="panel-sub">Work the highest-value queue first. LinkedIn Verify is where you manually confirm candidate profile URLs, then enrich the CRM card.</div></div></div><div class="panel-bd"><div class="chips" style="gap:8px;display:flex;flex-wrap:wrap">'
+      + tabs.map(t => {
+        const active = window.BASIN_LEAD_SOURCE_FILTER === t[0] ? ' active' : '';
+        const n = counts[t[0]] || 0;
+        return '<button class="chip'+active+'" onclick="setLeadSourceFilter(\''+esc(t[0])+'\')">'+esc(t[1])+' <span class="badge" style="margin-left:6px">'+n+'</span></button>';
+      }).join('')
+      + '</div><div class="mini-note" style="margin-top:10px"><strong>Priority order:</strong> Email First → LinkedIn Verified → LinkedIn Verify → NPI/Phone → RSS/Research. Inside each tab, leads sort highest score to lowest score.</div></div></div>';
+  }
+
+  function workflowCounts(list){
+    const c = {};
+    list.forEach(w => { c[w.bucket || 'day1'] = (c[w.bucket || 'day1'] || 0) + 1; });
+    return c;
+  }
+
+  window.renderLeadsWorkflowPage = function(){
+    hardEnsure();
+    const root = byId('leads-workflow-root');
+    if(!root) return;
+
+    const all = sortedWorkflow(STORE.leadWorkflow || []);
+    const counts = sourceCounts(all);
+    const visible = sortedWorkflow(all.filter(w => tabMatch(w, window.BASIN_LEAD_SOURCE_FILTER)));
+    const buckets = [];
+    for(let i=1;i<=10;i++) buckets.push(['day'+i,'Day '+i]);
+    buckets.push(['callback','Callbacks'],['future','Long-Term Future'],['notinterested','Not Interested']);
+
+    let html = '<div class="info gold"><strong>Leads Workflow:</strong> Source tabs let you work the right queue first. LinkedIn Verify leads are candidate LinkedIn URLs that need manual confirmation before full CRM enrichment.</div>';
+    html += '<div class="grid3" style="margin-bottom:14px"><div class="stat"><div class="stat-val">'+visible.length+'</div><div class="stat-lbl">Visible Leads</div></div><div class="stat"><div class="stat-val">'+visible.filter(w => /^day/.test(w.bucket||'')).length+'</div><div class="stat-lbl">Active Lead Work</div></div><div class="stat"><div class="stat-val">'+((STORE.rejectedRadarLeads||[]).length)+'</div><div class="stat-lbl">Filtered / Not Usable</div></div></div>';
+    html += tabsHtml(counts);
+
+    const wc = workflowCounts(visible);
+    buckets.forEach(([bucket,label]) => {
+      const items = sortedWorkflow(visible.filter(w => (w.bucket || 'day1') === bucket));
+      html += '<div class="panel" style="margin-bottom:14px"><div class="panel-hd"><div><div class="panel-title">'+esc(label)+'</div><div class="panel-sub">'+items.length+' leads · sorted by source priority and score high to low</div></div></div><div class="panel-bd">';
+      html += items.length ? items.map(card).join('') : '<div class="empty"><div class="empty-title">No leads in '+esc(label)+'</div></div>';
+      html += '</div></div>';
+    });
+    root.innerHTML = html;
+  };
+
+  function patchCounts(){
+    try{
+      if(typeof window.updateCounts === 'function' && !window.updateCounts.__v65){
+        const old = window.updateCounts;
+        window.updateCounts = function(){
+          const ret = old.apply(this, arguments);
+          try{
+            hardEnsure();
+            const all = STORE.leadWorkflow || [];
+            const c = sourceCounts(all);
+            const radarBadge = byId('radar-badge'); if(radarBadge) radarBadge.textContent = all.length || c.all || 0;
+            const leadsBadge = byId('leads-badge'); if(leadsBadge) leadsBadge.textContent = all.length || 0;
+          }catch(e){}
+          return ret;
+        };
+        window.updateCounts.__v65 = true;
+      }
+    }catch(e){}
+  }
+
+  function boot(){
+    patchCounts();
+    try { if(byId('page-leads') && byId('page-leads').classList.contains('active')) renderLeadsWorkflowPage(); } catch(e){}
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
