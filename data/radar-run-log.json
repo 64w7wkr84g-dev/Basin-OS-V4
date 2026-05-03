@@ -1,5 +1,69 @@
 {
-  "generatedAt": null,
-  "stats": {},
-  "sample": []
+  "generatedAt": "2026-05-03T13:21:55.179Z",
+  "stats": {
+    "totalFound": 159,
+    "readyToWork": 0,
+    "research": 159,
+    "npiCollected": 140,
+    "rssCollected": 19,
+    "linkedinDiscoveryCollected": 0,
+    "linkedinCandidatesFound": 0,
+    "emailFound": 0,
+    "phoneFound": 140,
+    "publicSearches": 900,
+    "braveConfigured": true,
+    "groqConfigured": true,
+    "errors": 0
+  },
+  "sampleReady": [],
+  "sampleResearch": [
+    {
+      "name": "Andrew Isenberg",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Brian Donley Named",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Brian Saulnier",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Cardinal Health",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Clark Gamblin",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "David Kozminski Joins",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "David Williams Joins",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    },
+    {
+      "name": "Joanne Favuzza",
+      "score": 78,
+      "status": "Research Needed",
+      "contacts": []
+    }
+  ]
 }
