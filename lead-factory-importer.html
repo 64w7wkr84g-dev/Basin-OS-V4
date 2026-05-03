@@ -3,25 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Basin OS — Lead Factory Importer V6</title>
+<title>Basin OS — Lead Factory Importer V6.3</title>
 <style>
 body{margin:0;background:#070b10;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding:24px}
-.card{max-width:1000px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
+.card{max-width:980px;margin:auto;background:#111a27;border:1px solid #2b3748;border-radius:18px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.35)}
 button{background:#d89424;color:#070b10;border:0;border-radius:12px;padding:14px 18px;font-weight:900;font-size:16px;margin:6px 6px 6px 0}
 pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radius:12px;padding:14px;color:#b7c4d8;max-height:440px;overflow:auto}
-.warn{border:1px solid #7a3540;background:#2a1218;color:#ffd0d0;border-radius:12px;padding:12px;margin:14px 0}
-.good{border:1px solid #286f4a;background:#0d2519;color:#c6ffdc;border-radius:12px;padding:12px;margin:14px 0}
-.info{border:1px solid #315d7c;background:#0e2233;color:#cdeaff;border-radius:12px;padding:12px;margin:14px 0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.stat{border:1px solid #2b3748;border-radius:14px;padding:12px;background:#0b111a}.num{font-size:28px;font-weight:900;color:#d89424}.lbl{font-size:12px;color:#aeb8ca;text-transform:uppercase;letter-spacing:.08em}
+.good{border:1px solid #286f4a;background:#0d2519;color:#c6ffdc;border-radius:12px;padding:12px;margin:14px 0}.warn{border:1px solid #7a3540;background:#2a1218;color:#ffd0d0;border-radius:12px;padding:12px;margin:14px 0}.info{border:1px solid #315d7c;background:#0e2233;color:#cdeaff;border-radius:12px;padding:12px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:12px 0}.stat{border:1px solid #2b3748;border-radius:14px;padding:12px;background:#0b111a}.num{font-size:28px;font-weight:900;color:#d89424}.lbl{font-size:11px;color:#aeb8ca;text-transform:uppercase;letter-spacing:.08em}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>Basin OS Lead Factory Importer V6</h1>
-<p>This loads source output into the new CRM-style lead factory model.</p>
-<div class="warn"><b>Compliance guardrail:</b> LinkedIn/SalesNav is manual-link/manual-entry only. No automated scraping, auto-viewing, or auto-messaging.</div>
-<div class="info"><b>Lead rule:</b> Day 1 is for email/direct LinkedIn/warm-route leads. NPI phone-only goes to Phone Verify. RSS without contact goes to Research.</div>
-<button onclick="loadFactory()">Load Lead Factory from GitHub Radar JSON</button>
+<h1>Basin OS Lead Factory Importer V6.3</h1>
+<div class="warn"><b>Safe LinkedIn workflow:</b> candidate URL only, manual open, manual confirm/reject, optional pasted snapshot parser. No page reading or scraping.</div>
+<div class="info"><b>Use:</b> this page force-loads the latest GitHub radar JSON into this browser’s localStorage.</div>
+<button onclick="loadFactory()">Load V6.3 Lead Factory Data</button>
 <button onclick="clearFactory()">Clear Lead Factory Browser Data</button>
 <div id="summary"></div>
 <div id="out"></div>
@@ -29,40 +26,24 @@ pre{white-space:pre-wrap;background:#070b10;border:1px solid #2b3748;border-radi
 <script>
 const STORE_KEY='basin_os_integrated';
 const now=()=>new Date().toISOString();
-const uid=(p='lf')=>`${p}_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
-const digits=v=>String(v||'').replace(/\D/g,'');
-function fmtPhone(v){let d=digits(v); if(d.length===10)return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`; if(d.length===11&&d[0]==='1')return `(${d.slice(1,4)}) ${d.slice(4,7)}-${d.slice(7)}`; return String(v||'').trim();}
-function isEmail(v){return /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(String(v||''))}
-function isLinkedIn(v){return /linkedin\.com\/in\//i.test(String(v||''))}
-function isPhone(v){return digits(v).length>=10}
-function getStore(){let s={};try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){};s.radarLeads=Array.isArray(s.radarLeads)?s.radarLeads:[];s.leadWorkflow=Array.isArray(s.leadWorkflow)?s.leadWorkflow:[];s.leadFactory=s.leadFactory||{leads:[],phoneVerify:[],research:[],activity:[]};return s}
+async function loadJson(path,fallback){try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status+' '+r.statusText);return await r.json()}catch(e){return Object.assign({_missing:true,_error:String(e.message||e)},fallback)}}
+function getStore(){let s={};try{s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){};s.leadFactory=s.leadFactory||{leads:[],research:[],activity:[]};return s}
 function save(s){localStorage.setItem(STORE_KEY,JSON.stringify(s))}
-async function loadJson(path,fallback){try{let r=await fetch(path+'?v='+Date.now());if(!r.ok)throw new Error(r.status);return await r.json()}catch(e){return Object.assign({_missing:true,_error:String(e)},fallback)}}
-function normalizeContact(c){if(!c)return null;let type=clean(c.type||'Contact'),value=clean(c.value||c.url||'');if(!value)return null;if(/phone/i.test(type))value=fmtPhone(value);let action=/email/i.test(type)?'email':/phone/i.test(type)?'call':/linkedin/i.test(type)?'linkedin':'open';return {id:c.id||uid('ct'),type,value,action,source:c.source||'',confidence:c.confidence||'Medium',createdAt:c.createdAt||now()}}
-function contacts(r){let out=[];function add(type,value,source='lead data',confidence='Medium'){let c=normalizeContact({type,value,source,confidence});if(!c)return;let k=(c.type+'|'+c.value).toLowerCase();if(!out.some(x=>(x.type+'|'+x.value).toLowerCase()===k))out.push(c)};(Array.isArray(r.contactMethods)?r.contactMethods:[]).forEach(c=>{c=normalizeContact(c);if(c)add(c.type,c.value,c.source,c.confidence)});add('Phone',r.phone,'lead field','High');add('Email',r.email,'lead field','High');add('LinkedIn Profile',r.linkedin||r.linkedinUrl||r.linkedInUrl,'lead field','High');if(r.npi)add('NPI Profile','https://npiregistry.cms.hhs.gov/provider-view/'+r.npi,'NPI Registry','High');if(r.url&&/npiregistry/i.test(r.url))add('NPI Profile',r.url,'NPI Registry','High');if(r.sourceUrl&&/npiregistry/i.test(r.sourceUrl))add('NPI Profile',r.sourceUrl,'NPI Registry','High');if(r.website||r.companyUrl)add('Company Website',r.website||r.companyUrl,'lead field','Low');if(r.url&&!/npiregistry/i.test(r.url))add('Source Link',r.url,r.source||'source','Medium');return out}
-function strength(cs){let e=cs.some(c=>/email/i.test(c.type)&&isEmail(c.value)),l=cs.some(c=>/linkedin/i.test(c.type)&&isLinkedIn(c.value)),p=cs.some(c=>/phone/i.test(c.type)&&isPhone(c.value)),n=cs.some(c=>/npi/i.test(c.type));if(e&&l&&p)return'A1';if(e||l)return'A2';if(p&&!e&&!l)return n?'B2':'B1';return'R'}
-function fit(r){let b=[r.title,r.role,r.specialty,r.company,r.signal,r.summary,r.source].join(' ').toLowerCase(),a=[];if(/physician|surgeon|doctor|md|do|anesth|orthop|plastic|gastro|cardio|urology|derm|radiology/.test(b))a.push('high-income medical profession proxy');if(/owner|founder|ceo|president|partner|principal/.test(b))a.push('owner/executive/partner proxy');if(/cpa|tax|accounting/.test(b))a.push('CPA/tax referral path');if(/attorney|law|estate/.test(b))a.push('legal/estate referral path');if(/sold|acquired|liquidity|exit|promoted|opened|launch|speaker|podcast/.test(b))a.push('timely public trigger');return a.join('; ')||'Potential fit; needs further verification'}
-function accredited(r){let b=[r.title,r.role,r.specialty,r.company,r.signal,r.summary,r.source].join(' ').toLowerCase(),a=[];if(/physician|surgeon|doctor|md|do|anesth|orthop|plastic|gastro|cardio|urology|derm|radiology/.test(b))a.push('specialist physician/high-income proxy');if(/owner|founder|ceo|president|partner|principal/.test(b))a.push('owner/executive/partner proxy');if(/sold|acquired|liquidity|exit/.test(b))a.push('possible liquidity event');if(!a.length)a.push('accredited-likely not proven');return a.join('; ')+'. Must still be verified by compliant qualification/self-attestation.'}
-function evidence(r){let out=[];function add(source,url,what,confidence='Medium'){if(!source&&!url)return;out.push({id:uid('ev'),source:source||'Source',url:url||'',whatItProves:what||'Supporting evidence',confidence,capturedAt:now()})}if(r.npi||/npi/i.test(r.source||'')||/npiregistry/i.test(r.url||r.sourceUrl||''))add('NPI Registry',r.url||r.sourceUrl||(r.npi?'https://npiregistry.cms.hhs.gov/provider-view/'+r.npi:''),'Real provider identity, specialty, practice phone, and location.','High');if(r.sourceUrl||r.url)add(r.source||r.sourceFeed||'Public source',r.sourceUrl||r.url,r.signal||r.summary||'Public evidence.','Medium');return out}
-function firstAction(cs,sourceType){let e=cs.some(c=>/email/i.test(c.type)&&isEmail(c.value)),l=cs.some(c=>/linkedin/i.test(c.type)&&isLinkedIn(c.value)),p=cs.some(c=>/phone/i.test(c.type)&&isPhone(c.value));if(e)return{queue:'Email First',bucket:'day1',text:'Day 1: send reviewed email first, log note/disposition.'};if(l)return{queue:'LinkedIn First',bucket:'day1',text:'Day 1: manually open LinkedIn/SalesNav profile and complete appropriate manual touch.'};if(sourceType==='rss'&&p)return{queue:'Call First',bucket:'day1',text:'Day 1: RSS/article verified phone exists; verify and call if appropriate.'};if(p)return{queue:'Phone Verify',bucket:'phoneverify',text:'Find email/direct LinkedIn before full Day 1 cadence. Phone is available for verification.'};return{queue:'Research Needed',bucket:'needsresearch',text:'Find verified contact method before Day 1.'}}
-function lead(raw,forced){let cs=contacts(raw),st=strength(cs),act=firstAction(cs,raw.sourceType);let bucket=forced||raw.bucket||act.bucket;return{id:raw.id||uid('lead'),name:clean(raw.name||raw.fullName||raw.signal||'Research Candidate'),title:clean(raw.title||raw.role||raw.specialty||'Prospect'),role:clean(raw.role||raw.title||''),specialty:clean(raw.specialty||''),company:clean(raw.company||raw.practice||raw.organization||''),practiceLocation:clean(raw.practiceLocation||raw.location||raw.address||''),location:clean(raw.location||raw.practiceLocation||''),fitReason:clean(raw.fitReason||fit(raw)),accreditedLikelyReason:clean(raw.accreditedLikelyReason||accredited(raw)),source:clean(raw.source||raw.sourceFeed||raw.sourceType||''),sourceType:clean(raw.sourceType||raw.source||''),sourceUrl:clean(raw.sourceUrl||raw.url||''),signal:clean(raw.signal||raw.summary||''),summary:clean(raw.summary||''),contactMethods:cs,contactStrength:st,bestFirstAction:act.text,contactPriority:act.queue,queue:act.queue,bucket,stage:bucket,workflowDay:bucket==='day1'?1:0,grade:raw.grade||(st==='A1'?'A':st==='A2'?'A':st==='B1'?'B':st==='B2'?'B':'R'),score:Number(raw.score||(st==='A1'?92:st==='A2'?86:st==='B1'?76:st==='B2'?66:40)),workflow:{day:bucket==='day1'?1:0,stage:bucket,completedTasks:[],disposition:'',note:''},notes:[],evidenceTrail:evidence(raw),createdAt:raw.createdAt||raw.foundAt||now(),updatedAt:now()}}
-function dedupe(arr){let seen=new Set(),out=[];for(let x of arr){let k=[x.name,x.company,x.title,x.sourceUrl].join('|').toLowerCase();if(seen.has(k))continue;seen.add(k);out.push(x)}return out}
 async function loadFactory(){
-  const activeData=await loadJson('radar-leads.json',{leads:[],phoneOnlyCandidates:[],researchCandidates:[],stats:{}});
-  const phoneData=await loadJson('radar-phone-only-candidates.json',{candidates:null,stats:{}});
-  const researchData=await loadJson('radar-research-candidates.json',{candidates:null,stats:{}});
-  const activeRaw=activeData.leads||[];
-  const phoneRaw=Array.isArray(phoneData.candidates)?phoneData.candidates:(activeData.phoneOnlyCandidates||[]);
-  const researchRaw=Array.isArray(researchData.candidates)?researchData.candidates:(activeData.researchCandidates||[]);
-  const active=dedupe(activeRaw.map(x=>lead(x,'day1')));
-  const phone=dedupe(phoneRaw.map(x=>lead(x,'phoneverify')));
-  const research=dedupe(researchRaw.map(x=>lead(x,'needsresearch')));
-  const s=getStore();s.leadFactory={leads:active,phoneVerify:phone,research,activity:[{id:uid('act'),text:'Lead Factory imported from GitHub radar JSON',createdAt:now()}],lastImportedAt:now()};s.radarLeads=active.concat(phone);s.leadWorkflow=active.concat(phone,research);save(s);
-  document.getElementById('summary').innerHTML='<div class="grid"><div class="stat"><div class="num">'+active.length+'</div><div class="lbl">Day 1 Ready</div></div><div class="stat"><div class="num">'+phone.length+'</div><div class="lbl">Phone Verify</div></div><div class="stat"><div class="num">'+research.length+'</div><div class="lbl">Research</div></div><div class="stat"><div class="num">'+active.filter(l=>l.contactMethods.some(c=>/email|linkedin/i.test(c.type))).length+'</div><div class="lbl">Warm Route</div></div></div>';
-  document.getElementById('out').innerHTML='<div class="good"><b>Loaded.</b> Now return to Basin OS and click Lead Factory.</div><pre>'+JSON.stringify({activeStats:activeData.stats,phoneStats:phoneData.stats,researchStats:researchData.stats,usedPhoneFallback:!Array.isArray(phoneData.candidates),usedResearchFallback:!Array.isArray(researchData.candidates)},null,2)+'</pre>';
+  const active=await loadJson('radar-leads.json',{leads:[],researchCandidates:[],stats:{}});
+  const research=await loadJson('radar-research-candidates.json',{candidates:null,stats:{}});
+  const leads=Array.isArray(active.leads)?active.leads:[];
+  const candidates=Array.isArray(research.candidates)?research.candidates:(Array.isArray(active.researchCandidates)?active.researchCandidates:[]);
+  const s=getStore();
+  s.leadFactory={leads,research:candidates,activity:[{id:'import_'+Date.now(),text:'Imported V6.3 Lead Factory data',createdAt:now()}],lastImportedAt:now()};
+  s.radarLeads=leads;
+  s.leadWorkflow=leads.concat(candidates);
+  save(s);
+  const stats=active.stats||{};
+  document.getElementById('summary').innerHTML='<div class="grid"><div class="stat"><div class="num">'+leads.length+'</div><div class="lbl">Ready</div></div><div class="stat"><div class="num">'+(stats.emailFirst||0)+'</div><div class="lbl">Email</div></div><div class="stat"><div class="num">'+(stats.linkedinFirst||0)+'</div><div class="lbl">LinkedIn</div></div><div class="stat"><div class="num">'+(stats.linkedinVerify||0)+'</div><div class="lbl">LI Verify</div></div><div class="stat"><div class="num">'+(stats.callFirstVerify||0)+'</div><div class="lbl">Call</div></div><div class="stat"><div class="num">'+candidates.length+'</div><div class="lbl">Research</div></div></div>';
+  document.getElementById('out').innerHTML='<div class="good"><b>Loaded.</b> Return to Basin OS and click Lead Factory.</div><pre>'+JSON.stringify({activeStats:active.stats,researchStats:research.stats},null,2)+'</pre>';
 }
-function clearFactory(){let s=getStore();s.leadFactory={leads:[],phoneVerify:[],research:[],activity:[]};s.radarLeads=[];s.leadWorkflow=[];save(s);document.getElementById('out').innerHTML='<div class="good">Cleared Lead Factory data.</div>'}
+function clearFactory(){let s=getStore();s.leadFactory={leads:[],research:[],activity:[]};s.radarLeads=[];s.leadWorkflow=[];save(s);document.getElementById('out').innerHTML='<div class="good">Cleared.</div>'}
 </script>
 </body>
 </html>
