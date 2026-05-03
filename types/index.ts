@@ -36,6 +36,7 @@ export interface Lead {
   linkedinVerify?: boolean;
   linkedinVerified?: boolean;
   cpaVerify?: boolean;
+  needsResearch?: boolean;
   skipped?: boolean;
   bucket?: LeadBucket | string;
   status?: string;

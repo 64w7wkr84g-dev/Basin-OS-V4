@@ -11,8 +11,8 @@
   },
   {
     "path": "BUILD_MANIFEST.json",
-    "bytes": 7292,
-    "sha256": "6cbb2a65b2be584eaaa33ab5af51223a3f2bbe674a30de23aacb9945b3cb2ef1"
+    "bytes": 7451,
+    "sha256": "8c471bc2c0e3faeb40200414896691c928a59f4f72b098f81a66636c00b5283d"
   },
   {
     "path": "DELETE_FROM_GITHUB_BEFORE_UPLOAD.md",
@@ -251,7 +251,7 @@
   },
   {
     "path": "types/index.ts",
-    "bytes": 2847,
-    "sha256": "77e0e02b23191cb2cac65ff5ea41f45201fd3b8acf23bfb41729f4809efea4ff"
+    "bytes": 2874,
+    "sha256": "843f07b4abd54594c99ecb09c705f03f5f92d7a103bd2d213689a7cbecb43224"
   }
 ]
