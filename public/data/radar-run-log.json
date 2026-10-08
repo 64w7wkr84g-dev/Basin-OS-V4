@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T19:20:10.407Z",
+  "generatedAt": "2026-10-08T19:16:10.752Z",
   "stats": {
     "totalFound": 126,
     "activeVisible": 126,
@@ -10,7 +10,7 @@
     "research": 59,
     "skipped": 0,
     "npiCollected": 59,
-    "rssCollected": 80,
+    "rssCollected": 79,
     "linkedinDiscoveryCollected": 0,
     "cpaCollected": 0,
     "emailFound": 0,
@@ -25,7 +25,7 @@
     "braveFailures": 650,
     "rssFailures": 0,
     "npiFailures": 0,
-    "firstBraveError": "Brave 402: {\"type\":\"ErrorResponse\",\"error\":{\"id\":\"fcbdeb4a-7362-4b8c-8f1e-58decb3361ca\",\"status\":402,\"detail\":\"Usage limit exceeded.\",\"meta\":{\"plan\":\"Search\",\"current_spend\":5.0,\"usage_limit\":5.0,\"usage_limit_type\":\"monthly\",\"component\":\"api\"},\"code\":\"USAGE_LIMIT_EXCEEDED\"},\"time\":1791400765}",
+    "firstBraveError": "Brave 402: {\"type\":\"ErrorResponse\",\"error\":{\"id\":\"bb2534ec-cf5d-46a5-a6aa-c8b1899a3915\",\"status\":402,\"detail\":\"Usage limit exceeded.\",\"meta\":{\"plan\":\"Search\",\"current_spend\":5.0,\"usage_limit\":5.0,\"usage_limit_type\":\"monthly\",\"component\":\"api\"},\"code\":\"USAGE_LIMIT_EXCEEDED\"},\"time\":1791486949}",
     "firstGroqError": "Groq 404: {\"error\":{\"message\":\"The model `llama-3.3-70b-versatile` does not exist or you do not have access to it.\",\"type\":\"invalid_request_error\",\"code\":\"model_not_found\"}}",
     "firstRssError": "",
     "firstNpiError": "",
